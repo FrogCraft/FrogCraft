@@ -16,11 +16,10 @@ import FrogCraft.Machines2.ItemBlockMachines2;
 import FrogCraft.Machines2.ACWindMill.BlockACWindMillCylinder;
 import FrogCraft.Machines2.ACWindMill.Item_Fan;
 import FrogCraft.NEI.NEI_Config;
+import FrogCraft.Ore.ItemBlockOre;
 
 public class LanguageRegister {
-	static Configuration lang;
-	public static void loadLanguage(Configuration _lang,Boolean isClient){
-		lang=_lang;
+	public static void loadLanguage(Configuration lang,Boolean isClient){
 		//NEI        
 		if(isClient){
 			NEI_Config.euTotal=LanguageRegister.getl(lang, "euTotal", "总耗电量:");
@@ -52,6 +51,10 @@ public class LanguageRegister {
 				getl(lang,"ACWindMillTop","学园都市风力发电机主体"),
 				getl(lang,"ACWindMillBase","学园都市风力发电机底座")
 		};		
+		ItemBlockOre.Ore_Names=new String[]{
+				getl(lang,"oreCarnallite","光卤石"),
+				getl(lang,"oreFluorapatite","氟磷灰石")
+		};
 		Item_Railgun.name=getl(lang,"Railgun_Name","超电磁炮");
 		Item_Railgun.tooTired=getl(lang,"Railgun_TooTired","亲 你太累了 休息会儿再射吧");
 		Item_Railgun.info=getl(lang,"Railgun_Info","吡哩吡哩~~~");
@@ -65,27 +68,23 @@ public class LanguageRegister {
 
 		
 		//Gases
-		applyToItem(lang,Item_Gases.itemsData,new String[]{"氧气","二氧化碳","氩气","氨气","一氧化氮","一氧化碳"});
+		applyToItem(lang,Item_Gases.itemsData,new String[]{"氧气","二氧化碳","氩气","氨气","一氧化氮","一氧化碳","氟气"});
 		
 		//Liquids
-		applyToItem(lang,Item_Liquids.itemsData,new String[]{"液化空气","煤焦油","硝酸","苯"});
+		applyToItem(lang,Item_Liquids.itemsData,new String[]{"液化空气","煤焦油","硝酸","苯","液态溴"});
 		
 		//Ingots
 		applyToItem(lang,Item_Ingots.itemsData,new String[]{"钾单质","磷单质"});	
 		
 		//Dusts
-		applyToItem(lang,Item_Dusts.itemsData,new String[]{"氧化钙","尿素","硝酸铵","硅酸钙","氢氧化钙","铝镁合金粉"});
+		applyToItem(lang,Item_Dusts.itemsData,new String[]{"氧化钙","尿素","硝酸铵","硅酸钙","氢氧化钙","铝镁合金粉","光卤石粉","氯化钾","溴化镁","氟磷灰石粉","氟化钙"});
 		
 		//Miscs
-		applyToItem(lang,Item_Miscs.itemsData,new String[]{"焦煤碳碎片","蜂窝煤","超电磁炮组件","金坷垃"});
+		applyToItem(lang,Item_Miscs.itemsData,new String[]{"焦煤碳碎片","蜂窝煤","超电磁炮组件","金坷垃","电解器插件","高温加热器插件","氨合成专用催化器件"});
 		
 		//Cells
-		applyToItem(lang,Item_Cells.itemsData,new String[]{"氨槽","煤焦油槽","氧气槽","液化空气槽","二氧化碳槽","氩槽","硝酸槽","一氧化氮槽","一氧化碳槽","苯槽"});
+		applyToItem(lang,Item_Cells.itemsData,new String[]{"氨槽","煤焦油槽","氧气槽","液化空气槽","二氧化碳槽","氩槽","硝酸槽","一氧化氮槽","一氧化碳槽","苯槽","溴槽","氟槽"});
 		
-
-	}
-	
-	public static void locallize(){
 		HashMap<String,String[]> achInfo=new HashMap<String,String[]>();
 		achInfo.put("get_railgun", new String[]{"Only my railgun!","来一炮?"});
 		achInfo.put("get_EVT", new String[]{"超高压变压器","降压到2048"});
@@ -101,9 +100,9 @@ public class LanguageRegister {
 		achInfo.put("condensetower2", new String[]{"分立他们.","乃学会了如何分离液体和固体的混合物"});		
 		for (String name:achInfo.keySet()){
 			setAchInfo(name,getl(lang,name+"_Name",achInfo.get(name)[0]),getl(lang,name+"_Desc",achInfo.get(name)[1]));
-		}		
-		lang.save();
+		}
 	}
+	
 	
 	static void applyToItem(Configuration lang,List<String[]> list,String[] langStr){
 		for (int i=0;i<list.size();i++){

@@ -7,11 +7,11 @@ import FrogCraft.Items.MobilePS.BlockMobilePS;
 import FrogCraft.Items.MobilePS.ItemBlock_MobilePS;
 import FrogCraft.Items.MobilePS.TileEntityMobilePS;
 import FrogCraft.Items.Railgun.*;
-import FrogCraft.Items.Spray.*;
 import FrogCraft.Machines.*;
 import FrogCraft.Machines.IndustrialDevices.*;
 import FrogCraft.Machines2.*;
 import FrogCraft.Machines2.ACWindMill.*;
+import FrogCraft.Ore.WorldGenerator;
 import FrogCraft.api.*;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -50,15 +50,13 @@ public class mod_FrogCraft {
 	public static mod_FrogCraft instance;
 	
 	public static Achievements fcAchievements;
-
-	public final static int[] GRIDS_HEIGHTS = {2, 2};
-	public final static int[] GRIDS_WIDTHS = {2, 2};
 	
 	//Configuration
-	static int id_ACWindMillCylinder,
-					  id_BlockMobliePS,
-					  id_BlockMachines,
-					  id_BlockMachines2;
+	static int id_BlockOre,
+			   id_ACWindMillCylinder,
+			   id_BlockMobliePS,
+			   id_BlockMachines,
+			   id_BlockMachines2;
 					  
 	
 	static int id_IC2Coolant_NH3_60K,
@@ -71,7 +69,6 @@ public class mod_FrogCraft {
 			   id_ItemLiquids,
 			   id_ItemGases,
 			   id_Railgun,
-			   id_ItemSpray,
 			   id_ItemFan;
 	
 	public static int rate_PneumaticCompressor;
@@ -79,6 +76,7 @@ public class mod_FrogCraft {
 	public static boolean rndboom_PneumaticCompressor;	
 	
 	//Blocks
+	public static FrogCraft.Ore.BlockOre Ore;
 	public static BlockFence ACWindMillCylinder;
 	public static BlockMobilePS MobilePS;
 	public static BlockMachines Machines;	
@@ -93,7 +91,6 @@ public class mod_FrogCraft {
 	public static Item_Liquids Liquids;
 	public static Item_Gases Gases;	
 	public static Item_Railgun Railgun;
-	public static Item_Spray Spray;
 	public static Item_Fan Fan;
 	
 	//Dynamics
@@ -117,11 +114,11 @@ public class mod_FrogCraft {
 		
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
         config.load();
-        useLang=config.get("Languages", "Use_Custom_Language", true).getBoolean(true); 
+        useLang=config.get("Languages", "Use_Custom_Language", false).getBoolean(false); 
 
         
         //---------------------------------------------------------------------------------------
-        
+        id_BlockOre=config.get("Blocks", "Ore", 658).getInt();
         id_ACWindMillCylinder=config.get("Blocks", "ACWindMillCylinder", 659).getInt();  
         id_BlockMobliePS=config.get("Blocks", "MobilePS", 660).getInt();  
         id_BlockMachines=config.get("Blocks", "Machines", 661).getInt();  
@@ -137,8 +134,7 @@ public class mod_FrogCraft {
         id_ItemLiquids=config.get("Items", "Liquids", 19742).getInt();
         id_ItemGases=config.get("Items", "Gases", 19743).getInt(); 
         id_Railgun=config.get("Items", "Railgun", 19744).getInt();
-        id_ItemSpray=config.get("Items", "Spray", 19745).getInt();
-        id_ItemFan=config.get("Items", "Fan", 19746).getInt();       
+        id_ItemFan=config.get("Items", "Fan", 19745).getInt();       
         
         //PneumaticCompressor
         rate_PneumaticCompressor=config.get("Generals", "rate_PneumaticCompressor", 100).getInt();    
@@ -157,31 +153,23 @@ public class mod_FrogCraft {
         ItemsRegister.loadItemsData();        
   
         //---------------------------------------------------------------------------------------
-		Configuration sprays = new Configuration(new java.io.File(event.getModConfigurationDirectory(),"mod_FrogCraft_Sprays.cfg"));
-		sprays.load();
-		Item_Spray.maxSpray=sprays.get("Generals", "Number_of_Spray", 2).getInt();
-		Item_Spray.names=new String[Item_Spray.maxSpray];
-		EntitySpray.GRIDS_WIDTHS=new float[Item_Spray.maxSpray];
-		EntitySpray.GRIDS_HEIGHTS=new float[Item_Spray.maxSpray];	
-		for (int i=0;i<Item_Spray.maxSpray;i++){
-			Item_Spray.names[i]=sprays.get("Spray_Names", String.valueOf(i), "喷漆").getString();
-			EntitySpray.GRIDS_WIDTHS[i]=(float) sprays.get("Spray_Width", String.valueOf(i), 2.0D).getDouble(2.0D);
-			EntitySpray.GRIDS_HEIGHTS[i]=(float) sprays.get("Spray_Height", String.valueOf(i), 2.0D).getDouble(2.0D);			
-		}	
-		sprays.save();
+
         
         if (useLang){
         	Configuration lang = new Configuration(new java.io.File(event.getModConfigurationDirectory(),"mod_FrogCraft.lang"));
         	lang.load();
         	LanguageRegister.loadLanguage(lang,event.getSide()==Side.CLIENT);
+    		lang.save();
         }
         
-		LanguageRegister.locallize();
         regItems();
 		fcAchievements=new Achievements();  //This is important to be placed here!!!!	
 	}
 	
 	public void regItems(){
+		//Initialize Blocks
+		Ore=new FrogCraft.Ore.BlockOre(id_BlockOre);
+		fcItems.oreID=Ore.blockID;
 		fcItems.acwindmillcylinder=ACWindMillCylinder = new BlockACWindMillCylinder(id_ACWindMillCylinder);
 		fcItems.mobileps=MobilePS=new BlockMobilePS(id_BlockMobliePS);
 		Machines=new BlockMachines(id_BlockMachines);
@@ -189,6 +177,7 @@ public class mod_FrogCraft {
 		Machines2=new BlockMachines2(id_BlockMachines2);
 		fcItems.machine2ID=Machines2.blockID;
 		
+		//Initialize Items
 		Cells=new Item_Cells(id_ItemCells);
 		fcItems.cellsID=Cells.itemID;		
 		ItemsRegister.loadContainerSettings();
@@ -207,7 +196,6 @@ public class mod_FrogCraft {
 		fcItems.IC2Coolant_NH3_180K=IC2Coolant_NH3_180K=new Item_IC2Coolant.Item_IC2CoolantNH3_180K(id_IC2Coolant_NH3_180K);	
 		fcItems.IC2Coolant_NH3_360K=IC2Coolant_NH3_360K=new Item_IC2Coolant.Item_IC2CoolantNH3_360K(id_IC2Coolant_NH3_360K);		
 		fcItems.railgun=Railgun=new Item_Railgun(id_Railgun);
-		fcItems.spray=Spray=new Item_Spray(id_ItemSpray);
 		fcItems.fan=Fan=new Item_Fan(id_ItemFan);
 		
 		//Register MetaBlocks
@@ -221,7 +209,12 @@ public class mod_FrogCraft {
 			LanguageRegistry.addName(new ItemStack(Machines2,1,i), ItemBlockMachines2.Machines2_Names[i]);
 		}		
 		
-		//Register Normal Blocks
+		GameRegistry.registerBlock(Ore,FrogCraft.Ore.ItemBlockOre.class);	
+		for (int i = 0; i < FrogCraft.Ore.ItemBlockOre.Ore_Names.length; i++) {
+			LanguageRegistry.addName(new ItemStack(Ore,1,i), FrogCraft.Ore.ItemBlockOre.Ore_Names[i]);
+		}			
+		
+		//Register Normal Blocks	
 		GameRegistry.registerBlock(ACWindMillCylinder);		
 		LanguageRegistry.addName(ACWindMillCylinder,BlockACWindMillCylinder.BlockACWindMillCylinder_Name);
 		GameRegistry.registerBlock(MobilePS,ItemBlock_MobilePS.class);
@@ -231,7 +224,6 @@ public class mod_FrogCraft {
 		GameRegistry.registerItem(IC2Coolant_NH3_180K, "FrogCraft_IC2Coolant_NH3_180K");
 		GameRegistry.registerItem(IC2Coolant_NH3_360K, "FrogCraft_IC2Coolant_NH3_360K");		
 		GameRegistry.registerItem(Railgun, "FrogCraft_Railgun");
-		GameRegistry.registerItem(Spray, "FrogCraft_Spray");
 		GameRegistry.registerItem(Fan, "FrogCraft_id_ItemFan");
 		GameRegistry.registerItem(Ingots,"FrogCraft_Ingots");			
 		GameRegistry.registerItem(Cells,"FrogCraft_Cells");			
@@ -239,13 +231,10 @@ public class mod_FrogCraft {
 		GameRegistry.registerItem(Dusts,"FrogCraft_Dusts");		
 		GameRegistry.registerItem(Liquids,"FrogCraft_Liquids");
 		GameRegistry.registerItem(Gases,"FrogCraft_Gases");	
-		
-		
 	}
 	
 	@Init
 	public void load(FMLInitializationEvent event) {
-		new Armor();
 		OreDictRegister.registerOreDict();
 		
 		//Register TileEntities
@@ -275,8 +264,8 @@ public class mod_FrogCraft {
 		
 		EntityRegistry.registerModEntity(EntityCoin.class, "Frogcraft_Railgun_Coin", 0, this, 40, 3, true);
 		EntityRegistry.registerGlobalEntityID(EntityCoin.class, "Frogcraft_Railgun_Coin", 0);
-		EntityRegistry.registerModEntity(EntitySpray.class, "Frogcraft_Spray", 1, this.instance, 40, 5, true);
 		
+		GameRegistry.registerWorldGenerator(new WorldGenerator());
 		proxy.registerRenderInformation();
 	}
 	
@@ -294,7 +283,7 @@ public class mod_FrogCraft {
 		if (ModLoader.isModLoaded("GregTech_Addon"))
 			GTGas=gregtechmod.api.GregTech_API.getGregTechItem(14,1,15).itemID;
 		else 
-			GTGas=Block.waterStill.blockID;
+			GTGas=Block.lavaStill.blockID;
 		
 		if (ModLoader.isModLoaded("GregTech_Addon"))
 			GTCell=gregtechmod.api.GregTech_API.getGregTechItem(2,1,4).itemID;

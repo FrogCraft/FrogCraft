@@ -48,17 +48,17 @@ public class RecipeRegister {
 		//Ca(OH)2+CO2=CaCO3+H2O
 		RecipeManager.addAdvanceChemicalReactorRecipe(new ItemStack(fcItems.dustsID,1,4), new ItemStack(fcItems.cellsID,1,4),null, null, null,GregTech_API.getGregTechItem(1, 1, 4), Items.getItem("waterCell"), null, null, null, 128, 10);		
 		//N2+3H2=2NH3
-		RecipeManager.addAdvanceChemicalReactorRecipe(new ItemStack(mod_FrogCraft.GTCell,1,15),new ItemStack(mod_FrogCraft.GTCell,3,0),null,null,null,new ItemStack(fcItems.cellsID,2,0),null,null,null,null,new ItemStack(Item.ingotIron,1),null,Items.getItem("cell").copy().splitStack(2),5000,-1,50);
+		RecipeManager.addAdvanceChemicalReactorRecipe(new ItemStack(mod_FrogCraft.GTCell,1,15),new ItemStack(mod_FrogCraft.GTCell,3,0),null,null,null,new ItemStack(fcItems.cellsID,2,0),null,null,null,null,fcItems.getItem(cls.misc, "AmmoniaModule"),null,Items.getItem("cell").copy().splitStack(2),5000,-1,100);
 		//N2+2O2=2NO2
-		RecipeManager.addAdvanceChemicalReactorRecipe(new ItemStack(fcItems.cellsID,2,2),new ItemStack(mod_FrogCraft.GTCell,1,15),null,null,null,new ItemStack(mod_FrogCraft.GTCell,2,38),null,null,null,null,new ItemStack(Item.ingotIron,1),null,Items.getItem("cell"),5000,-1,50);		
+		RecipeManager.addAdvanceChemicalReactorRecipe(new ItemStack(fcItems.cellsID,2,2),new ItemStack(mod_FrogCraft.GTCell,1,15),null,null,null,new ItemStack(mod_FrogCraft.GTCell,2,38),null,null,null,null,fcItems.getItem(cls.misc, "HeatingModule"),null,Items.getItem("cell"),7000,-1,100);		
 		//CO2+2NH3=CO(NH2)2+H2O
-		RecipeManager.addAdvanceChemicalReactorRecipe(new ItemStack(fcItems.cellsID,1,4), new ItemStack(fcItems.cellsID,2,0),null,null,null,new ItemStack(fcItems.dustsID,1,1),Items.getItem("waterCell"),null,null,null,null,null,Items.getItem("cell").splitStack(2),5000,50,1);
+		RecipeManager.addAdvanceChemicalReactorRecipe(new ItemStack(fcItems.cellsID,1,4), new ItemStack(fcItems.cellsID,2,0),null,null,null,new ItemStack(fcItems.dustsID,1,1),Items.getItem("waterCell"),null,null,null,null,null,Items.getItem("cell").copy().splitStack(2),2000,50,1);
 		//3NO2+H2O=2HNO3+NO
-		RecipeManager.addAdvanceChemicalReactorRecipe(new ItemStack(mod_FrogCraft.GTCell,3,38), Items.getItem("waterCell"), null, null, null, new ItemStack(fcItems.cellsID,2,6), new ItemStack(fcItems.cellsID,1,7), null, null, null, null, null, Items.getItem("cell"), 800, -1, 50);
+		RecipeManager.addAdvanceChemicalReactorRecipe(new ItemStack(mod_FrogCraft.GTCell,3,38), Items.getItem("waterCell"), null, null, null, new ItemStack(fcItems.cellsID,2,6), new ItemStack(fcItems.cellsID,1,7), null, null, null, null, null, Items.getItem("cell"), 800, 50,-1);
 		//2NO+O2=2NO2
 		RecipeManager.addAdvanceChemicalReactorRecipe(new ItemStack(fcItems.cellsID,2,7), new ItemStack(fcItems.cellsID,1,2), null, null, null, new ItemStack(mod_FrogCraft.GTCell,2,38), null, null, null, null, null, null, Items.getItem("cell"), 100, 10, -1);
 		//HNO3+NH3=NH4NO3
-		RecipeManager.addAdvanceChemicalReactorRecipe(new ItemStack(fcItems.cellsID,1,6), new ItemStack(fcItems.cellsID,1,0), null, null, null, new ItemStack(fcItems.dustsID,1,2), null, null, null, null, null, null, Items.getItem("cell").splitStack(2), 300, 10, -1);
+		RecipeManager.addAdvanceChemicalReactorRecipe(new ItemStack(fcItems.cellsID,1,6), new ItemStack(fcItems.cellsID,1,0), null, null, null, new ItemStack(fcItems.dustsID,1,2), null, null, null, null, null, null, Items.getItem("cell").copy().splitStack(2), 100, 10, -1);
 		//C+O2=CO2
 		RecipeManager.addAdvanceChemicalReactorRecipe(ic2.api.item.Items.getItem("coalDust"), new ItemStack(fcItems.cellsID,1,2), null, null, null, new ItemStack(fcItems.cellsID,1,4), null, null, null, null, 5000, 100);
 		RecipeManager.addAdvanceChemicalReactorRecipe(GregTech_API.getGregTechItem(1, 1, 240), new ItemStack(fcItems.cellsID,1,2), null, null, null, new ItemStack(fcItems.cellsID,1,4), null, null, null, null, 5000, 100);
@@ -66,19 +66,28 @@ public class RecipeRegister {
 		RecipeManager.addAdvanceChemicalReactorRecipe(new ItemStack(Item.coal,1,1), new ItemStack(fcItems.cellsID,1,2), null, null, null, new ItemStack(fcItems.cellsID,1,4), null, null, null, null, 7500, 100);
 		RecipeManager.addAdvanceChemicalReactorRecipe(GregTech_API.getGregTechItem(2, 1, 8), new ItemStack(fcItems.cellsID,1,2), null, null, null, new ItemStack(fcItems.cellsID,1,4), null, null, null, null,null,null,Items.getItem("cell"), 7500, 100, -1);
 		//Ca3(PO4)2 + 3SiO2 + 5 C == 3 CaSiO3 + 5CO + 2P
-		RecipeManager.addAdvanceChemicalReactorRecipe(GregTech_API.getGregTechItem(1, 1, 45), GregTech_API.getGregTechItem(1, 3, 7), GregTech_API.getGregTechItem(2, 1, 8), null, null, new ItemStack(fcItems.dustsID,3,3), new ItemStack(fcItems.cellsID,5,8), new ItemStack(fcItems.ingotsID,2,1), null, null,null,Items.getItem("cell").splitStack(4),null, 32000, 350,-1);
-		RecipeManager.addAdvanceChemicalReactorRecipe(GregTech_API.getGregTechItem(1, 2, 45), GregTech_API.getGregTechItem(1, 6, 7), GregTech_API.getGregTechItem(1, 1, 240), null, null, new ItemStack(fcItems.dustsID,6,3), new ItemStack(fcItems.cellsID,10,8), new ItemStack(fcItems.ingotsID,4,1), null, null,null,Items.getItem("cell").splitStack(10),null, 32000, 350,-1);
+		RecipeManager.addAdvanceChemicalReactorRecipe(GregTech_API.getGregTechItem(1, 1, 45), GregTech_API.getGregTechItem(1, 3, 7), GregTech_API.getGregTechItem(2, 1, 8), null, null, new ItemStack(fcItems.dustsID,3,3), new ItemStack(fcItems.cellsID,5,8), new ItemStack(fcItems.ingotsID,2,1), null, null,fcItems.getItem(cls.misc, "HeatingModule"),Items.getItem("cell").copy().splitStack(4),null, 32000,-1, 350);
+		RecipeManager.addAdvanceChemicalReactorRecipe(GregTech_API.getGregTechItem(1, 2, 45), GregTech_API.getGregTechItem(1, 6, 7), GregTech_API.getGregTechItem(1, 1, 240), null, null, new ItemStack(fcItems.dustsID,6,3), new ItemStack(fcItems.cellsID,10,8), new ItemStack(fcItems.ingotsID,4,1), null, null,fcItems.getItem(cls.misc, "HeatingModule"),Items.getItem("cell").copy().splitStack(10),null, 32000,-1, 350);
 		//2CO+O2=2CO2
 		RecipeManager.addAdvanceChemicalReactorRecipe(new ItemStack(fcItems.cellsID,2,8), new ItemStack(fcItems.cellsID,1,2), null, null, null, new ItemStack(fcItems.cellsID,2,4), null,null,null,null,null,null,Items.getItem("cell"), 100, 10,-1);
 		//CaSiO3=CaO+SiO2
-		RecipeManager.addAdvanceChemicalReactorRecipe(new ItemStack(fcItems.dustsID,1,3),null,null,null,null,new ItemStack(fcItems.dustsID,1,0),GregTech_API.getGregTechItem(1, 1, 7),null,null,null,40000,400);
+		RecipeManager.addAdvanceChemicalReactorRecipe(new ItemStack(fcItems.dustsID,1,3),null,null,null,null,new ItemStack(fcItems.dustsID,1,0),GregTech_API.getGregTechItem(1, 1, 7),null,null,null,fcItems.getItem(cls.misc, "HeatingModule"),null,null,40000,400,-1);
 		//C->raw carbon fiber
-		RecipeManager.addAdvanceChemicalReactorRecipe(GregTech_API.getGregTechItem(2, 9, 8), null, null, null, null, Items.getItem("carbonFiber"), null, null, null, null,null,null,Items.getItem("cell").splitStack(9), 1000, 50, -1);
+		RecipeManager.addAdvanceChemicalReactorRecipe(GregTech_API.getGregTechItem(2, 9, 8), null, null, null, null, Items.getItem("carbonFiber"), null, null, null, null,null,null,Items.getItem("cell").copy().splitStack(9), 1000, 50, -1);
+		//Mg+Br2=MgBr2
+		RecipeManager.addAdvanceChemicalReactorRecipe(GregTech_API.getGregTechItem(1, 1, 13),fcItems.getItem(cls.cell,"cell_Bromine",1),null,null,null,fcItems.getItem(cls.dust, "MgBr2", 1),null,null,null,null,null,null,Items.getItem("cell"),300,10,-1);
+		//K+Cl2=KCl
+		RecipeManager.addAdvanceChemicalReactorRecipe(GregTech_API.getGregTechItem(2, 2, 14),GregTech_API.getGregTechItem(2, 1, 13),null,null,null,fcItems.getItem(cls.dust, "KCl", 2),null,null,null,null,null,null,Items.getItem("cell").copy().splitStack(3),300,10,-1);		
+		RecipeManager.addAdvanceChemicalReactorRecipe(GregTech_API.getGregTechItem(2, 1, 13),fcItems.getItem(cls.ingot, "K",2),null,null,null,fcItems.getItem(cls.dust, "KCl", 2),null,null,null,null,null,null,Items.getItem("cell"),300,10,-1);	
+		//CaF2=Ca+F2
+		RecipeManager.addAdvanceChemicalReactorRecipe(fcItems.getItem(cls.dust,"CaF2",1),null,null,null,null,GregTech_API.getGregTechItem(2, 1, 11),fcItems.getItem(cls.cell,"cell_Fluorine",1),null,null,null,fcItems.getItem(cls.misc, "ElectrolizeModule"),Items.getItem("cell").copy().splitStack(2),null,40000,-1,350);			
+		//Ca+F2=CaF2
+		RecipeManager.addAdvanceChemicalReactorRecipe(GregTech_API.getGregTechItem(2, 1, 11),fcItems.getItem(cls.cell,"cell_Fluorine",1),null,null,null,fcItems.getItem(cls.dust,"CaF2",1),null,null,null,null,null,null,Items.getItem("cell").copy().splitStack(2),100,10,-1);		
 		
 		
 		//Thermal Cracker
 		//Coal
-		RecipeManager.addThermalCrackerRecipe(ic2.api.item.Items.getItem("coalDust").splitStack(1), 48, 80, new ItemStack(fcItems.miscsID,1,0), new LiquidStack(mod_FrogCraft.Liquids.itemID,200,1));
+		RecipeManager.addThermalCrackerRecipe(ic2.api.item.Items.getItem("coalDust"), 48, 80, new ItemStack(fcItems.miscsID,1,0), new LiquidStack(mod_FrogCraft.Liquids.itemID,200,1));
 		RecipeManager.addThermalCrackerRecipe(GregTech_API.getGregTechItem(1, 1, 240), 48, 80, new ItemStack(fcItems.miscsID,1,0), new LiquidStack(mod_FrogCraft.Liquids.itemID,200,1));		
 		
 		//Stone->Cao+CO2
@@ -93,6 +102,15 @@ public class RecipeRegister {
 		CraftingManager m=CraftingManager.getInstance();
 		//Dusts
 		regUnShapedRecipe(fcItems.getItem(cls.dust, "Magnalium", 1),new Object[]{"dustMagnesium","dustAluminium","dustAluminium"});
+		
+		//Modules
+		//Electrolize Module
+		regRecipe(new ItemStack(fcItems.miscsID,1,4),new Object[]{" m "," o "," e ",'m',Items.getItem("magnetizer"),'e',Items.getItem("electrolyzer"),'o',Items.getItem("advancedCircuit")});
+		//Heating Module
+		if (isGTLoaded)
+			regUnShapedRecipe(new ItemStack(fcItems.miscsID,1,5),new Object[]{GregTech_API.getGregTechItem(3, 1, 21),Items.getItem("advancedCircuit")});		
+		//Ammonia Catalyst
+		regUnShapedRecipe(new ItemStack(fcItems.miscsID,1,6),new Object[]{new ItemStack(fcItems.miscsID,1,5),Items.getItem("refinedIronIngot")});	
 		
 		//Mobile Power Supply
 		regRecipe(new ItemStack(fcItems.mobileps),new Object[]{"iei","ibi","ifi",'b',Items.getItem("batBox"),'f',Items.getItem("electroFurnace"),'e',Items.getItem("advancedCircuit"),'i',"ingotRefinedIron"});
@@ -153,7 +171,7 @@ public class RecipeRegister {
 	
         
         //GoldClod
-        GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(fcItems.miscsID,1,3),new Object[]{"ingotPotassium","gemPhosphor","molecule_1n"}));
+        GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(fcItems.miscsID,1,3),new Object[]{"ingotPotassium","ingotPotassium","ingotPotassium","gemPhosphor","gemPhosphor","gemPhosphor","molecule_1n","molecule_1n","molecule_1n"}));
 	
         //GunPowder
         GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Item.gunpowder,2),new Object[]{"dustAmmoniumNitrate","dustAmmoniumNitrate","dustCharcoal","craftingSulfurToGunpowder"}));
@@ -161,47 +179,71 @@ public class RecipeRegister {
 	}
 		
 	static void loadGTMachineRecipes(){
-		//General
-		if (isGTLoaded){
-			//Super Conductor
-			ic2.api.recipe.Recipes.advRecipes.addRecipe(GregTech_API.getGregTechItem(3, 4, 2), new Object[]{"lll","wiw","fff",'l',new ItemStack(fcItems.IC2Coolant_NH3_60K),'w',GregTech_API.getGregTechItem(0, 1, 80),'i',Items.getItem("iridiumPlate"),'f',GregTech_API.getGregTechItem(3, 1, 0)});
-		}
-		ic2.api.recipe.Recipes.advRecipes.addRecipe(Items.getItem("advancedMachine").splitStack(2), new Object[]{"xxx","x x","xxx",'x',GregTech_API.getGregTechItem(0, 1, 13)});
-		
-		//Generator
+		//Generator------------------------------------------------------------
 		//Simifluid - CoalTar
 		GregTech_API.addFuel(new ItemStack(fcItems.cellsID,1,1), Items.getItem("cell"), 10, 0);
 		//Simifluid - Benzyl
 		GregTech_API.addFuel(new ItemStack(fcItems.cellsID,1,9), Items.getItem("cell"), 10, 0);
+		//Simifluid - Bromine
+		GregTech_API.addFuel(new ItemStack(fcItems.cellsID,1,10), Items.getItem("cell"), 10, 0);
 		//Gas - CO
 		GregTech_API.addFuel(new ItemStack(fcItems.cellsID,1,8), Items.getItem("cell"), 30, 1);
 		//Plasma - GoldClod
-		GregTech_API.addFuel(new ItemStack(fcItems.miscsID,1,3), null, 1000, 4);
+		GregTech_API.addFuel(new ItemStack(fcItems.miscsID,1,3), null, 100, 5);
 		
-		//Implosion Compressor
+		//Freezer--------------------------------------------------------------
+		GregTech_API.addVacuumFreezerRecipe(new ItemStack(fcItems.IC2Coolant_NH3_60K), new ItemStack(fcItems.IC2Coolant_NH3_60K), 100);
+		GregTech_API.addVacuumFreezerRecipe(new ItemStack(fcItems.IC2Coolant_NH3_180K), new ItemStack(fcItems.IC2Coolant_NH3_180K), 100);
+		GregTech_API.addVacuumFreezerRecipe(new ItemStack(fcItems.IC2Coolant_NH3_360K), new ItemStack(fcItems.IC2Coolant_NH3_360K), 100);
+		
+		//Implosion Compressor-------------------------------------------------
 		//Lapis dust 2 lapis
 		GregTech_API.addImplosionRecipe(GregTech_API.getGregTechItem(1, 8, 2), 1, new ItemStack(Item.dyePowder.itemID,8,4), GregTech_API.getGregTechItem(1, 1, 63));
 		
-		//Centrifuge
+		//Centrifuge------------------------------------------------------------
 		//Potassium K
-		GregTech_API.addCentrifugeRecipe(GregTech_API.getGregTechItem(2, 1, 14), 0, Items.getItem("cell"), new ItemStack(fcItems.ingotsID,1,0), null, null, 5);
-
-		//Canner
+		GregTech_API.addCentrifugeRecipe(GregTech_API.getGregTechItem(2, 1, 14), 0, Items.getItem("cell"), new ItemStack(fcItems.ingotsID,1,0), null, null, 20);
+		//Magnalium
+		GregTech_API.addCentrifugeRecipe(fcItems.getItem(cls.dust, "Magnalium", 1), 0, GregTech_API.getGregTechItem(1, 1, 13), GregTech_API.getGregTechItem(1, 2, 18), null, null, 300);
+		//Carnallite
+		GregTech_API.addCentrifugeRecipe(fcItems.getItem(cls.dust, "Carnallite", 5), 8, fcItems.getItem(cls.dust, "KCl", 4), fcItems.getItem(cls.dust, "MgBr2", 1), Items.getItem("waterCell").copy().splitStack(8), null, 40);
+		
+		//Electrolizer-----------------------------------------------------------
+		//KCl
+		GregTech_API.addElectrolyzerRecipe(fcItems.getItem(cls.dust, "KCl", 2), 2, GregTech_API.getGregTechItem(2, 2, 14), GregTech_API.getGregTechItem(2, 1, 13), null, null, 120, 64);
+		//MgBr2
+		GregTech_API.addElectrolyzerRecipe(fcItems.getItem(cls.dust, "MgBr2", 1), 1, GregTech_API.getGregTechItem(1, 1, 13), fcItems.getItem(cls.cell,"cell_Bromine",1), null, null, 100, 64);		
+		//Fluorapatite
+		GregTech_API.addElectrolyzerRecipe(fcItems.getItem(cls.dust, "Fluorapatite", 2), 0, fcItems.getItem(cls.dust, "CaF2", 1), GregTech_API.getGregTechItem(1, 2, 45), null, null, 100,64);		
+		
+		//Canner-----------------------------------------------------------------
 		//K
 		GregTech_API.addCannerRecipe(new ItemStack(fcItems.ingotsID,1,0), Items.getItem("cell"), GregTech_API.getGregTechItem(2, 1, 14), null, 5, 1);	
 
-		//Blast
+		//Instrial Grinder-------------------------------------------------------
+		GregTech_API.addGrinderRecipe(new ItemStack(fcItems.oreID,1,0), -1, fcItems.getItem(cls.dust, "Carnallite", 8), new ItemStack(Block.dirt,1), null, null);
+		GregTech_API.addGrinderRecipe(new ItemStack(fcItems.oreID,1,1), -1, fcItems.getItem(cls.dust, "Fluorapatite", 8), GregTech_API.getGregTechItem(4, 1, 36), null, null);
+				
+		
+		//Blast-------------------------------------------------------------------
 		//Mg+2Al=MgAl2
-		GregTech_API.addBlastRecipe(fcItems.getItem(cls.dust, "Magnalium", 1), null, GregTech_API.getGregTechItem(0, 1, 13), null, 80, 64, 1900);
-	
-		//Centrifuge
-		GregTech_API.addCentrifugeRecipe(fcItems.getItem(cls.dust, "Magnalium", 1), 0, GregTech_API.getGregTechItem(1, 1, 13), GregTech_API.getGregTechItem(1, 2, 18), null, null, 300);
-	
-		//Assembler
+		GregTech_API.addBlastRecipe(fcItems.getItem(cls.dust, "Magnalium", 1), null, GregTech_API.getGregTechItem(0, 1, 13), null, 150, 64, 1900);
+
+		//Assembler---------------------------------------------------------------
 		GregTech_API.addAssemblerRecipe(GregTech_API.getGregTechItem(0, 8, 13), null, Items.getItem("advancedMachine").splitStack(2), 500, 1);
 	}
 	
 	static void loadICMachineRecipes(){		
+		//General
+		if (isGTLoaded){
+			//Super Conductor
+			ic2.api.recipe.Recipes.advRecipes.addRecipe(GregTech_API.getGregTechItem(3, 4, 2), new Object[]{"lll","wiw","fff",'l',new ItemStack(fcItems.IC2Coolant_NH3_60K),'w',GregTech_API.getGregTechItem(0, 1, 80),'i',Items.getItem("iridiumPlate"),'f',GregTech_API.getGregTechItem(3, 1, 0)});
+			//AdvanceMachine
+			ic2.api.recipe.Recipes.advRecipes.addRecipe(Items.getItem("advancedMachine").splitStack(2), new Object[]{"xxx","x x","xxx",'x',GregTech_API.getGregTechItem(0, 1, 13)});
+		}
+		regUnShapedRecipe(Items.getItem("fertilizer").splitStack(16),new Object[]{fcItems.getItem(cls.dust, "Urea"),Items.getItem("fertilizer")});
+		regUnShapedRecipe(Items.getItem("fertilizer").splitStack(64),new Object[]{fcItems.getItem(cls.misc, "GoldClod"),Items.getItem("fertilizer")});
+		
 		//IC2 Compressor Recipes
 		ic2.api.recipe.Recipes.compressor.addRecipe(new ItemStack(fcItems.miscsID,8,0), new ItemStack(fcItems.miscsID,1,1));
 		
@@ -209,10 +251,17 @@ public class RecipeRegister {
 		for (int i=0;i<Item_Cells.itemsData.size();i++){
 			ic2.api.recipe.Recipes.extractor.addRecipe(new ItemStack(fcItems.cellsID,1,i), Items.getItem("cell"));
 		}
+		ic2.api.recipe.Recipes.extractor.addRecipe(Items.getItem("hydratingCell"),Items.getItem("cell"));
 		
 		//IC2 Macerator Recipes
+		//Magnalium
 		ic2.api.recipe.Recipes.macerator.addRecipe(GregTech_API.getGregTechItem(0, 1, 13), fcItems.getItem(cls.dust, "Magnalium", 1));
+		//Carnallite
+		ic2.api.recipe.Recipes.macerator.addRecipe(new ItemStack(fcItems.oreID,1,0), fcItems.getItem(cls.dust, "Carnallite", 2));	
+		//Fluorapatite
+		ic2.api.recipe.Recipes.macerator.addRecipe(new ItemStack(fcItems.oreID,1,1), fcItems.getItem(cls.dust, "Fluorapatite", 2));	
 	}
+	
 	
 	//Common stuff------------------------------------------------------------------------------------------------------------------
 	static void loadMobilePSEnergyUpdates() {

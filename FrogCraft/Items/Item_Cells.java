@@ -25,7 +25,7 @@ public class Item_Cells extends Item{
 	public Item_Cells(int id) {
 		super(id);
 		setHasSubtypes(true);
-		setUnlocalizedName("Item_Cells");
+		setUnlocalizedName("fcItem_Cells");
 		setMaxDamage(0); 
 		setCreativeTab(mod_FrogCraft.tabFrogCraft);		
 	}

@@ -359,9 +359,16 @@ public class BlockMachines extends BlockContainer {
     {
         super.onBlockPlacedBy(world, x, y, z, player, stack);
         int heading = MathHelper.floor_double((double)(player.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-       
+        int pitch = Math.round(player.rotationPitch);
+        
         SidedIC2Machine te=(SidedIC2Machine)world.getBlockTileEntity(x, y, z);
-
+        int meta=world.getBlockMetadata(x, y, z);
+        
+        if((meta==6|meta==7|meta==8)&&pitch >= 65)
+        		te.setFacing((short)1);
+        else if ((meta==6|meta==7|meta==8)&&pitch <= -65)
+        		te.setFacing((short)0);        	      
+        else
         switch (heading)
         {
         case 0:

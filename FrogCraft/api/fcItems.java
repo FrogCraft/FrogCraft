@@ -13,14 +13,15 @@ import net.minecraft.item.ItemStack;
  *  do not modify any thing, otherwise it will cause unknown compatibility error or any unexpected result!
  *  These variables are initialized in pre init */
 public class fcItems {
-	/**Refer to FrogCraft.ItemRegister*/
-	public static int machineID,machine2ID;
+	/**Refer to FrogCraft.ItemRegister,meta sensitive*/
+	public static int machineID,machine2ID,oreID;
 	/**Refer to FrogCraft.ItemRegister*/
 	public static int ingotsID,cellsID,miscsID,dustsID,gasesID,liquidsID;
 	
+	/**Not meta sensitive items and blocks*/
 	public static Block acwindmillcylinder;
 	public static Block mobileps;
-	public static Item fan,spray,railgun;
+	public static Item fan,railgun;
 	public static Item IC2Coolant_NH3_60K;
 	public static Item IC2Coolant_NH3_180K;
 	public static Item IC2Coolant_NH3_360K;
@@ -33,7 +34,7 @@ public class fcItems {
 		return getItem(type.t,name,amount);
 	}
 	
-	/** type - 0:ingots 1:cells 2:miscs 3:dusts*/
+	
 	public static ItemStack getItem(int type,String name,int amount){
 		List<String[]> itemsData=null;
 		int id=-1;

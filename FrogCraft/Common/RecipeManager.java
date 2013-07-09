@@ -112,6 +112,16 @@ public class RecipeManager {
 					if(!findRequirementIgnoreAmount(items[j],advanceChemicalReactorRecipes.get(i)))
 						fit=false;
 				}
+				
+				//ItemStack cat=advanceChemicalReactorRecipes.get(i)[10];
+				//if(cat!=null){
+				//	if(in[12]==null) //Missing catalyst
+				//		fit=false;
+				//	else if(!cat.isItemEqual(in[12])) //Condition mismatch
+				//		fit=false;
+				//}
+				//else if(cat==null&&in[12]!=null) //Condition mismatch
+					//fit=false;
 			}
 			
 			if (fit)

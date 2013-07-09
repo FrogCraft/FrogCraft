@@ -38,13 +38,21 @@ public class TileEntityAdvanceChemicalReactor extends BaseIC2Machine implements 
         if (curRecipeIndex>-1){
         	ItemStack[] curRecipe=RecipeManager.advanceChemicalReactorRecipes.get(curRecipeIndex);
         	int[] curRecipeInfo=RecipeManager.advanceChemicalReactorRecipeInfo.get(curRecipeIndex);
+
         	
         	if(inv[12]!=null&&curRecipe[10]!=null&&inv[12].isItemEqual(curRecipe[10]))
-        		tickMax=curRecipeInfo[2];
+        		tickMax=curRecipeInfo[2]; //Catalyst is needed
+        	else if(curRecipe[10]==null&&inv[12]!=null)
+        		tickMax=-1; 			  //Wrong condition  	
+        	else if(curRecipe[10]!=null&&inv[12]!=null&&!inv[12].isItemEqual(curRecipe[10]))
+        		tickMax=-1; 			  //Wrong condition         	
         	else
-        		tickMax=curRecipeInfo[1];
+        		tickMax=curRecipeInfo[1]; //No catalyst
+
+
         	
-        	if((tickMax!=-1&&energy>=curRecipeInfo[0]&&checkOutput(curRecipe)&&checkCell(curRecipe))|(tick>0)){ //Check the input/output is available or not
+        	if((tickMax>0&&energy>=curRecipeInfo[0]&&checkOutput(curRecipe)&&checkCell(curRecipe))
+        			|(tickMax>0&&tick>0)){ //Check the input/output is available or not
         		setWorking(true);
         		progress=tick*100/tickMax;
         		if (progress>100)
@@ -101,11 +109,6 @@ public class TileEntityAdvanceChemicalReactor extends BaseIC2Machine implements 
         	tickMax=0;
         	progress=0;
         }
-        
-        
-        //energy=Recipes.findAdvanceChemicalReactorRecipeIndex(inv);
-        
-        return;
     }
 	
     boolean checkCell(ItemStack[] rec){

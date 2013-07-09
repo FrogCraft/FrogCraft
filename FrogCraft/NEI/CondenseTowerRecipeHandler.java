@@ -76,7 +76,7 @@ public class CondenseTowerRecipeHandler extends TemplateRecipeHandler{
 	public void drawExtras(GuiContainerManager gui, int recipe){
 		Cached_Recipe rec=(Cached_Recipe)arecipes.get(recipe);
 		gui.drawText(28,80,NEI_Config.euTotal+String.valueOf(rec.eu), 4210752,false);
-		gui.drawText(28,90,NEI_Config.euTick+String.valueOf(rec.eu/rec.tick), 4210752,false);	
+		gui.drawText(28,90,"Per "+String.valueOf(rec.unit)+"mB", 4210752,false);	
 		gui.drawText(28,100,NEI_Config.tick+String.valueOf(rec.tick), 4210752,false);
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -118,7 +118,7 @@ public class CondenseTowerRecipeHandler extends TemplateRecipeHandler{
 		public ArrayList products= new ArrayList();
 		public ArrayList resources= new ArrayList();
 
-		public int eu,tick;
+		public int eu,tick,unit;
 		public int[] rec;
 		
 		public Cached_Recipe(int i){			
@@ -126,6 +126,7 @@ public class CondenseTowerRecipeHandler extends TemplateRecipeHandler{
 			this.resources.add(new PositionedStack(LiquidIO.getFilledContainers(rec[0],rec[1]), 9, 23));
 			eu=rec[3];
 			tick=rec[4];
+			unit=rec[2];
 			if(rec[5]>0)
 				this.products.add(new PositionedStack(LiquidIO.getFilledContainers(rec[5],rec[6]), 71, 23));
 			if(rec[8]>0)
