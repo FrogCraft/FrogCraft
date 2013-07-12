@@ -88,12 +88,17 @@ public class SidedIC2Machine extends TileEntity implements IWrenchable, INetwork
     }
 
    
+    public void beforeSetFacing(short newFacing,short oldFacing){}
+    public void afterSetFacing(short facing){}
+    
     @Override
     public void setFacing(short var1)
     {
+    	beforeSetFacing(var1,facing);
         facing = var1;
         NetworkHelper.updateTileEntityField(this, "facing");
         NetworkHelper.announceBlockUpdate(worldObj, xCoord, yCoord, zCoord);
+        afterSetFacing(var1);
     }
 
     @Override

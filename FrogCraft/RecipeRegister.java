@@ -235,14 +235,19 @@ public class RecipeRegister {
 	
 	static void loadICMachineRecipes(){		
 		//General
-		if (isGTLoaded){
+		if (isGTLoaded){ //GT Items
 			//Super Conductor
 			ic2.api.recipe.Recipes.advRecipes.addRecipe(GregTech_API.getGregTechItem(3, 4, 2), new Object[]{"lll","wiw","fff",'l',new ItemStack(fcItems.IC2Coolant_NH3_60K),'w',GregTech_API.getGregTechItem(0, 1, 80),'i',Items.getItem("iridiumPlate"),'f',GregTech_API.getGregTechItem(3, 1, 0)});
 			//AdvanceMachine
 			ic2.api.recipe.Recipes.advRecipes.addRecipe(Items.getItem("advancedMachine").splitStack(2), new Object[]{"xxx","x x","xxx",'x',GregTech_API.getGregTechItem(0, 1, 13)});
 		}
+		
+		//IC Items
+		//fertilizer
 		regUnShapedRecipe(Items.getItem("fertilizer").splitStack(16),new Object[]{fcItems.getItem(cls.dust, "Urea"),Items.getItem("fertilizer")});
 		regUnShapedRecipe(Items.getItem("fertilizer").splitStack(64),new Object[]{fcItems.getItem(cls.misc, "GoldClod"),Items.getItem("fertilizer")});
+		//overclockerUpgrade
+		ic2.api.recipe.Recipes.advRecipes.addRecipe(Items.getItem("overclockerUpgrade").splitStack(2),new Object[]{" o ","lal","   ",'a',Items.getItem("electronicCircuit"),'l',Items.getItem("insulatedCopperCableItem"),'o',fcItems.IC2Coolant_NH3_60K});
 		
 		//IC2 Compressor Recipes
 		ic2.api.recipe.Recipes.compressor.addRecipe(new ItemStack(fcItems.miscsID,8,0), new ItemStack(fcItems.miscsID,1,1));

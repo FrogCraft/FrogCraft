@@ -121,7 +121,7 @@ public class TileEntityLiquifier extends BaseIC2Machine implements ISidedInvento
         			if(tankOut.liquid.itemID==mod_FrogCraft.Liquids.itemID&tankOut.liquid.itemMeta==0&tankOut.liquid.amount<=maxCapacity-10)
         				if(te.useGas(12)){
         					tankOut.liquid.amount+=10;
-        					energy-=64;
+        					energy-=32;
         					didSomething=true;
         				}
         	}

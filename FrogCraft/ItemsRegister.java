@@ -69,6 +69,11 @@ public class ItemsRegister {
 		Item_Gases.add("NO", "Nitrogen Monoxide","NO");
 /*5*/	Item_Gases.add("CO", "Carbon Monoxide","CO");	
 		Item_Gases.add("Fluorine", "Fluorine", "Warning: React with everything!");
+		//Item_Gases.add("HF", "Hydrogen Fluoride", "Warning: Toxic!");
+/*8*/	//Item_Gases.add("HCl", "Hydrogen Chloride", "Warning: Corrosive!");
+		//Item_Gases.add("HBr", "Hydrogen Bromied", "Warning: Corrosive!");
+		//Item_Gases.add("HI", "Hydrogen Idoine", "Warning: Super Acidic!");	
+/*11*/	//Item_Gases.add("HCN", "Hydrogen Cyanide", "Warning: Extremely deadly!");
 	}
 	
 	public static void loadContainerSettings(){

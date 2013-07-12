@@ -42,7 +42,7 @@ public class RenderACWindMillTop extends TileEntitySpecialRenderer{
 		if (!te.isWorking())
 			return;
 		
-		Tessellator tessellator = Tessellator.instance;
+		//Tessellator tessellator = Tessellator.instance;
 		//make the block brightness dependent from surroundings lighting.
 		//float f = block.getBlockBrightness(world, i, j, k);
 		//int l = world.getLightBrightnessForSkyBlocks(i, j, k, 0);

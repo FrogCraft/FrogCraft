@@ -68,7 +68,7 @@ public class LanguageRegister {
 
 		
 		//Gases
-		applyToItem(lang,Item_Gases.itemsData,new String[]{"氧气","二氧化碳","氩气","氨气","一氧化氮","一氧化碳","氟气"});
+		applyToItem(lang,Item_Gases.itemsData,new String[]{"氧气","二氧化碳","氩气","氨气","一氧化氮","一氧化碳","氟气"});//,"氢氟酸","盐酸","氢溴酸","氢碘酸","巨毒的氢氰酸"});
 		
 		//Liquids
 		applyToItem(lang,Item_Liquids.itemsData,new String[]{"液化空气","煤焦油","硝酸","苯","液态溴"});

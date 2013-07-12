@@ -1,7 +1,9 @@
 package FrogCraft.Machines;
 
 import ic2.api.Direction;
+import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileSourceEvent;
+import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.network.NetworkHelper;
 import ic2.api.item.*;
 import net.minecraft.entity.player.EntityPlayer;
@@ -87,6 +89,24 @@ public class TileEntityHSU extends BaseIC2Machine implements ic2.api.energy.tile
 		energy-=amount-sourceEvent.amount;			
 	}
 
+	@Override 
+	public void beforeSetFacing(short newFacing,short oldFacing){
+		if(this.addedToEnergyNet){
+			MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
+        	this.addedToEnergyNet = false;
+		}
+		return;
+	}
+	
+	@Override 
+	public void afterSetFacing(short facing){
+		if(!this.addedToEnergyNet){
+			MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
+        	this.addedToEnergyNet = true;
+		}
+		return;
+	}
+	
 	@Override
 	public boolean emitsEnergyTo(TileEntity receiver, Direction direction) {
     	if (direction.toSideValue()==facing)

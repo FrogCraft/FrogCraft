@@ -17,9 +17,9 @@ public class FuelHandler implements IFuelHandler {
 		if(fuel.itemID==fcItems.miscsID){
 			switch (fuel.getItemDamage()){
 			case 0:
-				return 2500;  //Piece of coking coal
+				return 1800;  //Piece of coking coal
 			case 1:
-				return 25000; //Briquette (45600eu needed to make a briquette)
+				return 16000; //Briquette (45600eu needed to make a briquette)
 			}
 		}
 			
