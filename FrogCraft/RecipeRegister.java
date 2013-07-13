@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.src.ModLoader;
 import net.minecraftforge.liquids.LiquidStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -107,7 +108,8 @@ public class RecipeRegister {
 	static void loadNormalRecipes(){//Mg 13 Al18 MgAl13
 		CraftingManager m=CraftingManager.getInstance();
 		//Dusts
-		regUnShapedRecipe(fcItems.getItem(cls.dust, "Magnalium", 1),new Object[]{"dustMagnesium","dustAluminium","dustAluminium"});
+		regUnShapedRecipe(fcItems.getItem(cls.dust, "Magnalium", 3),new Object[]{"dustMagnesium","dustAluminium","dustAluminium"});
+	
 		
 		//Modules
 		//Electrolize Module
@@ -187,6 +189,10 @@ public class RecipeRegister {
 	}
 		
 	static void loadGTMachineRecipes(){
+		//Ingot
+		if(isGTLoaded)
+			FurnaceRecipes.smelting().addSmelting(fcItems.dustsID, 5, GregTech_API.getGregTechItem(0, 1, 40), 0.8F);
+		
 		//Generator------------------------------------------------------------
 		//Simifluid - CoalTar
 		GregTech_API.addFuel(new ItemStack(fcItems.cellsID,1,1), Items.getItem("cell"), 10, 0);
@@ -212,7 +218,7 @@ public class RecipeRegister {
 		//Potassium K
 		GregTech_API.addCentrifugeRecipe(GregTech_API.getGregTechItem(2, 1, 14), 0, Items.getItem("cell"), new ItemStack(fcItems.ingotsID,1,0), null, null, 20);
 		//Magnalium
-		GregTech_API.addCentrifugeRecipe(fcItems.getItem(cls.dust, "Magnalium", 1), 0, GregTech_API.getGregTechItem(1, 1, 13), GregTech_API.getGregTechItem(1, 2, 18), null, null, 300);
+		GregTech_API.addCentrifugeRecipe(fcItems.getItem(cls.dust, "Magnalium", 3), 0, GregTech_API.getGregTechItem(1, 1, 13), GregTech_API.getGregTechItem(1, 2, 18), null, null, 300);
 		//Carnallite
 		GregTech_API.addCentrifugeRecipe(fcItems.getItem(cls.dust, "Carnallite", 5), 8, fcItems.getItem(cls.dust, "KCl", 4), fcItems.getItem(cls.dust, "MgBr2", 1), Items.getItem("waterCell").copy().splitStack(8), null, 40);
 		
@@ -231,11 +237,6 @@ public class RecipeRegister {
 		//Instrial Grinder-------------------------------------------------------
 		GregTech_API.addGrinderRecipe(new ItemStack(fcItems.oreID,1,0), -1, fcItems.getItem(cls.dust, "Carnallite", 8), new ItemStack(Block.dirt,1), null, null);
 		GregTech_API.addGrinderRecipe(new ItemStack(fcItems.oreID,1,1), -1, fcItems.getItem(cls.dust, "Fluorapatite", 8), GregTech_API.getGregTechItem(4, 1, 36), null, null);
-				
-		
-		//Blast-------------------------------------------------------------------
-		//Mg+2Al=MgAl2
-		GregTech_API.addBlastRecipe(fcItems.getItem(cls.dust, "Magnalium", 1), null, GregTech_API.getGregTechItem(0, 1, 13), null, 150, 64, 1900);
 
 		//Assembler---------------------------------------------------------------
 		GregTech_API.addAssemblerRecipe(GregTech_API.getGregTechItem(0, 8, 13), null, Items.getItem("advancedMachine").splitStack(2), 500, 1);
@@ -247,7 +248,7 @@ public class RecipeRegister {
 			//Super Conductor
 			ic2.api.recipe.Recipes.advRecipes.addRecipe(GregTech_API.getGregTechItem(3, 4, 2), new Object[]{"lll","wiw","fff",'l',new ItemStack(fcItems.IC2Coolant_NH3_60K),'w',GregTech_API.getGregTechItem(0, 1, 80),'i',Items.getItem("iridiumPlate"),'f',GregTech_API.getGregTechItem(3, 1, 0)});
 			//AdvanceMachine
-			ic2.api.recipe.Recipes.advRecipes.addRecipe(Items.getItem("advancedMachine").splitStack(2), new Object[]{"xxx","x x","xxx",'x',GregTech_API.getGregTechItem(0, 1, 13)});
+			ic2.api.recipe.Recipes.advRecipes.addRecipe(Items.getItem("advancedMachine"), new Object[]{"xxx","x x","xxx",'x',GregTech_API.getGregTechItem(0, 1, 13)});
 		}
 		
 		//IC Items
@@ -268,6 +269,7 @@ public class RecipeRegister {
 		
 		//IC2 Macerator Recipes
 		//Magnalium
+		ic2.api.recipe.Recipes.macerator.addRecipe(GregTech_API.getGregTechItem(0, 1, 40), fcItems.getItem(cls.dust, "Magnalium", 1));
 		ic2.api.recipe.Recipes.macerator.addRecipe(GregTech_API.getGregTechItem(0, 1, 13), fcItems.getItem(cls.dust, "Magnalium", 1));
 		//Carnallite
 		ic2.api.recipe.Recipes.macerator.addRecipe(new ItemStack(fcItems.oreID,1,0), fcItems.getItem(cls.dust, "Carnallite", 2));	
