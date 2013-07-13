@@ -40,7 +40,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 
-@Mod( modid = "mod_FrogCraft", name="FrogCraft", version="1.0",dependencies = "required-after:IC2")
+@Mod( modid = "mod_FrogCraft", name="FrogCraft", version="1.1",dependencies = "required-after:IC2")
 @NetworkMod(channels = { "mod_FrogCraft" },clientSideRequired = true,serverSideRequired = false,packetHandler = PacketHandler.class)
 public class mod_FrogCraft {
 	@SidedProxy(clientSide = "FrogCraft.ClientProxy", serverSide = "FrogCraft.GuiHandler")
@@ -116,7 +116,33 @@ public class mod_FrogCraft {
         config.load();
         useLang=config.get("Languages", "Use_Custom_Language", false).getBoolean(false); 
 
+        //---------------------------------------------------------------------------------------
+        RecipeRegister.ePC=config.get("Enable", "PneumaticCompressor", true).getBoolean(true);
+        RecipeRegister.eAP=config.get("Enable", "AirPump", true).getBoolean(true);
+        RecipeRegister.eIC=config.get("Enable", "IndustrialCompressor", true).getBoolean(true);
+        RecipeRegister.eIM=config.get("Enable", "IndustrialMacerator", true).getBoolean(true);       
+        RecipeRegister.eIE=config.get("Enable", "IndustrialExtractor", true).getBoolean(true);
+        RecipeRegister.eIF=config.get("Enable", "IndustrialFurnance", true).getBoolean(true);
+        RecipeRegister.eHSU=config.get("Enable", "HSU", true).getBoolean(true);
+        RecipeRegister.eUHSU=config.get("Enable", "UHSU", true).getBoolean(true);        
+        RecipeRegister.eEVT=config.get("Enable", "EVT", true).getBoolean(true);
+        RecipeRegister.eL=config.get("Enable", "Liquifier", true).getBoolean(true);  
+        RecipeRegister.eCT=config.get("Enable", "CondenseTower", true).getBoolean(true);        
+        RecipeRegister.eTC=config.get("Enable", "ThermalCracker", true).getBoolean(true);
+        RecipeRegister.eACR=config.get("Enable", "AdvanceChemicalReactor", true).getBoolean(true);         
+
+        RecipeRegister.eACWM=config.get("Enable", "AcademicCityWindMill", true).getBoolean(true);
+        RecipeRegister.eAWB=config.get("Enable", "AutoWorkBench", true).getBoolean(true);  
         
+        RecipeRegister.eR=config.get("Enable", "Railgun", true).getBoolean(true);
+        RecipeRegister.eMPS=config.get("Enable", "MobilePowerSupply", true).getBoolean(true);  
+        RecipeRegister.eNH3C60K=config.get("Enable", "NH3CoolantCell60K", true).getBoolean(true);
+        RecipeRegister.eNH3C180K=config.get("Enable", "NH3CoolantCell180K", true).getBoolean(true);      
+        RecipeRegister.eNH3C360K=config.get("Enable", "NH3CoolantCell360K", true).getBoolean(true);
+        
+        WorldGenerator.genCarnallite=config.get("Enable", "genCarnalliteOreUnderWater", true).getBoolean(true);
+        WorldGenerator.genFluorapatite=config.get("Enable", "genFluorapatiteOreUnderGround", true).getBoolean(true);
+        WorldGenerator.genClay=config.get("Enable", "genClayUnderGround", true).getBoolean(true);
         //---------------------------------------------------------------------------------------
         id_BlockOre=config.get("Blocks", "Ore", 658).getInt();
         id_ACWindMillCylinder=config.get("Blocks", "ACWindMillCylinder", 659).getInt();  
@@ -140,6 +166,7 @@ public class mod_FrogCraft {
         rate_PneumaticCompressor=config.get("Generals", "rate_PneumaticCompressor", 100).getInt();    
         boom_PneumaticCompressor=config.get("Generals", "boom_PneumaticCompressor", true).getBoolean(true); 
         rndboom_PneumaticCompressor=config.get("Generals", "rndboom_PneumaticCompressor", false).getBoolean(false); 
+        
         //Railgun
         EntityCoin.dMax=(short) config.get("Generals", "Railgun_Max_Range", 40).getInt();
         EntityCoin.damageHit=(short)  config.get("Generals", "Railgun_Damage", 50).getInt();
@@ -259,6 +286,7 @@ public class mod_FrogCraft {
 		GameRegistry.registerTileEntity(TileEntityACWindMillTop.class, "containerACWindMillTop");
 		GameRegistry.registerTileEntity(TileEntityACWindMillBase.class, "containerACWindMillBase");		
 		GameRegistry.registerTileEntity(TileEntityLiquidOutput.class, "containerLiquidOutput");
+		GameRegistry.registerTileEntity(TileEntityAutoWorkBench.class, "containerAutoWorkBench");
 		
 		GameRegistry.registerTileEntity(TileEntityMobilePS.class, "containerMobilePS");
 		

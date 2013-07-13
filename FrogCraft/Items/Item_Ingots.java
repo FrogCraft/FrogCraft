@@ -1,7 +1,10 @@
 package FrogCraft.Items;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import FrogCraft.*;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -15,15 +18,18 @@ import net.minecraft.item.*;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.liquids.*;
 
 public class Item_Ingots extends Item{
 	public static Icon Icons[];
 	
 	public static List<String[]> itemsData= new ArrayList<String[]>();
+	public static Map<String,Integer> nameMap=new HashMap();
 	
 	public static void add(String name,String displayName){add(name,displayName,"");}
-	public static void add(String name,String displayName,String info){itemsData.add(new String[]{name,displayName,info});}
+	public static void add(String name,String displayName,String info){
+		itemsData.add(new String[]{name,displayName,info});
+		nameMap.put(name, itemsData.size()-1);
+	}
 	
    
 	//Explosive Ingot(K)

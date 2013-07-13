@@ -1,8 +1,7 @@
 package FrogCraft.api;
 
 import java.util.List;
-
-import FrogCraft.api.fcItems.cls;
+import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -36,38 +35,39 @@ public class fcItems {
 	
 	
 	public static ItemStack getItem(int type,String name,int amount){
-		List<String[]> itemsData=null;
+		Map<String,Integer> nameMap=null;
 		int id=-1;
+		
 		try{
 			if (type==0){
 				id=ingotsID;
-				itemsData=(List<String[]>) Class.forName("FrogCraft.Items.Item_Ingots").getField("itemsData").get(null);
+				nameMap=(Map<String, Integer>) Class.forName("FrogCraft.Items.Item_Ingots").getField("nameMap").get(null);
 			}
 			if (type==1){
 				id=cellsID;
-				itemsData=(List<String[]>) Class.forName("FrogCraft.Items.Item_Cells").getField("itemsData").get(null);
+				nameMap=(Map<String, Integer>) Class.forName("FrogCraft.Items.Item_Cells").getField("nameMap").get(null);
 			}
 			if (type==2){
 				id=miscsID;
-				itemsData=(List<String[]>) Class.forName("FrogCraft.Items.Item_Miscs").getField("itemsData").get(null);
+				nameMap=(Map<String, Integer>) Class.forName("FrogCraft.Items.Item_Miscs").getField("nameMap").get(null);
 			}
 			if (type==3){
-					id=dustsID;
-				itemsData=(List<String[]>) Class.forName("FrogCraft.Items.Item_Dusts").getField("itemsData").get(null);			
+				id=dustsID;
+				nameMap=(Map<String, Integer>) Class.forName("FrogCraft.Items.Item_Dusts").getField("nameMap").get(null);
 			}
 		}
 		catch(Exception e){}
 		
 		
-		if(id==-1|itemsData==null)
+		if(id==-1|nameMap==null)
 			return null;
 		
-		for(int i=0;i<itemsData.size();i++){
-			if (itemsData.get(i)[0]==name)
-				return new ItemStack(id,amount,i);
-		}
+		int dmg=nameMap.get(name);
 		
-		return null;
+		if (dmg>=nameMap.size())
+			return null;
+		
+		return new ItemStack(id,amount,dmg);
 	}
 	
 	/***/

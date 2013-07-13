@@ -13,7 +13,7 @@ import ic2.api.network.NetworkHelper;
 import FrogCraft.mod_FrogCraft;
 import FrogCraft.Common.*;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -23,7 +23,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 
 
-public class TileEntityMobilePS extends TileEntity implements ic2.api.energy.tile.IEnergySource,ISidedInventory, INetworkDataProvider,INetworkTileEntityEventListener{
+public class TileEntityMobilePS extends TileEntity implements ic2.api.energy.tile.IEnergySource,IInventory, INetworkDataProvider,INetworkTileEntityEventListener{
 	public int maxEnergy=Integer.MAX_VALUE;
 	public int energyMK=0,energyMM=0,energyMB=0;
 	public int vOut=32;
@@ -353,22 +353,4 @@ public class TileEntityMobilePS extends TileEntity implements ic2.api.energy.til
 
 	@Override
 	public boolean isStackValidForSlot(int i, ItemStack itemstack) {return false;}
-
-	@Override
-	public int[] getAccessibleSlotsFromSide(int var1) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean canInsertItem(int i, ItemStack itemstack, int j) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean canExtractItem(int i, ItemStack itemstack, int j) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 }

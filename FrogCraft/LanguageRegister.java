@@ -49,7 +49,8 @@ public class LanguageRegister {
 				getl(lang,"LiquidOutput","冷凝塔液体出口"),
 				getl(lang,"CondenseTowerCylinder","冷凝塔壁"),
 				getl(lang,"ACWindMillTop","学园都市风力发电机主体"),
-				getl(lang,"ACWindMillBase","学园都市风力发电机底座")
+				getl(lang,"ACWindMillBase","学园都市风力发电机底座"),
+				getl(lang,"AutoWorkBench","自动工作台")
 		};		
 		ItemBlockOre.Ore_Names=new String[]{
 				getl(lang,"oreCarnallite","光卤石"),

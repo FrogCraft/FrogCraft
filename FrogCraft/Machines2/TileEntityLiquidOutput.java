@@ -132,7 +132,7 @@ public class TileEntityLiquidOutput extends SidedIC2Machine implements ISidedInv
 	}
 
 	@Override
-	public String getInvName() {return "tileentityThermalCracker";}
+	public String getInvName() {return "tileentityLiquidOutput";}
 
 	@Override
 	public boolean isInvNameLocalized() {return false;}

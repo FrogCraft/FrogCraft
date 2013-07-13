@@ -1,7 +1,10 @@
 package FrogCraft.Items;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import FrogCraft.*;
 import FrogCraft.api.*;
 import cpw.mods.fml.relauncher.Side;
@@ -16,9 +19,13 @@ import net.minecraftforge.liquids.*;
 public class Item_Gases extends Item{
 	public static Icon Icons[];
 	public static List<String[]> itemsData= new ArrayList<String[]>();
+	public static Map<String,Integer> nameMap=new HashMap();
 	
 	public static void add(String name,String displayName){add(name,displayName,"");}
-	public static void add(String name,String displayName,String info){itemsData.add(new String[]{name,displayName,info});}
+	public static void add(String name,String displayName,String info){
+		itemsData.add(new String[]{name,displayName,info});
+		nameMap.put(name, itemsData.size()-1);
+	}
 	public static ItemStack[] filledContainer;
 	
 	ItemStack getCell(int meta){

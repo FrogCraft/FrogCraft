@@ -4,6 +4,8 @@ import FrogCraft.Machines.*;
 import FrogCraft.Machines.IndustrialDevices.*;
 import FrogCraft.Machines2.*;
 import FrogCraft.Items.MobilePS.*;
+
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -42,7 +44,9 @@ public class GuiHandler implements IGuiHandler {
         	
         	if (tileEntity instanceof TileEntityLiquidOutput)
         		return new ContainerLiquidOutput(player.inventory, (TileEntityLiquidOutput) tileEntity);
-      
+        	if (tileEntity instanceof TileEntityAutoWorkBench)
+        		return new ContainerAutoWorkBench(player.inventory, (TileEntityAutoWorkBench) tileEntity);
+        	
         	return null;
         }
 
@@ -73,6 +77,8 @@ public class GuiHandler implements IGuiHandler {
         	
         	if (tileEntity instanceof TileEntityLiquidOutput)
         		return new GuiLiquidOutput(player.inventory, (TileEntityLiquidOutput) tileEntity);
+        	if (tileEntity instanceof TileEntityAutoWorkBench)
+        		return new GuiAutoWorkBench(player.inventory, (TileEntityAutoWorkBench) tileEntity);
       
         	return null;
         }

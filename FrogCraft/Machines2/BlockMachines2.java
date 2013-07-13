@@ -51,6 +51,8 @@ public class BlockMachines2 extends BlockContainer {
     			return new TileEntityACWindMillTop();
     		case 3:
     			return new TileEntityACWindMillBase();
+    		case 4:
+    			return new TileEntityAutoWorkBench();
     		default:
     				return null;
     	}
@@ -92,7 +94,15 @@ public class BlockMachines2 extends BlockContainer {
     	iconBuffer[3][2]=r.registerIcon("FrogCraft:ACWindMill_Base_Side");
     	iconBuffer[3][3]=r.registerIcon("FrogCraft:ACWindMill_Base_Side");    	
     	iconBuffer[3][4]=r.registerIcon("FrogCraft:ACWindMill_Base_Side");
-    	iconBuffer[3][5]=r.registerIcon("FrogCraft:ACWindMill_Base_Side");   
+    	iconBuffer[3][5]=r.registerIcon("FrogCraft:ACWindMill_Base_Side");  
+    	
+    	//AutoWorkBench
+    	iconBuffer[4][0]=r.registerIcon("FrogCraft:AutoWorkBench_Back");
+    	iconBuffer[4][1]=r.registerIcon("FrogCraft:AutoWorkBench_Top");
+    	iconBuffer[4][2]=r.registerIcon("FrogCraft:AutoWorkBench_Back");
+    	iconBuffer[4][3]=r.registerIcon("FrogCraft:AutoWorkBench_Front");    	
+    	iconBuffer[4][4]=r.registerIcon("FrogCraft:AutoWorkBench_Side");
+    	iconBuffer[4][5]=r.registerIcon("FrogCraft:AutoWorkBench_Side");    	
     }
     
     //Gui Interface

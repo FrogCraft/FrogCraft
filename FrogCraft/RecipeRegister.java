@@ -10,14 +10,20 @@ import net.minecraft.src.ModLoader;
 import net.minecraftforge.liquids.LiquidStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+
 import FrogCraft.Common.RecipeManager;
 import FrogCraft.Items.Item_Cells;
 import FrogCraft.api.*;
 import FrogCraft.api.fcItems.cls;
+
 import gregtechmod.api.GregTech_API;
 
 public class RecipeRegister {	
 	public static boolean isGTLoaded;
+	public static boolean ePC,eAP,eIC,eIM,eIE,eIF,eHSU,eUHSU,eEVT,eL,eCT,eTC,eACR, //Machine1
+						  eACWM,eAWB,                                               //Machine2
+						  eR,eMPS,eNH3C60K,eNH3C180K,eNH3C360K;                    //Other stuff
+	
 	public static void loadRecipes(){
 		isGTLoaded=ModLoader.isModLoaded("GregTech_Addon");
 		loadMobilePSSolarUpdates();
@@ -113,61 +119,63 @@ public class RecipeRegister {
 		regUnShapedRecipe(new ItemStack(fcItems.miscsID,1,6),new Object[]{new ItemStack(fcItems.miscsID,1,5),Items.getItem("refinedIronIngot")});	
 		
 		//Mobile Power Supply
-		regRecipe(new ItemStack(fcItems.mobileps),new Object[]{"iei","ibi","ifi",'b',Items.getItem("batBox"),'f',Items.getItem("electroFurnace"),'e',Items.getItem("advancedCircuit"),'i',"ingotRefinedIron"});
-		regRecipe(new ItemStack(fcItems.mobileps),new Object[]{"iei","ibi","ifi",'b',Items.getItem("batBox"),'f',Items.getItem("electroFurnace"),'e',Items.getItem("advancedCircuit"),'i',"ingotAluminium"});	
+		if(eMPS)regRecipe(new ItemStack(fcItems.mobileps),new Object[]{"iei","ibi","ifi",'b',Items.getItem("batBox"),'f',Items.getItem("electroFurnace"),'e',Items.getItem("advancedCircuit"),'i',"ingotRefinedIron"});
+		if(eMPS)regRecipe(new ItemStack(fcItems.mobileps),new Object[]{"iei","ibi","ifi",'b',Items.getItem("batBox"),'f',Items.getItem("electroFurnace"),'e',Items.getItem("advancedCircuit"),'i',"ingotAluminium"});	
 		
 		//Cooling Cell
-		regRecipe(new ItemStack(fcItems.IC2Coolant_NH3_60K),new Object[]{" t ","tnt"," t ",'t',"ingotTin",'n',new ItemStack(fcItems.cellsID,1,0)});
-		regRecipe(new ItemStack(fcItems.IC2Coolant_NH3_180K),new Object[]{"ttt","nnn","ttt",'t',"ingotTin",'n',new ItemStack(fcItems.IC2Coolant_NH3_60K)});
-		regRecipe(new ItemStack(fcItems.IC2Coolant_NH3_360K),new Object[]{"tnt","tct","tnt",'t',"ingotTin",'n',new ItemStack(fcItems.IC2Coolant_NH3_180K),'c',Items.getItem("denseCopperPlate")});		
+		if(eNH3C60K)regRecipe(new ItemStack(fcItems.IC2Coolant_NH3_60K),new Object[]{" t ","tnt"," t ",'t',"ingotTin",'n',new ItemStack(fcItems.cellsID,1,0)});
+		if(eNH3C180K)regRecipe(new ItemStack(fcItems.IC2Coolant_NH3_180K),new Object[]{"ttt","nnn","ttt",'t',"ingotTin",'n',new ItemStack(fcItems.IC2Coolant_NH3_60K)});
+		if(eNH3C360K)regRecipe(new ItemStack(fcItems.IC2Coolant_NH3_360K),new Object[]{"tnt","tct","tnt",'t',"ingotTin",'n',new ItemStack(fcItems.IC2Coolant_NH3_180K),'c',Items.getItem("denseCopperPlate")});		
 		
 		if (isGTLoaded){
 			//Pneumatic Compressor
-			m.addRecipe(new ItemStack(fcItems.machineID,1,0),new Object[]{"mam","ece","mam",'a',GregTech_API.getGregTechBlock(0, 1, 10),'e',Items.getItem("advancedCircuit"),'c',Items.getItem("compressor"),'m',Items.getItem("advancedAlloy")});
+			if(ePC)m.addRecipe(new ItemStack(fcItems.machineID,1,0),new Object[]{"mam","ece","mam",'a',GregTech_API.getGregTechBlock(0, 1, 10),'e',Items.getItem("advancedCircuit"),'c',Items.getItem("compressor"),'m',Items.getItem("advancedAlloy")});
 			//Gas pump
-			regRecipe(new ItemStack(fcItems.machineID,1,1),new Object[]{"xdx","xpx","xax",'p',Items.getItem("pump"),'a',"craftingRawMachineTier02",'d',Items.getItem("advancedCircuit"),'x',Items.getItem("cell")});		
+			if(eAP)regRecipe(new ItemStack(fcItems.machineID,1,1),new Object[]{"xdx","xpx","xax",'p',Items.getItem("pump"),'a',"craftingRawMachineTier02",'d',Items.getItem("advancedCircuit"),'x',Items.getItem("cell")});		
 			//Industrial Version
-			regRecipe(new ItemStack(fcItems.machineID,1,2),new Object[]{"rbr","dcd","rar",'c',Items.getItem("compressor"),'b',Block.chest,'a',"craftingRawMachineTier02",'d',Items.getItem("advancedCircuit"),'r',Items.getItem("reinforcedStone")});
-			regRecipe(new ItemStack(fcItems.machineID,1,3),new Object[]{"rbr","dcd","rar",'c',Items.getItem("macerator"),'b',Block.chest,'a',"craftingRawMachineTier02",'d',Items.getItem("advancedCircuit"),'r',Block.obsidian});
-			regRecipe(new ItemStack(fcItems.machineID,1,4),new Object[]{"rbr","dcd","rar",'c',Items.getItem("extractor"),'b',Block.chest,'a',"craftingRawMachineTier02",'d',Items.getItem("advancedCircuit"),'r',Items.getItem("electrolyzedWaterCell")});		
+			if(eIC)regRecipe(new ItemStack(fcItems.machineID,1,2),new Object[]{"rbr","dcd","rar",'c',Items.getItem("compressor"),'b',Block.chest,'a',"craftingRawMachineTier02",'d',Items.getItem("advancedCircuit"),'r',Items.getItem("reinforcedStone")});
+			if(eIM)regRecipe(new ItemStack(fcItems.machineID,1,3),new Object[]{"rbr","dcd","rar",'c',Items.getItem("macerator"),'b',Block.chest,'a',"craftingRawMachineTier02",'d',Items.getItem("advancedCircuit"),'r',Block.obsidian});
+			if(eIE)regRecipe(new ItemStack(fcItems.machineID,1,4),new Object[]{"rbr","dcd","rar",'c',Items.getItem("extractor"),'b',Block.chest,'a',"craftingRawMachineTier02",'d',Items.getItem("advancedCircuit"),'r',Items.getItem("electrolyzedWaterCell")});		
 			//Industrial Furnace
-			m.addRecipe(new ItemStack(fcItems.machineID,1,5),new Object[]{" b ","dcd"," r ",'c',Items.getItem("inductionFurnace"),'b',Block.chest,'d',Items.getItem("advancedCircuit"),'r',GregTech_API.getGregTechItem(3, 1, 21)});
+			if(eIF)m.addRecipe(new ItemStack(fcItems.machineID,1,5),new Object[]{" b ","dcd"," r ",'c',Items.getItem("inductionFurnace"),'b',Block.chest,'d',Items.getItem("advancedCircuit"),'r',GregTech_API.getGregTechItem(3, 1, 21)});
 			//HSU
-			regRecipe(new ItemStack(fcItems.machineID,1,6),new Object[]{"ete","lml","eae",'a',"craftingRawMachineTier02",'e',GregTech_API.getGregTechItem(3, 1, 0),'m',Items.getItem("mfsUnit"),'t',Items.getItem("hvTransformer"),'l',Block.blockLapis});	
+			if(eHSU)regRecipe(new ItemStack(fcItems.machineID,1,6),new Object[]{"ete","lml","eae",'a',"craftingRawMachineTier02",'e',GregTech_API.getGregTechItem(3, 1, 0),'m',Items.getItem("mfsUnit"),'t',Items.getItem("hvTransformer"),'l',Block.blockLapis});	
 			//UHSU
-			regRecipe(new ItemStack(fcItems.machineID,1,7),new Object[]{"ltl","lul","lal",'a',GregTech_API.getGregTechBlock(0, 1, 10),'u',new ItemStack(fcItems.machineID,1,6),'t',new ItemStack(fcItems.machineID,1,8),'l',"chunkLazurite"});
+			if(eUHSU)regRecipe(new ItemStack(fcItems.machineID,1,7),new Object[]{"ltl","lul","lal",'a',GregTech_API.getGregTechBlock(0, 1, 10),'u',new ItemStack(fcItems.machineID,1,6),'t',new ItemStack(fcItems.machineID,1,8),'l',"chunkLazurite"});
 			//EV Transformer
-			m.addRecipe(new ItemStack(fcItems.machineID,1,8),new Object[]{"www","ctc","www",'t',Items.getItem("hvTransformer"),'c',Items.getItem("advancedCircuit"),'w',Items.getItem("trippleInsulatedIronCableItem")});
+			if(eEVT)m.addRecipe(new ItemStack(fcItems.machineID,1,8),new Object[]{"www","ctc","www",'t',Items.getItem("hvTransformer"),'c',Items.getItem("advancedCircuit"),'w',Items.getItem("trippleInsulatedIronCableItem")});
 			//Liquefier
-			regRecipe(new ItemStack(fcItems.machineID,1,9),new Object[]{"lpl","lcl","eae",'a',"craftingRawMachineTier02",'c',Items.getItem("compressor"),'p',Items.getItem("pump"),'e',Items.getItem("electronicCircuit"),'l',Items.getItem("cell")});
+			if(eL)regRecipe(new ItemStack(fcItems.machineID,1,9),new Object[]{"lpl","lcl","eae",'a',"craftingRawMachineTier02",'c',Items.getItem("compressor"),'p',Items.getItem("pump"),'e',Items.getItem("electronicCircuit"),'l',Items.getItem("cell")});
 			//CondenseTower
-			regRecipe(new ItemStack(fcItems.machineID,1,10),new Object[]{"idi","cpc","cac",'a',"craftingRawMachineTier02",'i',Items.getItem("miningPipe"),'d',Items.getItem("advancedCircuit"),'p',Items.getItem("pump"),'c',Items.getItem("cell")});
+			if(eCT)regRecipe(new ItemStack(fcItems.machineID,1,10),new Object[]{"idi","cpc","cac",'a',"craftingRawMachineTier02",'i',Items.getItem("miningPipe"),'d',Items.getItem("advancedCircuit"),'p',Items.getItem("pump"),'c',Items.getItem("cell")});
 			//ThermalCracker
-			regRecipe(new ItemStack(fcItems.machineID,1,11),new Object[]{"cdc","cec","rar",'a',"craftingRawMachineTier02",'d',Items.getItem("advancedCircuit"),'c',Items.getItem("cell"),'r',GregTech_API.getGregTechItem(3, 1, 21),'e',Items.getItem("extractor")});
+			if(eTC)regRecipe(new ItemStack(fcItems.machineID,1,11),new Object[]{"cdc","cec","rar",'a',"craftingRawMachineTier02",'d',Items.getItem("advancedCircuit"),'c',Items.getItem("cell"),'r',GregTech_API.getGregTechItem(3, 1, 21),'e',Items.getItem("extractor")});
 			//AdvanceChemicalReactor
-			regRecipe(new ItemStack(fcItems.machineID,1,12),new Object[]{"sms","cec","sas",'a',"craftingRawMachineTier02",'m',Items.getItem("magnetizer"),'e',Items.getItem("extractor"),'s',"plateSteel",'c',Items.getItem("advancedCircuit")});
+			if(eACR)regRecipe(new ItemStack(fcItems.machineID,1,12),new Object[]{"sms","cec","sas",'a',"craftingRawMachineTier02",'m',Items.getItem("magnetizer"),'e',Items.getItem("extractor"),'s',"plateSteel",'c',Items.getItem("advancedCircuit")});
 			
 			
 			//LiquidOutput
-			m.addRecipe(new ItemStack(fcItems.machine2ID,1,0),new Object[]{"rir","rgr","rir",'r',Items.getItem("refinedIronIngot"),'i',Items.getItem("miningPipe"),'g',Items.getItem("reinforcedGlass")});
-			m.addRecipe(new ItemStack(fcItems.machine2ID,1,0),new Object[]{"rir","rgr","rir",'r',GregTech_API.getGregTechItem(0, 1, 18),'i',Items.getItem("miningPipe"),'g',Items.getItem("reinforcedGlass")});
+			if(eCT)regRecipe(new ItemStack(fcItems.machine2ID,1,0),new Object[]{"rgr","rir","rar",'r',Items.getItem("refinedIronIngot"),'i',Items.getItem("miningPipe"),'g',Items.getItem("reinforcedGlass"),'a',"craftingRawMachineTier02"});
+			if(eCT)regRecipe(new ItemStack(fcItems.machine2ID,1,0),new Object[]{"rgr","rir","rar",'r',GregTech_API.getGregTechItem(0, 1, 18),'i',Items.getItem("miningPipe"),'g',Items.getItem("reinforcedGlass"),'a',"craftingRawMachineTier02"});
 			//CondenseTowerCylinder
-			m.addRecipe(new ItemStack(fcItems.machine2ID,1,1),new Object[]{"rir","rir","rir",'r',Items.getItem("refinedIronIngot"),'i',Items.getItem("miningPipe")});	
-			m.addRecipe(new ItemStack(fcItems.machine2ID,1,1),new Object[]{"rir","rir","rir",'r',GregTech_API.getGregTechItem(0, 1, 18),'i',Items.getItem("miningPipe")});
+			if(eCT)regRecipe(new ItemStack(fcItems.machine2ID,1,1),new Object[]{"rir","rir","rir",'r',Items.getItem("refinedIronIngot"),'i',Items.getItem("miningPipe")});	
+			if(eCT)regRecipe(new ItemStack(fcItems.machine2ID,1,1),new Object[]{"rir","rir","rir",'r',GregTech_API.getGregTechItem(0, 1, 18),'i',Items.getItem("miningPipe")});
 		}
 		
 		//WindMill
-		m.addRecipe(new ItemStack(fcItems.fan),new Object[]{" f "," f ","f f",'f',Items.getItem("ironFence")});
-		m.addRecipe(new ItemStack(fcItems.acwindmillcylinder,12),new Object[]{"f f","f f","f f",'f',Items.getItem("ironFence")});
+		if(eACWM)m.addRecipe(new ItemStack(fcItems.fan),new Object[]{" f "," f ","f f",'f',Items.getItem("ironFence")});
+		if(eACWM)m.addRecipe(new ItemStack(fcItems.acwindmillcylinder,12),new Object[]{"f f","f f","f f",'f',Items.getItem("ironFence")});
 		//Top
-		regRecipe(new ItemStack(fcItems.machine2ID,1,2),new Object[]{"crc","rwr","crc", 'c', "ingotCopper",'w',Items.getItem("windMill"),'r',"dyeRed"});
+		if(eACWM)regRecipe(new ItemStack(fcItems.machine2ID,1,2),new Object[]{"crc","rwr","crc", 'c', "ingotCopper",'w',Items.getItem("windMill"),'r',"dyeRed"});
         //Base   
-		regRecipe(new ItemStack(fcItems.machine2ID,1,3),new Object[]{" i ","cac"," e ", 'c', Items.getItem("insulatedCopperCableItem"),'a',"craftingRawMachineTier02",'e',Items.getItem("electronicCircuit"),'i',new ItemStack(fcItems.acwindmillcylinder)});        	
-	
+		if(eACWM)regRecipe(new ItemStack(fcItems.machine2ID,1,3),new Object[]{" i ","cac"," e ", 'c', Items.getItem("insulatedCopperCableItem"),'a',"craftingRawMachineTier02",'e',Items.getItem("electronicCircuit"),'i',new ItemStack(fcItems.acwindmillcylinder)});        	
+		//AutoWorkBench
+		if(eAWB)regRecipe(new ItemStack(fcItems.machine2ID,1,4),new Object[]{"ttt","tct","ttt",'t',"ingotTin",'c',Block.workbench});
+		
         //RailGun
-        regRecipe(new ItemStack(fcItems.miscsID,1,2),new Object[]{"scs","sts","scs",'s',"craftingSuperconductor",'c',"crafting360kCoolantStore",'t',new ItemStack(fcItems.machineID,1,8)});
-        regRecipe(new ItemStack(fcItems.miscsID,1,2),new Object[]{"sss","ctc","sss",'s',"craftingSuperconductor",'c',"crafting360kCoolantStore",'t',new ItemStack(fcItems.machineID,1,8)});       
-        regRecipe(new ItemStack(fcItems.railgun),new Object[]{"igi","oco","ili",'c',new ItemStack(fcItems.miscsID,1,2),'l',"crafting1kkEUStore",'g',new ItemStack(fcItems.miscsID,1,3),'o',Items.getItem("overclockerUpgrade"),'i',"plateAlloyIridium"});
+        if(eR)regRecipe(new ItemStack(fcItems.miscsID,1,2),new Object[]{"scs","sts","scs",'s',"craftingSuperconductor",'c',"crafting360kCoolantStore",'t',new ItemStack(fcItems.machineID,1,8)});
+        if(eR)regRecipe(new ItemStack(fcItems.miscsID,1,2),new Object[]{"sss","ctc","sss",'s',"craftingSuperconductor",'c',"crafting360kCoolantStore",'t',new ItemStack(fcItems.machineID,1,8)});       
+        if(eR)regRecipe(new ItemStack(fcItems.railgun),new Object[]{"igi","oco","ili",'c',new ItemStack(fcItems.miscsID,1,2),'l',"crafting1kkEUStore",'g',new ItemStack(fcItems.miscsID,1,3),'o',Items.getItem("overclockerUpgrade"),'i',"plateAlloyIridium"});
 	
         
         //GoldClod
