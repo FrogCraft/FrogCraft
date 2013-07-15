@@ -30,7 +30,7 @@ public class GuiLiquifier extends GuiLiquids {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-    	fontRenderer.drawString(ItemBlockMachines.Machines_Names[te.getBlockMetadata()], 8, 6, 4210752);
+    	fontRenderer.drawString(StatCollector.translateToLocal("tile.Machines."+ItemBlockMachines.subNames[te.getBlockMetadata()]+".name"), 8, 6, 4210752);
     	//fontRenderer.drawString("Eu Stored: "+String.valueOf(te.energy), 46, 50, 4210752); 
     	
     	this.drawLiquidBar(17, 23, 16, 47, te.idIn, te.damageIn, te.amountInP/10);

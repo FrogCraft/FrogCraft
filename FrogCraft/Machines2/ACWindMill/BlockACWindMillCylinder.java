@@ -12,9 +12,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockACWindMillCylinder extends BlockFence{
-	public static String BlockACWindMillCylinder_Name="ACWindMill Cylinder";	
-	
+public class BlockACWindMillCylinder extends BlockFence{	
 	public BlockACWindMillCylinder(int id){
 		super(id, "FrogCraft:ACWindMill_Cylinder", Material.wood);
 		setHardness(2.0F);

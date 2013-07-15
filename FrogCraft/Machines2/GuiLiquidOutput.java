@@ -30,7 +30,7 @@ public class GuiLiquidOutput extends GuiLiquids {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-    	fontRenderer.drawString(ItemBlockMachines2.Machines2_Names[te.getBlockMetadata()], 8, 6, 4210752);
+    	fontRenderer.drawString(StatCollector.translateToLocal("tile.Machines2."+ItemBlockMachines2.subNames[te.getBlockMetadata()]+".name"), 8, 6, 4210752);
     	
     	this.drawLiquidBar(143, 23, 16, 47, te.idOut, te.damageOut, te.amountOutP/10);
 

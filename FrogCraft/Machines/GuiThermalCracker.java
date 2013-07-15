@@ -27,7 +27,7 @@ public class GuiThermalCracker extends GuiLiquids {
         protected void drawGuiContainerForegroundLayer(int par1, int par2) {
                 //draw text and stuff here
                 //the parameters for drawString are: string, x, y, color
-                fontRenderer.drawString(ItemBlockMachines.Machines_Names[tileentity.getBlockMetadata()], 8, 6, 4210752);
+                fontRenderer.drawString(StatCollector.translateToLocal("tile.Machines."+ItemBlockMachines.subNames[tileentity.getBlockMetadata()]+".name"), 8, 6, 4210752);
                 //draws "Inventory" or your regional equivalent
                 //fontRenderer.drawString(String.valueOf(tileentity.progress)+"%", 8, ySize - 96, 4210752);    
                 fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, ySize - 96, 4210752);    

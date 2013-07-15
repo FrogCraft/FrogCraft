@@ -13,15 +13,25 @@ public class OreDictRegister {
 		OreDictionary.registerOre("crafting1kkEUStore",Items.getItem("lapotronCrystal"));		
 		OreDictionary.registerOre("craftingRawMachineTier01",Items.getItem("machine"));		
 		OreDictionary.registerOre("craftingRawMachineTier02",Items.getItem("advancedMachine"));
+		OreDictionary.registerOre("craftingCompressor",Items.getItem("compressor"));
+		OreDictionary.registerOre("craftingMacerator",Items.getItem("macerator"));
+		OreDictionary.registerOre("craftingExtractor",Items.getItem("extractor"));
+		OreDictionary.registerOre("craftingPump",Items.getItem("pump"));
 		
-		OreDictionary.registerOre("ingotPotassium",new ItemStack(fcItems.ingotsID,1,0));
-		OreDictionary.registerOre("gemPhosphor",new ItemStack(fcItems.ingotsID,1,1));	
-		OreDictionary.registerOre("molecule_1n_4h_1n_3o",new ItemStack(fcItems.cellsID,1,7));
-		OreDictionary.registerOre("molecule_1h_1n_3o",new ItemStack(fcItems.cellsID,1,8));
-		OreDictionary.registerOre("molecule_1n_1o",new ItemStack(fcItems.cellsID,1,9));		
-		OreDictionary.registerOre("dustAmmoniumNitrate",new ItemStack(fcItems.dustsID,1,2));			
+		//FC
 		OreDictionary.registerOre("crafting60kCoolantStore",fcItems.IC2Coolant_NH3_60K);
 		OreDictionary.registerOre("crafting180kCoolantStore",fcItems.IC2Coolant_NH3_180K);	
 		OreDictionary.registerOre("crafting360kCoolantStore",fcItems.IC2Coolant_NH3_360K);
+		
+		OreDictionary.registerOre("molecule_1h_1n_3o",new ItemStack(fcItems.cellsID,1,6));
+		OreDictionary.registerOre("molecule_1n_1o",new ItemStack(fcItems.cellsID,1,7));
+		
+		OreDictionary.registerOre("dustAmmoniumNitrate",new ItemStack(fcItems.dustsID,1,2));
+		OreDictionary.registerOre("dustMagnalium",new ItemStack(fcItems.dustsID,1,5));	
+		OreDictionary.registerOre("dustCarnallite",new ItemStack(fcItems.dustsID,1,6));		
+		OreDictionary.registerOre("dustFluorapatite",new ItemStack(fcItems.dustsID,1,9));
+		
+		OreDictionary.registerOre("ingotPotassium",new ItemStack(fcItems.ingotsID,1,0));
+		OreDictionary.registerOre("gemPhosphor",new ItemStack(fcItems.ingotsID,1,1));	
 	}
 }

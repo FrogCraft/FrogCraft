@@ -30,6 +30,7 @@ public class BlockMobilePS extends BlockContainer{
 	public BlockMobilePS(int id) {
 		super(id, Material.rock);
 		setCreativeTab(mod_FrogCraft.tabFrogCraft);
+		setUnlocalizedName("BlockMobilePS");
 	}
 
     //Register Icons

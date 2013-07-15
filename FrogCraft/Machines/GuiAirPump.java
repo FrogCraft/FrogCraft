@@ -21,7 +21,7 @@ public class GuiAirPump extends GuiContainer {
         protected void drawGuiContainerForegroundLayer(int param1, int param2) {
                 //draw text and stuff here
                 //the parameters for drawString are: string, x, y, color
-                fontRenderer.drawString(ItemBlockMachines.Machines_Names[tileentity.getBlockMetadata()], 8, 6, 4210752);
+                fontRenderer.drawString(StatCollector.translateToLocal("tile.Machines."+ItemBlockMachines.subNames[tileentity.getBlockMetadata()]+".name"), 8, 6, 4210752);
                 fontRenderer.drawString("Gas amount: "+String.valueOf(tileentity.max_gasamount*tileentity.GasPercentage/10000), 8, 22, 4210752); 
                 fontRenderer.drawString("Max amount: "+String.valueOf(tileentity.max_gasamount), 8, 32, 4210752); 
                 fontRenderer.drawString("Percentage: "+String.valueOf(tileentity.GasPercentage/100)+"%", 8, 42, 4210752); 

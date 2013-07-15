@@ -12,85 +12,81 @@ import FrogCraft.api.fcItems;
 public class ItemsRegister {
 	public static void loadItemsData(){
 		//Cells
-		Item_Cells.add("cell_Ammonia", "Ammonia Cell","NH3");
-		Item_Cells.add("cell_CoalTar","Coal Tar Cell");
-/*2*/	Item_Cells.add("cell_Oxygen","Oxygen Cell","O2");
-		Item_Cells.add("cell_LiquifiedAir","Liquefied Air Cell");
-		Item_Cells.add("cell_CO2","CO2 Cell","CO2");
-/*5*/	Item_Cells.add("cell_Argon","Argon Cell","Ar");		
-  		Item_Cells.add("cell_HNO3","Nitric Acid Cell","HNO3");
-		Item_Cells.add("cell_NO", "Nitrogen Oxide", "NO");
-/*8*/	Item_Cells.add("cell_CO", "Carbon MonoOxide","CO");
-		Item_Cells.add("cell_Benzyl", "Benzyl Cell","C6H6");
-		Item_Cells.add("cell_Bromine", "Bromine Cell","Br2");
-/*11*/	Item_Cells.add("cell_Fluorine", "Fluorine Cell","F2");
+		Item_Cells.add(0,"cell_Ammonia");
+		Item_Cells.add(1,"cell_CoalTar");
+/*2*/	Item_Cells.add(2,"cell_Oxygen");
+		Item_Cells.add(3,"cell_LiquifiedAir");
+		Item_Cells.add(4,"cell_CO2");
+/*5*/	Item_Cells.add(5,"cell_Argon");		
+  		Item_Cells.add(6,"cell_HNO3");
+		Item_Cells.add(7,"cell_NO");
+/*8*/	Item_Cells.add(8,"cell_CO");
+		Item_Cells.add(9,"cell_Benzene");
+		Item_Cells.add(10,"cell_Bromine");
+/*11*/	Item_Cells.add(11,"cell_Fluorine");
 		
 		//Miscs
-		Item_Miscs.add("pCokingCoal", "Piece of Coking Coal");
-		Item_Miscs.add("Briquette", "Briquette" ,"Chinese style!");
-/*2*/	Item_Miscs.add("Railgun_Core", "Railgun Core");
-		Item_Miscs.add("GoldClod", "GoldClod" ,"妈妈的0.0");
-		Item_Miscs.add("ElectrolizeModule", "Electrolize Module");
-/*5*/	Item_Miscs.add("HeatingModule", "Heating Module");
-		Item_Miscs.add("AmmoniaModule", "Ammonia Catalytic Module");
+		Item_Miscs.add(0,"pCokingCoal");
+		Item_Miscs.add(1,"Briquette");
+/*2*/	Item_Miscs.add(2,"Railgun_Core");
+		Item_Miscs.add(3,"GoldClod");
+		Item_Miscs.add(4,"ElectrolizeModule");
+/*5*/	Item_Miscs.add(5,"HeatingModule");
+		Item_Miscs.add(6,"AmmoniaModule");
 		
 		//Dusts
-		Item_Dusts.add("CaO","Calcium Oxide","CaO");
-		Item_Dusts.add("Urea","Urea","CO(NH2)2");
-/*2*/	Item_Dusts.add("NH4NO3","Ammonium Nitrate","NH4NO3");
-		Item_Dusts.add("CaSiO3", "Calcium Silicate","CaSiO3");
-		Item_Dusts.add("CaOH2", "Calcium Hydroxide","Ca(OH)2");
-/*5*/	Item_Dusts.add("Magnalium", "Magnalium dust","MgAl2");	
-		Item_Dusts.add("Carnallite", "Carnallite dust","4KCl.MgBr2.8H2O");	
-		Item_Dusts.add("KCl", "Potassium chloride","KCl");	
-/*8*/	Item_Dusts.add("MgBr2", "Magnesium bromide","MgBr2");
-		Item_Dusts.add("Fluorapatite", "Fluorapatite dust","Ca5F(PO4)3");
-		Item_Dusts.add("CaF2", "Calcium Fluoride","CaF2");
+		Item_Dusts.add(0,"CaO");
+		Item_Dusts.add(1,"Urea");
+/*2*/	Item_Dusts.add(2,"NH4NO3");
+		Item_Dusts.add(3,"CaSiO3");
+		Item_Dusts.add(4,"CaOH2");
+/*5*/	Item_Dusts.add(5,"Magnalium");	
+		Item_Dusts.add(6,"Carnallite");	
+		Item_Dusts.add(7,"KCl");	
+/*8*/	Item_Dusts.add(8,"MgBr2");
+		Item_Dusts.add(9,"Fluorapatite");
+		Item_Dusts.add(10,"CaF2");
 /*11*/
 		
 		
 		//Ingots
-		Item_Ingots.add("K", "Potassium","K");
-		Item_Ingots.add("P", "Phosphor","P");
+		Item_Ingots.add(0,"K");
+		Item_Ingots.add(1,"P");
+		
+		
 		
 		//Liquids
-		Item_Liquids.add("LiquifiedAir", "Liquified Air", "Warning: Super Cold!");
-		Item_Liquids.add("CoalTar", "Coal Tar" ,"Very complex compound QAQ");
-/*2*/	Item_Liquids.add("HNO3", "Nitric Acid" ,"Warning: Crossive!");
-		Item_Liquids.add("Benzyl", "Benzyl" , "Warning: Toxic!");
-		Item_Liquids.add("Bromine", "Bromine","Smells terrible!");
+		Item_Liquids.add(0,"LiquifiedAir");
+		Item_Liquids.add(1,"CoalTar");
+/*2*/	Item_Liquids.add(2,"HNO3");
+		Item_Liquids.add(3,"Benzene");
+		Item_Liquids.add(4,"Bromine");
 /*5*/	
 		
 		//Gases
-		Item_Gases.add("Oxygen", "Oxygen","O2");
-		Item_Gases.add("CO2", "Carbon Dioxide","CO2");
-/*2*/	Item_Gases.add("Argon", "Argon","Ar");
-		Item_Gases.add("Ammonia", "Ammonia","Never breath it!");
-		Item_Gases.add("NO", "Nitrogen Monoxide","NO");
-/*5*/	Item_Gases.add("CO", "Carbon Monoxide","CO");	
-		Item_Gases.add("Fluorine", "Fluorine", "Warning: React with everything!");
-		//Item_Gases.add("HF", "Hydrogen Fluoride", "Warning: Toxic!");
-/*8*/	//Item_Gases.add("HCl", "Hydrogen Chloride", "Warning: Corrosive!");
-		//Item_Gases.add("HBr", "Hydrogen Bromied", "Warning: Corrosive!");
-		//Item_Gases.add("HI", "Hydrogen Idoine", "Warning: Super Acidic!");	
-/*11*/	//Item_Gases.add("HCN", "Hydrogen Cyanide", "Warning: Extremely deadly!");
+		Item_Gases.add(0,"Oxygen");
+		Item_Gases.add(1,"CO2");
+/*2*/	Item_Gases.add(2,"Argon");
+		Item_Gases.add(3,"Ammonia");
+		Item_Gases.add(4,"NO");
+/*5*/	Item_Gases.add(5,"CO");	
+		Item_Gases.add(6,"Fluorine");
 	}
 	
 	public static void loadContainerSettings(){
-		Item_Liquids.filledContainer=new ItemStack[]{
-				new ItemStack(fcItems.cellsID,1,3),
-				new ItemStack(fcItems.cellsID,1,1),
-				new ItemStack(fcItems.cellsID,1,6),
-				new ItemStack(fcItems.cellsID,1,9),
-				new ItemStack(fcItems.cellsID,1,10)};
 		
-		Item_Gases.filledContainer=new ItemStack[]{
-				new ItemStack(fcItems.cellsID,1,2),
-				new ItemStack(fcItems.cellsID,1,4),
-		/*2*/	new ItemStack(fcItems.cellsID,1,5),
-				new ItemStack(fcItems.cellsID,1,0),
-				new ItemStack(fcItems.cellsID,1,7),
-		/*5*/	new ItemStack(fcItems.cellsID,1,8),
-				new ItemStack(fcItems.cellsID,1,11)};		
+		Item_Liquids.filledContainer.put(0, new ItemStack(fcItems.cellsID,1,3));
+		Item_Liquids.filledContainer.put(1, new ItemStack(fcItems.cellsID,1,1));
+		Item_Liquids.filledContainer.put(2, new ItemStack(fcItems.cellsID,1,6));
+		Item_Liquids.filledContainer.put(3, new ItemStack(fcItems.cellsID,1,9));
+		Item_Liquids.filledContainer.put(4, new ItemStack(fcItems.cellsID,1,10));
+		
+		Item_Gases.filledContainer.put(0, new ItemStack(fcItems.cellsID,1,2));
+		Item_Gases.filledContainer.put(1, new ItemStack(fcItems.cellsID,1,4));	
+		Item_Gases.filledContainer.put(2, new ItemStack(fcItems.cellsID,1,5));
+		Item_Gases.filledContainer.put(3, new ItemStack(fcItems.cellsID,1,0));			
+		Item_Gases.filledContainer.put(4, new ItemStack(fcItems.cellsID,1,7));	
+		Item_Gases.filledContainer.put(5, new ItemStack(fcItems.cellsID,1,8));
+		Item_Gases.filledContainer.put(6, new ItemStack(fcItems.cellsID,1,11));
 	}
 }

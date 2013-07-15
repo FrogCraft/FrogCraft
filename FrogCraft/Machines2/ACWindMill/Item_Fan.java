@@ -19,11 +19,9 @@ import net.minecraft.util.StringTranslate;
 import net.minecraft.world.World;
 
 public class Item_Fan extends Item {
-	public static String name="ACWindMill Rotor";
-
 	public Item_Fan(int par1) {
 		super(par1);
-		setUnlocalizedName("Frogcraft_Fan");
+		setUnlocalizedName("ACWindMill_Rotor");
 		setCreativeTab(mod_FrogCraft.tabFrogCraft);
 	}
 
@@ -31,11 +29,6 @@ public class Item_Fan extends Item {
     public void registerIcons(IconRegister par1IconRegister)
     {
         itemIcon = par1IconRegister.registerIcon("FrogCraft:ACWindMill_Fan");
-    }
-    
-    public String getItemDisplayName(ItemStack par1ItemStack)
-    {
-    	return name;
     }
 	
 	@Override

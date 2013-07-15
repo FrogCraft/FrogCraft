@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 public class ItemBlockOre extends ItemBlock {
 
 	public final static String[] subNames = {"oreCarnallite","oreFluorapatite"};
-	public static String[] Ore_Names={"Carnallite Ore","Fluorapatite Ore"};
 	
 	public ItemBlockOre(int id) {
 		super(id);

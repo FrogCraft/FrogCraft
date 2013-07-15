@@ -1,5 +1,8 @@
 package FrogCraft;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import FrogCraft.Machines.*;
 import FrogCraft.Machines.IndustrialDevices.*;
 import FrogCraft.Machines2.*;
@@ -10,13 +13,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.network.IGuiHandler;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
-public class GuiHandler implements IGuiHandler {
-	
-	public int addArmor(String armor) {
-		return 0;
-	}
-	
+public class CommonProxy implements IGuiHandler {
     //returns an instance of the Container you made earlier
 	@Override
     	public Object getServerGuiElement(int id, EntityPlayer player, World world,int x, int y, int z) {
@@ -83,6 +82,23 @@ public class GuiHandler implements IGuiHandler {
         	return null;
         }
 
+    	public static Set<String> languages = new HashSet();
+
+    	static {
+    		languages.add("zh_CN");
+    		languages.add("en_US");
+    	}
+    	
+    	public void init() {
+    		for (String lang : languages) {
+    			LanguageRegistry.instance().loadLocalization(
+    					"/mods/FrogCraft/lang/" + lang + ".properties", lang, false);
+    		}
+    	}
+        
+        
+    	public int addArmor(String armor) {return 0;}
+        
         public void registerRenderInformation(){}     
         public void registerTileEntitySpecialRenderer(/*PLACEHOLDER*/){}
         public World getClientWorld(){return null;}

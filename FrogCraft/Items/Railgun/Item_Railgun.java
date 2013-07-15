@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 
@@ -19,9 +20,6 @@ public class Item_Railgun extends Item implements ic2.api.item.IElectricItem{
 	public static int AmmoID=1;
 	public static int euPerShot=100000;
 	public static Icon icon,coin,using;
-	public static String name="Only my railgun!!!",
-						 tooTired="You are too tired to use railgun!",
-						 info="Pili Pili~";
 	
 	public Item_Railgun(int par1){
 		super(par1);
@@ -51,13 +49,10 @@ public class Item_Railgun extends Item implements ic2.api.item.IElectricItem{
     	using=par1IconRegister.registerIcon("FrogCraft:RailGun_Coin");
     }
     
-    public String getItemDisplayName(ItemStack par1ItemStack)
-    {
-        return name;
-    }
+
     
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-    	par3List.add(info);
+    	par3List.add(StatCollector.translateToLocal("item.Item_Railgun.info"));
     }
 
 	public ItemStack onItemRightClick(ItemStack item, World world, EntityPlayer player)
@@ -102,7 +97,7 @@ public class Item_Railgun extends Item implements ic2.api.item.IElectricItem{
 		}
 		else{ //Not enough electricity
 			if (!world.isRemote)
-				player.sendChatToPlayer(tooTired);
+				player.sendChatToPlayer(StatCollector.translateToLocal("item.Item_Railgun.tooTired"));
 		}
     	
 

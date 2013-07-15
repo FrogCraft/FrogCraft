@@ -25,7 +25,7 @@ public class GuiMobilePS extends GuiContainer {
      	//draw text and stuff here
        	//the parameters for drawString are: string, x, y, color
     	//fontRenderer.drawString(String.valueOf(tileentity.progress), 8, 6, 4210752);
-       	fontRenderer.drawString(ItemBlock_MobilePS.name, 8, 6, 4210752);
+       	fontRenderer.drawString(StatCollector.translateToLocal("tile.BlockMobilePS.name"), 8, 6, 4210752);
        	fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, ySize - 96, 4210752);
        	fontRenderer.drawString("Out:"+String.valueOf(tileentity.vOut), 124, ySize - 96, 4210752);       	
        	

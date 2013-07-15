@@ -23,7 +23,7 @@ public class BlockOre extends Block{
         setHardness(2.0F);
         setResistance(5.0F);
         //setStepSound(Block.dirt.stepSound);
-        setUnlocalizedName("Ore");
+        setUnlocalizedName("fcOre");
         setCreativeTab(mod_FrogCraft.tabFrogCraft);
 	}
     

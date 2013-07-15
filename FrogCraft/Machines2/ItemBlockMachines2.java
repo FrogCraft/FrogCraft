@@ -9,8 +9,7 @@ import net.minecraft.item.ItemStack;
 public class ItemBlockMachines2 extends ItemBlock {
 
 	public final static String[] subNames = {"LiquidOutput","CondenseTowerCylinder","ACWindMillTop","ACWindMillBase","AutoWorkBench"};
-	public static String[] Machines2_Names={"Condense Tower Output","Condense Tower Cylinder","ACWindMill Top","ACWindMill Base","Auto WorkBench"};
-	
+
 	public ItemBlockMachines2(int id) {
 		super(id);
 		setHasSubtypes(true);

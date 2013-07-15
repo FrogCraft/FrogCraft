@@ -13,32 +13,26 @@ import net.minecraft.nbt.NBTTagCompound;
 public abstract class Item_IC2Coolant extends Item implements IReactorComponent{
 
 	public static class Item_IC2CoolantNH3_60K extends Item_IC2Coolant{
-		public static String displayName="60K NH3 Coolant Cell";
 		public Item_IC2CoolantNH3_60K(int id) {
 			super(id,60000,"NH3_60K");
-			super.displayName=this.displayName;
 		}
 	}
 	
 	public static class Item_IC2CoolantNH3_180K extends Item_IC2Coolant{
-		public static String displayName="180K NH3 Coolant Cell";
 		public Item_IC2CoolantNH3_180K(int id) {
 			super(id,180000,"NH3_180K");
-			super.displayName=this.displayName;
 		}
 	}
 	
 	public static class Item_IC2CoolantNH3_360K extends Item_IC2Coolant{
-		public static String displayName="360K NH3 Coolant Cell";
 		public Item_IC2CoolantNH3_360K(int id) {
 			super(id,360000,"NH3_360K");
-			super.displayName=this.displayName;
 		}
 	}	
 	
 	
 	public int heatStorage;
-	public String name,displayName;
+	public String name;
 	public Item_IC2Coolant(int id,int heatCapacity,String name) {
 		super(id);
 		heatStorage=heatCapacity;
@@ -57,14 +51,7 @@ public abstract class Item_IC2Coolant extends Item implements IReactorComponent{
     {
     	itemIcon=par1IconRegister.registerIcon("FrogCraft:Coolant_"+name);
     }
-	
-    @SideOnly(Side.CLIENT)    
-    @Override
-    public String getItemDisplayName(ItemStack par1ItemStack)
-    {
-    	return displayName;
-    }
-	
+
 	@Override
 	public void processChamber(IReactor reactor, ItemStack yourStack, int x,int y) {}
 

@@ -291,7 +291,7 @@ public class BlockMachines extends BlockContainer {
         }
         else if(((entityPlayer.getCurrentEquippedItem() != null)&&(entityPlayer.getCurrentEquippedItem().itemID != ic2.api.item.Items.getItem("ecMeter").itemID))|(entityPlayer.getCurrentEquippedItem() == null))
         {
-        	if ((new GuiHandler()).getServerGuiElement(0, entityPlayer, world, x, y, z) != null){
+        	if ((new CommonProxy()).getServerGuiElement(0, entityPlayer, world, x, y, z) != null){
         		entityPlayer.openGui(FrogCraft.mod_FrogCraft.instance, 0, world, x, y, z);
         	    return true;
         	}

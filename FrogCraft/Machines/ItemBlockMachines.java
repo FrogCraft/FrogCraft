@@ -5,15 +5,13 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StringTranslate;
 
 public class ItemBlockMachines extends ItemBlock {
 
 	public final static String[] subNames = {"PneumaticCompressor","AirPump","IndustrialCompressor","IndustrialMacerator",
 											 "IndustrialExtractor","IndustrialFurnance","HSU","UHSU",
 											 "EVT","Liquifier","LiquidInjector","ThermalCracker","AdvanceChemicalReactor"};
-	public static String[] Machines_Names={"Pneumatic Compressor","Air Pump","Industrial Compressor","Industrial Macerator",
-		   "Industrial Extractor","Industrial Furnance","Hybrid Storage Unit","Ultimate Hybrid Storage Unit",
-		   "Ev_Transformer","Liquifier","Condense tower","Thermal Cracker","Advance Chemical Reactor"};
 	
 	public final static int[] maxIn={32,128,128,128,
 									128,128,2048,8192,
@@ -43,6 +41,4 @@ public class ItemBlockMachines extends ItemBlock {
 	public String getUnlocalizedName(ItemStack itemstack) {
 		return getUnlocalizedName() + "." + subNames[itemstack.getItemDamage()];
 	}
-
-
 }

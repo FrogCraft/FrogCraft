@@ -7,11 +7,13 @@ import java.util.List;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
 import FrogCraft.Common.GuiLiquids;
 import FrogCraft.Common.LiquidIO;
+import FrogCraft.Machines.ItemBlockMachines;
 
 import codechicken.nei.PositionedStack;
 import codechicken.nei.forge.GuiContainerManager;
@@ -37,7 +39,7 @@ public class CondenseTowerRecipeHandler extends TemplateRecipeHandler{
 	//The string displayed on the top of the recipe window
 	@Override
 	public String getRecipeName() {
-		return FrogCraft.Machines.ItemBlockMachines.Machines_Names[10];
+		return StatCollector.translateToLocal("tile.Machines."+ItemBlockMachines.subNames[10]+".name");
 	}
 
 	//Recipe window texture
@@ -75,9 +77,9 @@ public class CondenseTowerRecipeHandler extends TemplateRecipeHandler{
 	
 	public void drawExtras(GuiContainerManager gui, int recipe){
 		Cached_Recipe rec=(Cached_Recipe)arecipes.get(recipe);
-		gui.drawText(28,80,NEI_Config.euTotal+String.valueOf(rec.eu), 4210752,false);
+		gui.drawText(28,80,StatCollector.translateToLocal("nei.euTotal")+":"+String.valueOf(rec.eu), 4210752,false);
 		gui.drawText(28,90,"Per "+String.valueOf(rec.unit)+"mB", 4210752,false);	
-		gui.drawText(28,100,NEI_Config.tick+String.valueOf(rec.tick), 4210752,false);
+		gui.drawText(28,100,StatCollector.translateToLocal("nei.euTick")+":"+String.valueOf(rec.tick), 4210752,false);
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		gui.bindTexture(getGuiTexture());

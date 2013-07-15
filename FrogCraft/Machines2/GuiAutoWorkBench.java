@@ -27,7 +27,7 @@ public class GuiAutoWorkBench extends GuiContainer {
     
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-    	fontRenderer.drawString(ItemBlockMachines2.Machines2_Names[te.getBlockMetadata()], -59, 6, 4210752);
+    	fontRenderer.drawString(StatCollector.translateToLocal("tile.Machines2."+ItemBlockMachines2.subNames[te.getBlockMetadata()]+".name"), -59, 6, 4210752);
     }
         
 	@Override

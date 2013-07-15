@@ -7,11 +7,13 @@ import java.util.List;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
 import FrogCraft.Common.GuiLiquids;
 import FrogCraft.Common.LiquidIO;
+import FrogCraft.Machines.ItemBlockMachines;
 
 import codechicken.nei.PositionedStack;
 import codechicken.nei.forge.GuiContainerManager;
@@ -37,7 +39,7 @@ public class ThermalCrackerRecipeHandler extends TemplateRecipeHandler{
 	//The string displayed on the top of the recipe window
 	@Override
 	public String getRecipeName() {
-		return FrogCraft.Machines.ItemBlockMachines.Machines_Names[11];
+		return StatCollector.translateToLocal("tile.Machines."+ItemBlockMachines.subNames[11]+".name");
 	}
 
 	//Recipe window texture
@@ -58,11 +60,11 @@ public class ThermalCrackerRecipeHandler extends TemplateRecipeHandler{
 	
 	public void drawExtras(GuiContainerManager gui, int recipe){
 		Cached_Recipe rec=(Cached_Recipe)arecipes.get(recipe);
-		gui.drawText(28,80,NEI_Config.euTotal+String.valueOf(rec.eu*rec.tick), 4210752,false);
-		gui.drawText(28,90,NEI_Config.euTick+String.valueOf(rec.eu), 4210752,false);	
-		gui.drawText(28,100,NEI_Config.tick+String.valueOf(rec.tick), 4210752,false);
+		gui.drawText(28,80,StatCollector.translateToLocal("nei.euTotal")+":"+String.valueOf(rec.eu*rec.tick), 4210752,false);
+		gui.drawText(28,90,StatCollector.translateToLocal("nei.euTick")+":"+String.valueOf(rec.eu), 4210752,false);	
+		gui.drawText(28,100,StatCollector.translateToLocal("nei.tick")+":"+String.valueOf(rec.tick), 4210752,false);
 		if (rec.outID>0)
-			gui.drawText(28,110,NEI_Config.liquid+new ItemStack(rec.outID,1,rec.outDamage).getDisplayName(), 4210752,false);
+			gui.drawText(28,110,StatCollector.translateToLocal("nei.outputLiquid")+":"+new ItemStack(rec.outID,1,rec.outDamage).getDisplayName(), 4210752,false);
 		
 		
 		GuiLiquids.drawLiquidBar(138, 12, 16, 47, rec.outID, rec.outDamage, 100);

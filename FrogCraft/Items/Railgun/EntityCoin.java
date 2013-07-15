@@ -76,24 +76,6 @@ public class EntityCoin extends Entity implements IProjectile
 		if (!this.worldObj.isRemote){
 			this.setDead(); //despawns the bullet after hitting something
 		}
-		else{
-			for (int j = 0; j < 8; ++j)
-				this.worldObj.spawnParticle("snowballpoof", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
-		
-			for (int j = 0; j < 16; ++j)
-			{
-				int signx=1,signy=1,signz=1;
-				if (rand.nextBoolean())signx=-1;
-				if (rand.nextBoolean())signy=-1; 
-				if (rand.nextBoolean())signz=-1;        	
-				worldObj.createExplosion(null, posX+(signx*rand.nextInt(15)/6.0f), posY+(signy*rand.nextInt(15)/6.0f), posZ+(signz*rand.nextInt(15)/6.0f), 0f, false);
-				worldObj.spawnParticle("flame",posX+(signx*rand.nextInt(15)/6.0f), posY+(signy*rand.nextInt(15)/6.0f), posZ+(signz*rand.nextInt(15)/6.0f), 0.0D, 0.0D, 0.0D);
-			}   
-   
-			for (int i = 0; i < 4; ++i)
-				worldObj.spawnParticle("largesmoke", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
-				
-		}
 	}
 
 	public EntityCoin(World par1World)

@@ -5,8 +5,11 @@ import java.util.ArrayList;
 
 import org.lwjgl.opengl.GL11;
 
+import FrogCraft.Machines.ItemBlockMachines;
+
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import codechicken.nei.PositionedStack;
 import codechicken.nei.forge.GuiContainerManager;
@@ -33,7 +36,7 @@ public class AdvanceChemicalReactorRecipeHandler extends TemplateRecipeHandler{
 	//The string displayed on the top of the recipe window
 	@Override
 	public String getRecipeName() {
-		return FrogCraft.Machines.ItemBlockMachines.Machines_Names[12];
+		return StatCollector.translateToLocal("tile.Machines."+ItemBlockMachines.subNames[12]+".name");
 	}
 
 	//Recipe window texture
@@ -54,18 +57,18 @@ public class AdvanceChemicalReactorRecipeHandler extends TemplateRecipeHandler{
 	
 	public void drawExtras(GuiContainerManager gui, int recipe){
 		Cached_Recipe rec=(Cached_Recipe)arecipes.get(recipe);
-		gui.drawText(28,80,NEI_Config.euTotal+String.valueOf(rec.eu), 4210752,false);
+		gui.drawText(28,80,StatCollector.translateToLocal("nei.euTotal")+":"+String.valueOf(rec.eu), 4210752,false);
 		
 		if (rec.tick<0){
-			gui.drawText(28,90,NEI_Config.euTick+String.valueOf(rec.eu/rec.tickWithCatalyst), 4210752,false);	
-			gui.drawText(28,100,NEI_Config.tick+String.valueOf(rec.tickWithCatalyst), 4210752,false);
-			gui.drawText(28,110,NEI_Config.catalystRequird, 4210752,false);
+			gui.drawText(28,90,StatCollector.translateToLocal("nei.euTick")+":"+String.valueOf(rec.eu/rec.tickWithCatalyst), 4210752,false);	
+			gui.drawText(28,100,StatCollector.translateToLocal("nei.tick")+":"+String.valueOf(rec.tickWithCatalyst), 4210752,false);
+			gui.drawText(28,110,StatCollector.translateToLocal("catalystRequird"), 4210752,false);
 		}
 		else{
-			gui.drawText(28,90,NEI_Config.euTick+String.valueOf(rec.eu/rec.tick), 4210752,false);	
-			gui.drawText(28,100,NEI_Config.tick+String.valueOf(rec.tick), 4210752,false);
+			gui.drawText(28,90,StatCollector.translateToLocal("nei.euTick")+":"+String.valueOf(rec.eu/rec.tick), 4210752,false);	
+			gui.drawText(28,100,StatCollector.translateToLocal("nei.tick")+":"+String.valueOf(rec.tick), 4210752,false);
 			if (rec.tickWithCatalyst>1)
-				gui.drawText(28,110,NEI_Config.tickWithCatalyst+String.valueOf(rec.tickWithCatalyst), 4210752,false);
+				gui.drawText(28,110,StatCollector.translateToLocal("tickWithCatalyst")+":"+String.valueOf(rec.tickWithCatalyst), 4210752,false);
 		}
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		gui.bindTexture("/mods/FrogCraft/textures/gui/Gui_AdvanceChemicalReactor.png");

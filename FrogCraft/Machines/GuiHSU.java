@@ -23,7 +23,7 @@ public class GuiHSU extends GuiContainer {
      	//draw text and stuff here
        	//the parameters for drawString are: string, x, y, color
     	
-       	fontRenderer.drawString(ItemBlockMachines.Machines_Names[tileentity.getBlockMetadata()], 8, 6, 4210752);
+       	fontRenderer.drawString(StatCollector.translateToLocal("tile.Machines."+ItemBlockMachines.subNames[tileentity.getBlockMetadata()]+".name"), 8, 6, 4210752);
        	fontRenderer.drawString("Percentage: "+getpS()+"%", 8, 24, 4210752); 
        	fontRenderer.drawString("Eu: "+getE(), 8, 34, 4210752); 
        	fontRenderer.drawString("Max: "+String.valueOf(tileentity.maxEnergy), 8, 44, 4210752);

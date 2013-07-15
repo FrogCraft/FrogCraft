@@ -40,11 +40,11 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 
-@Mod( modid = "mod_FrogCraft", name="FrogCraft", version="1.1",dependencies = "required-after:IC2")
+@Mod( modid = "mod_FrogCraft", name="FrogCraft", version="1.2",dependencies = "required-after:IC2")
 @NetworkMod(channels = { "mod_FrogCraft" },clientSideRequired = true,serverSideRequired = false,packetHandler = PacketHandler.class)
 public class mod_FrogCraft {
-	@SidedProxy(clientSide = "FrogCraft.ClientProxy", serverSide = "FrogCraft.GuiHandler")
-	public static GuiHandler proxy;
+	@SidedProxy(clientSide = "FrogCraft.ClientProxy", serverSide = "FrogCraft.CommonProxy")
+	public static CommonProxy proxy;
 	
 	@Instance("mod_FrogCraft")
 	public static mod_FrogCraft instance;
@@ -103,18 +103,15 @@ public class mod_FrogCraft {
     public static CreativeTabs tabFrogCraft = new CreativeTabs("tabFrogCraft") {
         public ItemStack getIconItemStack() {return new ItemStack(Machines, 1, 8);}
         
-        @SideOnly(Side.CLIENT)
-        public String getTranslatedTabLabel(){return "FrogCraft";}
+        //@SideOnly(Side.CLIENT)
+        //public String getTranslatedTabLabel(){return "FrogCraft";}
     };   
     
     
 	@PreInit
-    public void preInit(FMLPreInitializationEvent event) {			
-		boolean useLang;
-		
+    public void preInit(FMLPreInitializationEvent event) {					
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
         config.load();
-        useLang=config.get("Languages", "Use_Custom_Language", false).getBoolean(false); 
 
         //---------------------------------------------------------------------------------------
         RecipeRegister.ePC=config.get("Enable", "PneumaticCompressor", true).getBoolean(true);
@@ -180,15 +177,6 @@ public class mod_FrogCraft {
         ItemsRegister.loadItemsData();        
   
         //---------------------------------------------------------------------------------------
-
-        
-        if (useLang){
-        	Configuration lang = new Configuration(new java.io.File(event.getModConfigurationDirectory(),"mod_FrogCraft.lang"));
-        	lang.load();
-        	LanguageRegister.loadLanguage(lang,event.getSide()==Side.CLIENT);
-    		lang.save();
-        }
-        
         regItems();
 		fcAchievements=new Achievements();  //This is important to be placed here!!!!	
 	}
@@ -227,23 +215,11 @@ public class mod_FrogCraft {
 		
 		//Register MetaBlocks
 		GameRegistry.registerBlock(Machines,ItemBlockMachines.class);	
-		for (int i = 0; i < ItemBlockMachines.Machines_Names.length; i++) {
-			LanguageRegistry.addName(new ItemStack(Machines,1,i), ItemBlockMachines.Machines_Names[i]);
-		}
-		
 		GameRegistry.registerBlock(Machines2,ItemBlockMachines2.class);	
-		for (int i = 0; i < ItemBlockMachines2.Machines2_Names.length; i++) {
-			LanguageRegistry.addName(new ItemStack(Machines2,1,i), ItemBlockMachines2.Machines2_Names[i]);
-		}		
-		
 		GameRegistry.registerBlock(Ore,FrogCraft.Ore.ItemBlockOre.class);	
-		for (int i = 0; i < FrogCraft.Ore.ItemBlockOre.Ore_Names.length; i++) {
-			LanguageRegistry.addName(new ItemStack(Ore,1,i), FrogCraft.Ore.ItemBlockOre.Ore_Names[i]);
-		}			
 		
 		//Register Normal Blocks	
 		GameRegistry.registerBlock(ACWindMillCylinder);		
-		LanguageRegistry.addName(ACWindMillCylinder,BlockACWindMillCylinder.BlockACWindMillCylinder_Name);
 		GameRegistry.registerBlock(MobilePS,ItemBlock_MobilePS.class);
 		
 		//Register Items
@@ -295,11 +271,12 @@ public class mod_FrogCraft {
 		
 		GameRegistry.registerWorldGenerator(new WorldGenerator());
 		proxy.registerRenderInformation();
+		proxy.init();
 	}
 	
 	@PostInit
     public void postInit(FMLPostInitializationEvent event) {
-		NetworkRegistry.instance().registerGuiHandler(this, new GuiHandler());
+		NetworkRegistry.instance().registerGuiHandler(this, new CommonProxy());
 		
 		Item_Railgun.AmmoID=ic2.api.item.Items.getItem("coin").itemID;
 		if (GregTech_API.getGregTechItem(3, 1, 27)!=null)
