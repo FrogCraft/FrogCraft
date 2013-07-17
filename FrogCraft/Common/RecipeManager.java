@@ -8,8 +8,6 @@ import net.minecraftforge.liquids.LiquidStack;
 
 
 public class RecipeManager {
-	/** {idIn,damageIn,amountIn,idOut,damageOut,amountOut,energy,tick} */
-	public static List<int[]> liquifierRecipes = new ArrayList<int[]>();
 	/** {idIn,damageIn,amountIn,energy,tick,idOut, damageOut, amountOut....}*/
 	public static List<int[]> liquidInjectorRecipes = new ArrayList<int[]>();
 	/** {idIn,damageIn,amountIn,energy,tick,idOut,damageOut,amountOut,idOut,damageOut,amountOut} */
@@ -150,33 +148,6 @@ public class RecipeManager {
 			}
 		}
 		return false;
-	}
-	
-	//Liquefier--------------------------------------------------------------------------------------------------------------------------------------
-	/** add a new recipe for liquifier */
-	public static void addLiquifierRecipe(int idIn,int damageIn,int amountIn,int idOut,int damageOut,int amountOut,int energy,int tick){
-		liquifierRecipes.add(new int[]{idIn,damageIn,amountIn,idOut,damageOut,amountOut,energy,tick});
-	}
-	
-	public static void addLiquifierRecipe(LiquidStack in,LiquidStack out,int energy,int tick){
-		liquifierRecipes.add(new int[]{in.itemID,in.itemMeta,in.amount,out.itemID,out.itemMeta,out.amount,energy,tick});
-	}
-	
-	/** find a recipe for liquifier*/
-	public static int[] getLiquifierRecipe(int idIn,int damageIn,int amountIn){
-		int[] j;
-		for (int i=0;i<liquifierRecipes.size();i++){
-			j=liquifierRecipes.get(i);
-			if (j[0]==idIn&j[1]==damageIn&j[2]<=amountIn){
-				return j;
-			}
-		}
-		return null;
-	}
-	
-	/** find a recipe for liquifier*/
-	public static int[] getLiquifierRecipe(LiquidStack in){
-		return getLiquifierRecipe(in.itemID,in.itemMeta,in.amount);
 	}
 	
 	//Liquid Injector-------------------------------------------------------------------------------------------------------------------------------

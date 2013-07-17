@@ -24,8 +24,8 @@ public class ContainerLiquifier extends Container {
 
 	protected TileEntityLiquifier tileEntity;
 	
-	public int idIn,idOut,damageIn,damageOut,amountInP,amountOutP;
-	public int energy=0;
+	public int idOut,damageOut,amountOutP;
+	public int energy=0,tick=0;
 	
 	public ContainerLiquifier (InventoryPlayer inventoryPlayer, TileEntityLiquifier te){
         tileEntity = te;
@@ -102,11 +102,9 @@ public class ContainerLiquifier extends Container {
     public void addCraftingToCrafters(ICrafting par1iCrafting) {
     	super.addCraftingToCrafters(par1iCrafting);
     	par1iCrafting.sendProgressBarUpdate(this, 0, tileEntity.energy);
-    	par1iCrafting.sendProgressBarUpdate(this, 1, tileEntity.idIn);
-    	par1iCrafting.sendProgressBarUpdate(this, 2, tileEntity.idOut);
-    	par1iCrafting.sendProgressBarUpdate(this, 3, tileEntity.damageIn);    	
+    	par1iCrafting.sendProgressBarUpdate(this, 1, tileEntity.tick);
+    	par1iCrafting.sendProgressBarUpdate(this, 2, tileEntity.idOut);  	
     	par1iCrafting.sendProgressBarUpdate(this, 4, tileEntity.damageOut);
-    	par1iCrafting.sendProgressBarUpdate(this, 5, tileEntity.amountInP);
     	par1iCrafting.sendProgressBarUpdate(this, 6, tileEntity.amountOutP);       	
     }
     
@@ -115,12 +113,10 @@ public class ContainerLiquifier extends Container {
     public void updateProgressBar(int par1, int par2)
     {
     	switch(par1){
-    		case 0:{tileEntity.energy = par2;return;}
-    		case 1:{tileEntity.idIn = par2;return;}    		
-    		case 2:{tileEntity.idOut = par2;return;}
-    		case 3:{tileEntity.damageIn = par2;return;}      		
-    		case 4:{tileEntity.damageOut = par2;return;}
-    		case 5:{tileEntity.amountInP = par2;return;}          
+    		case 0:{tileEntity.energy = par2;return;}	
+    		case 1:{tileEntity.tick = par2;return;}
+    		case 2:{tileEntity.idOut = par2;return;}    		
+    		case 4:{tileEntity.damageOut = par2;return;}       
     		case 6:{tileEntity.amountOutP = par2;return;}     		
     	}
     	
@@ -134,21 +130,17 @@ public class ContainerLiquifier extends Container {
     	while (var1.hasNext())
     	{
     		ICrafting var2 = (ICrafting)var1.next();
-    		var2.sendProgressBarUpdate(this, 0, energy);
-    		var2.sendProgressBarUpdate(this, 1, idIn);        
+    		var2.sendProgressBarUpdate(this, 0, energy);   
+    		var2.sendProgressBarUpdate(this, 1, tick);
     		var2.sendProgressBarUpdate(this, 2, idOut);
-    		var2.sendProgressBarUpdate(this, 3, damageIn);
-    		var2.sendProgressBarUpdate(this, 4, damageOut);        
-    		var2.sendProgressBarUpdate(this, 5, amountInP);    		
+    		var2.sendProgressBarUpdate(this, 4, damageOut);    		
      		var2.sendProgressBarUpdate(this, 6, amountOutP);    		
     	}
     	
     	energy=tileEntity.energy;
-    	idIn=tileEntity.idIn;
+    	tick=tileEntity.tick;
     	idOut=tileEntity.idOut;	
-    	damageIn=tileEntity.damageIn;
     	damageOut=tileEntity.damageOut;		
-    	amountInP=tileEntity.amountInP;
     	amountOutP=tileEntity.amountOutP;
     }
 

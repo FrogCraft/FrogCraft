@@ -18,10 +18,17 @@ public class TileEntityAdvanceChemicalReactor extends BaseIC2Machine implements 
 	public int progress=0;
 	public int elevel=0;
 	
+	int curRecipeIndex=-1;
+	
 	public TileEntityAdvanceChemicalReactor() {
 		super(128, 50000);
 		inv=new ItemStack[13];
 	}
+	
+    @Override
+	public void onInventoryChanged(){
+		curRecipeIndex=RecipeManager.findAdvanceChemicalReactorRecipeIndex(inv); //Find a correct recipe with sufficient amount
+    }
 	
     @Override
     public void updateEntity(){  	
@@ -34,7 +41,7 @@ public class TileEntityAdvanceChemicalReactor extends BaseIC2Machine implements 
         
         elevel=14*energy/maxEnergy;       
         
-        int curRecipeIndex=RecipeManager.findAdvanceChemicalReactorRecipeIndex(inv); //Find a correct recipe with sufficient amount
+        
         if (curRecipeIndex>-1){
         	ItemStack[] curRecipe=RecipeManager.advanceChemicalReactorRecipes.get(curRecipeIndex);
         	int[] curRecipeInfo=RecipeManager.advanceChemicalReactorRecipeInfo.get(curRecipeIndex);
@@ -54,7 +61,10 @@ public class TileEntityAdvanceChemicalReactor extends BaseIC2Machine implements 
         	if((tickMax>0&&energy>=curRecipeInfo[0]&&checkOutput(curRecipe)&&checkCell(curRecipe))
         			|(tickMax>0&&tick>0)){ //Check the input/output is available or not
         		setWorking(true);
-        		progress=tick*100/tickMax;
+        		
+        		onInventoryChanged();
+        		
+            	progress=tick*100/tickMax;
         		if (progress>100)
         			progress=100;
         	
@@ -181,6 +191,7 @@ public class TileEntityAdvanceChemicalReactor extends BaseIC2Machine implements 
                     }
             }
                     
+            onInventoryChanged();
     }
 
     @Override
@@ -225,6 +236,7 @@ public class TileEntityAdvanceChemicalReactor extends BaseIC2Machine implements 
                             }
                     }
             }
+            
             return stack;
     }
 

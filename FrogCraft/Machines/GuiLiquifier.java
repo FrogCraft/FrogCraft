@@ -33,11 +33,9 @@ public class GuiLiquifier extends GuiLiquids {
     	fontRenderer.drawString(StatCollector.translateToLocal("tile.Machines."+ItemBlockMachines.subNames[te.getBlockMetadata()]+".name"), 8, 6, 4210752);
     	//fontRenderer.drawString("Eu Stored: "+String.valueOf(te.energy), 46, 50, 4210752); 
     	
-    	this.drawLiquidBar(17, 23, 16, 47, te.idIn, te.damageIn, te.amountInP/10);
     	this.drawLiquidBar(143, 23, 16, 47, te.idOut, te.damageOut, te.amountOutP/10);
 
-    	mc.renderEngine.bindTexture("/mods/FrogCraft/textures/gui/Gui_Liquifier.png");                
-    	this.drawTexturedModalRect(17, 23, 176, 0, 16, 47);      
+    	mc.renderEngine.bindTexture("/mods/FrogCraft/textures/gui/Gui_Liquifier.png");      
     	this.drawTexturedModalRect(143, 23, 176, 0, 16, 47);
       	
 
@@ -50,17 +48,7 @@ public class GuiLiquifier extends GuiLiquids {
     			l.add(String.valueOf("About "+te.amountOutP*te.maxCapacity/1000)+"mB");
        			func_102021_a(l, x, y);   
             }
-    	}
-    	if (x>=16&y>=22&x<=34&y<=70){
-    		List<String> l = new ArrayList<String>();
-    		if (te.idIn>0){
-    			l.add(new ItemStack(te.idIn,1,te.damageIn).getDisplayName());
-    			l.add(String.valueOf(te.amountInP/10)+"."+String.valueOf(te.amountInP-(te.amountInP/10)*10)+"%");
-    			l.add("About "+String.valueOf(te.amountInP*te.maxCapacity/1000)+"mB");
-    			func_102021_a(l, x, y);   
-            }             
-    	}    	
-
+    	} 	
     }
         
         
@@ -75,6 +63,8 @@ public class GuiLiquifier extends GuiLiquids {
                 
 		if (te.energy>0)
 			this.drawTexturedModalRect(x + 81, y + 27 +14 - gete(), 176, 52+14- gete(), 13, gete());
+		
+		this.drawTexturedModalRect(x + 77, y +56, 176, 70, 24*te.tick/100, 16);
 	}
 
 	int gete(){

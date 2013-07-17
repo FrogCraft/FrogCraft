@@ -1,5 +1,6 @@
 package FrogCraft.Machines;
 
+import ic2.api.item.Items;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -18,8 +19,8 @@ import FrogCraft.Common.*;
 public class TileEntityLiquifier extends BaseIC2Machine implements ISidedInventory,ITankContainer{
 	public static int maxCapacity=10000;
 	
-	public int idIn,idOut,damageIn,damageOut,amountInP,amountOutP;
-	public LiquidTank tankIn=new LiquidTank(maxCapacity),tankOut=new LiquidTank(maxCapacity);
+	public int idOut,damageOut,amountOutP;
+	public LiquidTank tankOut=new LiquidTank(maxCapacity);
 	public ItemStack inv[];
 	
 	public int tick=0;
@@ -27,8 +28,6 @@ public class TileEntityLiquifier extends BaseIC2Machine implements ISidedInvento
 	public TileEntityLiquifier() {
 		super(128,10000);
 		inv=new ItemStack[4];
-		//tankIn.setLiquid(new LiquidStack(gregtechmod.api.GregTech_API.getGregTechItem(14,1,15).itemID,1000,15));
-		//tankIn.setLiquid(new LiquidStack(Block.waterStill,10000));
 	}
 
     @Override
@@ -37,14 +36,11 @@ public class TileEntityLiquifier extends BaseIC2Machine implements ISidedInvento
     	
     	int amountIn,amountOut;
     	
-    	idIn=n.getInteger("idIn");
     	idOut=n.getInteger("idOut");
-    	damageIn=n.getInteger("damageIn");
     	damageOut=n.getInteger("damageOut");
     	amountIn=n.getInteger("amountIn");
     	amountOut=n.getInteger("amountOut");
     	
-    	tankIn.liquid=(new LiquidStack(idIn,amountIn,damageIn));
     	tankOut.liquid=(new LiquidStack(idOut,amountOut,damageOut));
     	
         NBTTagList tagList = n.getTagList("Inventory");
@@ -61,14 +57,9 @@ public class TileEntityLiquifier extends BaseIC2Machine implements ISidedInvento
     public void writeToNBT(NBTTagCompound n) {
     	super.writeToNBT(n);
 	
-    	int amountIn=0,amountOut=0;
-    	LiquidStack lin=tankIn.getLiquid(),lout=tankOut.getLiquid();
+    	int amountOut=0;
+    	LiquidStack lout=tankOut.getLiquid();
     	
-    	if (tankIn.containsValidLiquid()){
-        	idIn=lin.itemID;
-        	damageIn=lin.itemMeta;
-    		amountIn=lin.amount;
-    	}
     	
     	if (tankOut.containsValidLiquid()){
         	idOut=lout.itemID; 
@@ -76,11 +67,8 @@ public class TileEntityLiquifier extends BaseIC2Machine implements ISidedInvento
     		amountOut=lout.amount;
     	}
     	
-    	n.setInteger("idIn", idIn);
     	n.setInteger("idOut", idOut);
-    	n.setInteger("damageIn", damageIn);
-    	n.setInteger("damageOut", damageOut);    
-    	n.setInteger("amountIn", amountIn);
+    	n.setInteger("damageOut", damageOut);  
     	n.setInteger("amountOut", amountOut);     
     	
         NBTTagList itemList = new NBTTagList();
@@ -100,20 +88,22 @@ public class TileEntityLiquifier extends BaseIC2Machine implements ISidedInvento
     public void updateEntity(){  	
         super.updateEntity();
                        
-        
+        //Do nothing for client world
         if (worldObj.isRemote)
             return;
         
+        //Variable for update the working state
         boolean didSomething=false;	
         
         if(worldObj.getBlockTileEntity(xCoord, yCoord-1, zCoord) instanceof TileEntityAirPump){
+        	tick=0;
         	if (energy>=64){
         		TileEntityAirPump te=(TileEntityAirPump)worldObj.getBlockTileEntity(xCoord, yCoord-1, zCoord);
-			
+        		
         		if (!tankOut.containsValidLiquid()&te.getGas()>=12){
         			if(te.useGas(12)){
         				tankOut.liquid=(new LiquidStack(mod_FrogCraft.Liquids.itemID,10,0));	
-        				energy-=16;
+        				energy-=32;
         				didSomething=true;
         			}
         		}		
@@ -126,28 +116,44 @@ public class TileEntityLiquifier extends BaseIC2Machine implements ISidedInvento
         				}
         	}
         }
-        else if(tankIn.liquid!=null){
-        	didSomething=work();
+        else {
+        	if(inv[0]!=null&&Items.getItem("airCell").isItemEqual(inv[0])&&
+        			(!tankOut.containsValidLiquid()|(tankOut.containsValidLiquid()&&tankOut.liquid.amount<=maxCapacity-1000))){
+        		if (energy<32)
+        			tick=0;
+        		else{
+        			
+        			tick++;
+   
+        			didSomething=true;
+        		
+        			energy-=32;
+        		
+        			if(tick>100){
+        				tick=0;
+        				
+        				if (!tankOut.containsValidLiquid()){
+        					tankOut.liquid=(new LiquidStack(mod_FrogCraft.Liquids.itemID,1000,0));
+        				}
+        				else{
+        					tankOut.liquid.amount+=1000;
+        				}
+        				
+        				inv[0].stackSize-=1;
+        				if(inv[0].stackSize==0)
+        				inv[0]=null;
+        			}
+        		}
+        	}
+        	else
+        		tick=0;
+        		
         }
     	
         setWorking(didSomething);
         
-        LiquidStack l=LiquidIO.drainContainer(maxCapacity,tankIn.liquid,inv,0,2);
-        if (l!=null){
-        	if (tankIn.liquid==null)
-        		tankIn.liquid=l;
-        	else
-        		tankIn.liquid.amount+=l.amount;
-        	tankIn.liquid=(tankIn.liquid);
-        }
         LiquidIO.fillContainer(tankOut.liquid,inv,1,3);
     	
-        
-        if (tankIn.liquid!=null){
-        	idIn=tankIn.liquid.itemID;
-        	damageIn=tankIn.liquid.itemMeta;
-        	amountInP=tankIn.liquid.amount*1000/maxCapacity;
-        }
         if (tankOut.liquid!=null){
         	idOut=tankOut.liquid.itemID; 
         	damageOut=tankOut.liquid.itemMeta;
@@ -155,96 +161,21 @@ public class TileEntityLiquifier extends BaseIC2Machine implements ISidedInvento
         }
     }
     
-    boolean work(){
-    	int[] recipe=RecipeManager.getLiquifierRecipe(tankIn.liquid.itemID,tankIn.liquid.itemMeta,tankIn.liquid.amount);
-    	
-    	if (recipe==null)
-    		return false;
-    	
-    	if (energy<recipe[6])
-    		return false;
-    	
-    	if (!tankOut.containsValidLiquid()){
-    		tankOut.liquid=(new LiquidStack(recipe[3],recipe[5],recipe[4]));	
-    		tankIn.liquid.amount-=recipe[2];
-    		energy-=recipe[6];
-    	}
-    	else{
-    		if (tankOut.liquid.itemID!=recipe[3]|tankOut.liquid.itemMeta!=recipe[4]|tankOut.liquid.amount>maxCapacity-recipe[5])
-    			return false;
-    		
-    		tick+=1;
-    		if (tick>=recipe[7]){
-    			tick=0;
-    			tankOut.liquid.amount+=recipe[5];
-				tankIn.liquid.amount-=recipe[2];
-				energy-=recipe[6];  
-    		}
-    	}
-    	return true;
-    }
     
-    //boolean canWork(int eu,int v){
-    //	if (energy<eu)
-    //		return false;
-    //	
-    //	if (!tankIn.containsValidLiquid())
-    //		return false;
-    //	
-    //	if (tankIn.liquid.amount<v)
-    //		return false;
-    //	
-    //	if (tankOut.liquid!=null)
-    //		if(tankOut.liquid.amount>maxCapacity-v)
-    //			return false;
-    //	
-    //	return true;
-    //}
     
+    //Liquid Options -- Ready for update
 	@Override
-	public int fill(ForgeDirection from, LiquidStack resource, boolean doFill) {
-		return tankIn.fill(resource, doFill);
-	}
-
+	public int fill(ForgeDirection from, LiquidStack resource, boolean doFill) {return 0;}
 	@Override
-	public int fill(int tankIndex, LiquidStack resource, boolean doFill) {
-		return tankIn.fill(resource, doFill);
-	}
-
+	public int fill(int tankIndex, LiquidStack resource, boolean doFill) {return 0;}
 	@Override
-	public LiquidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-		if (from==from.DOWN)
-			return tankIn.drain(maxDrain, doDrain);
-		else
-			return tankOut.drain(maxDrain, doDrain);
-	}
-
+	public LiquidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {return tankOut.drain(maxDrain, doDrain);}
 	@Override
-	public LiquidStack drain(int tankIndex, int maxDrain, boolean doDrain) {
-		if (tankIndex==0)
-			return tankIn.drain(maxDrain, doDrain);
-		else
-			return tankOut.drain(maxDrain, doDrain);
-	}
-
+	public LiquidStack drain(int tankIndex, int maxDrain, boolean doDrain) {return tankOut.drain(maxDrain, doDrain);}
 	@Override
-	public ILiquidTank[] getTanks(ForgeDirection direction) {
-		if (direction==direction.UNKNOWN)
-			return new ILiquidTank[]{tankIn,tankOut};
-		if (direction==direction.DOWN)
-			return new ILiquidTank[]{tankIn};
-		else
-			return new ILiquidTank[]{tankOut};
-	}
-
+	public ILiquidTank[] getTanks(ForgeDirection direction) {return new ILiquidTank[]{tankOut};}
 	@Override
-	public ILiquidTank getTank(ForgeDirection direction, LiquidStack type) {
-		if (direction==direction.DOWN)
-			return tankIn;
-		else
-			return tankOut;
-	}
-	
+	public ILiquidTank getTank(ForgeDirection direction, LiquidStack type) {return tankOut;}	
 	//SidedInventory-------------------------------------------------------------------------------
 	
 	@Override
