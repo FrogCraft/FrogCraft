@@ -2,6 +2,7 @@ package FrogCraft.Machines2.ACWindMill;
 
 import FrogCraft.Common.SidedIC2Machine;
 import ic2.api.Direction;
+import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileSourceEvent;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
@@ -10,7 +11,7 @@ public class TileEntityACWindMillBase extends SidedIC2Machine implements ic2.api
 	private EnergyTileSourceEvent sourceEvent;
 	public int energy=0;
 	public int maxEnergy=256;
-		
+	public boolean addedToEnergyNet;
 	
     @Override
     public void updateEntity(){  	
@@ -18,6 +19,13 @@ public class TileEntityACWindMillBase extends SidedIC2Machine implements ic2.api
         
         if (worldObj.isRemote)
             return;
+        
+        if (!this.addedToEnergyNet)
+        {
+            //EnergyNet.getForWorld(this.worldObj).addTileEntity(this);
+            MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
+            this.addedToEnergyNet = true;
+        }
         
         out(32);
         out(32); 
@@ -39,7 +47,7 @@ public class TileEntityACWindMillBase extends SidedIC2Machine implements ic2.api
 
 	@Override
 	public boolean isAddedToEnergyNet() {
-		return true;
+		return addedToEnergyNet;
 	}
 
 	@Override

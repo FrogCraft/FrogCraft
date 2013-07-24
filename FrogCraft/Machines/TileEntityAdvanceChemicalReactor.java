@@ -276,7 +276,7 @@ public class TileEntityAdvanceChemicalReactor extends BaseIC2Machine implements 
 
 
 	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) {return false;}
+	public boolean isStackValidForSlot(int i, ItemStack itemstack) {return true;}
 
 	//SidedInventory
 	@Override

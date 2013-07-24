@@ -10,13 +10,13 @@ import ic2.api.item.Items;
 public class OreDictRegister {
 	public static void registerOreDict(){
 		//IC2
-		OreDictionary.registerOre("crafting1kkEUStore",Items.getItem("lapotronCrystal"));		
-		OreDictionary.registerOre("craftingRawMachineTier01",Items.getItem("machine"));		
-		OreDictionary.registerOre("craftingRawMachineTier02",Items.getItem("advancedMachine"));
-		OreDictionary.registerOre("craftingCompressor",Items.getItem("compressor"));
-		OreDictionary.registerOre("craftingMacerator",Items.getItem("macerator"));
-		OreDictionary.registerOre("craftingExtractor",Items.getItem("extractor"));
-		OreDictionary.registerOre("craftingPump",Items.getItem("pump"));
+		OreDictionary.registerOre("crafting1kkEUStore",Items.getItem("lapotronCrystal").copy());		
+		OreDictionary.registerOre("craftingRawMachineTier01",Items.getItem("machine").copy());		
+		OreDictionary.registerOre("craftingRawMachineTier02",Items.getItem("advancedMachine").copy());
+		OreDictionary.registerOre("craftingCompressor",Items.getItem("compressor").copy());
+		OreDictionary.registerOre("craftingMacerator",Items.getItem("macerator").copy());
+		OreDictionary.registerOre("craftingExtractor",Items.getItem("extractor").copy());
+		OreDictionary.registerOre("craftingPump",Items.getItem("pump").copy());
 		
 		//FC
 		OreDictionary.registerOre("crafting60kCoolantStore",fcItems.IC2Coolant_NH3_60K);

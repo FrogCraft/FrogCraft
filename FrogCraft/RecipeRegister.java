@@ -245,7 +245,7 @@ public class RecipeRegister {
 		GregTech_API.addGrinderRecipe(new ItemStack(fcItems.oreID,1,1), -1, fcItems.getItem(cls.dust, "Fluorapatite", 8), GregTech_API.getGregTechItem(4, 1, 36), null, null);
 
 		//Assembler---------------------------------------------------------------
-		GregTech_API.addAssemblerRecipe(GregTech_API.getGregTechItem(0, 8, 13), null, Items.getItem("advancedMachine").splitStack(2), 500, 1);
+		GregTech_API.addAssemblerRecipe(GregTech_API.getGregTechItem(0, 8, 13), null, Items.getItem("advancedMachine").copy().splitStack(2), 500, 1);
 	}
 	
 	static void loadICMachineRecipes(){		
@@ -254,7 +254,7 @@ public class RecipeRegister {
 			//Super Conductor
 			ic2.api.recipe.Recipes.advRecipes.addRecipe(GregTech_API.getGregTechItem(3, 4, 2), new Object[]{"lll","wiw","fff",'l',new ItemStack(fcItems.IC2Coolant_NH3_60K),'w',GregTech_API.getGregTechItem(0, 1, 80),'i',Items.getItem("iridiumPlate"),'f',GregTech_API.getGregTechItem(3, 1, 0)});
 			//AdvanceMachine
-			ic2.api.recipe.Recipes.advRecipes.addRecipe(Items.getItem("advancedMachine"), new Object[]{"xxx","x x","xxx",'x',GregTech_API.getGregTechItem(0, 1, 13)});
+			ic2.api.recipe.Recipes.advRecipes.addRecipe(Items.getItem("advancedMachine").copy(), new Object[]{"xxx","x x","xxx",'x',GregTech_API.getGregTechItem(0, 1, 13)});
 		}
 		
 		//IC Items
@@ -262,7 +262,7 @@ public class RecipeRegister {
 		regIC2UnShapedRecipe(Items.getItem("fertilizer").splitStack(16),new Object[]{fcItems.getItem(cls.dust, "Urea"),Items.getItem("fertilizer")});
 		regIC2UnShapedRecipe(Items.getItem("fertilizer").splitStack(64),new Object[]{fcItems.getItem(cls.misc, "GoldClod"),Items.getItem("fertilizer")});
 		//overclockerUpgrade
-		ic2.api.recipe.Recipes.advRecipes.addRecipe(Items.getItem("overclockerUpgrade").splitStack(2),new Object[]{" o ","lal","   ",'a',Items.getItem("electronicCircuit"),'l',Items.getItem("insulatedCopperCableItem"),'o',fcItems.IC2Coolant_NH3_60K});
+		ic2.api.recipe.Recipes.advRecipes.addRecipe(Items.getItem("overclockerUpgrade").copy().splitStack(2),new Object[]{" o ","lal","   ",'a',Items.getItem("electronicCircuit"),'l',Items.getItem("insulatedCopperCableItem"),'o',fcItems.IC2Coolant_NH3_60K});
 		
 		//IC2 Compressor Recipes
 		ic2.api.recipe.Recipes.compressor.addRecipe(new ItemStack(fcItems.miscsID,8,0), new ItemStack(fcItems.miscsID,1,1));

@@ -10,7 +10,8 @@ public class TileEntityIndustrialFurnance extends TileEntityIndustrialDevice {
 		if (i==null)
 			return new ItemStack[]{i,null};
 		ItemStack r= FurnaceRecipes.smelting().getSmeltingResult(i.copy());
-		i.stackSize-=1;
+		if(r!=null)
+			i.stackSize-=1;
 		return new ItemStack[]{i,r};
 	}
 

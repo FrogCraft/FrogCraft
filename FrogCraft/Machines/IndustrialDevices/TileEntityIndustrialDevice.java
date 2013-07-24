@@ -93,7 +93,7 @@ public abstract class TileEntityIndustrialDevice extends BaseIC2Machine implemen
         		heat=heat+1;
         }
         	        
-        if (tick==100){
+        if (tick==150){
         	tick=0;
         	
         		if (heat>0)heat=heat-1;
@@ -116,7 +116,7 @@ public abstract class TileEntityIndustrialDevice extends BaseIC2Machine implemen
         
 
         
-        if (cansmeltg()&energy>=300){
+        if (cansmeltg()&energy>=600){
         	progress+=1;
         	if (progress==15){
         		progress=0;
@@ -130,17 +130,19 @@ public abstract class TileEntityIndustrialDevice extends BaseIC2Machine implemen
     
     void dowork(){
     	for (int i=0;i<6;i++){
+    		if(inv[i]!=null&&inv[i].stackSize<=0)
+    			inv[i]=null;
     		ItemStack[] results=getResult(inv[i]);
     		ItemStack result=results[1];
     		if (result!=null){ //Can smelt
     			if (inv[i+6]==null){
     				inv[i+6]=result.copy();
     				
-    				inv[i]=results[0].copy();
-    				if(inv[i].stackSize==0)
+    				inv[i]=results[0];
+    				if(inv[i].stackSize<=0)
     					inv[i]=null;
     				
-    				energy-=50;
+    				energy-=100;
     			}
     			
     			else if (inv[i+6].getItem()==result.getItem()&inv[i+6].getItemDamage()==result.getItemDamage()){
@@ -148,11 +150,11 @@ public abstract class TileEntityIndustrialDevice extends BaseIC2Machine implemen
     					inv[i+6].stackSize+=result.stackSize;
     					
     					
-    					inv[i]=results[0].copy();
-        				if(inv[i].stackSize==0)
+    					inv[i]=results[0];
+        				if(inv[i].stackSize<=0)
         					inv[i]=null;
     					
-        				energy-=50;	
+        				energy-=100;	
     				}
     			}
     		}
@@ -160,7 +162,7 @@ public abstract class TileEntityIndustrialDevice extends BaseIC2Machine implemen
     }
     
     public boolean canwork(){
-    	if (energy<300)
+    	if (energy<600)
     		return false;
     	
     	if (redPowerd())

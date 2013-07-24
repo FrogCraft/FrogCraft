@@ -31,7 +31,7 @@ public class TileEntityACWindMillTop extends SidedIC2Machine{
         
         if(settled){
         	TileEntityACWindMillBase te=findBase();
-        	int gen=37;        	
+        	int gen=13;        	
         	for (int x=-3;x<4;x++){
             	for (int y=-3;y<4;y++){
                 	for (int z=-3;z<4;z++){
