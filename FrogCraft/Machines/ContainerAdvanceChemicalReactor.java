@@ -9,7 +9,6 @@ import FrogCraft.Common.ProductSlot;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.RenderEngine;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -18,7 +17,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
-import net.minecraftforge.liquids.LiquidStack;
 
 public class ContainerAdvanceChemicalReactor extends Container {
 
@@ -66,7 +64,7 @@ public class ContainerAdvanceChemicalReactor extends Container {
         for (int i = 0; i < 9; i++) {
                 addSlotToContainer(new Slot(inventoryPlayer, i, 8 + i * 18, 142));
         }
-}
+    }
 	
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int slot) {

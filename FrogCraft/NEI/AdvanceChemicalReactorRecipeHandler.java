@@ -5,8 +5,9 @@ import java.util.ArrayList;
 
 import org.lwjgl.opengl.GL11;
 
-import FrogCraft.Machines.ItemBlockMachines;
+import FrogCraft.Machines.*;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -14,14 +15,17 @@ import net.minecraft.util.StatCollector;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.forge.GuiContainerManager;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import static codechicken.core.gui.GuiDraw.*;
 
 public class AdvanceChemicalReactorRecipeHandler extends TemplateRecipeHandler{
 
+	
 	public AdvanceChemicalReactorRecipeHandler(){
 		codechicken.nei.api.API.registerRecipeHandler(this);
 		codechicken.nei.api.API.registerUsageHandler(this);
 	}
 	
+	@Override
 	public void loadTransferRects(){
 		this.transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(68, 29, 30, 10), getRecipeId(), new Object[0]));
 		
@@ -42,7 +46,7 @@ public class AdvanceChemicalReactorRecipeHandler extends TemplateRecipeHandler{
 	//Recipe window texture
 	@Override
 	public String getGuiTexture() {
-		return "/mods/FrogCraft/textures/gui/Gui_AdvanceChemicalReactor.png";
+		return "frogcraft:textures/gui/Gui_AdvanceChemicalReactor.png";
 	}
 	
 	@Override
@@ -55,26 +59,33 @@ public class AdvanceChemicalReactorRecipeHandler extends TemplateRecipeHandler{
 		return "FrogCraft.ACR";
 	}
 	
-	public void drawExtras(GuiContainerManager gui, int recipe){
+	@Override
+	public void drawExtras(int recipe){
 		Cached_Recipe rec=(Cached_Recipe)arecipes.get(recipe);
-		gui.drawText(28,80,StatCollector.translateToLocal("nei.euTotal")+":"+String.valueOf(rec.eu), 4210752,false);
 		
+		drawString(StatCollector.translateToLocal("nei.euTotal")+":"+String.valueOf(rec.eu),28,80, 4210752,false);
 		if (rec.tick<0){
-			gui.drawText(28,90,StatCollector.translateToLocal("nei.euTick")+":"+String.valueOf(rec.eu/rec.tickWithCatalyst), 4210752,false);	
-			gui.drawText(28,100,StatCollector.translateToLocal("nei.tick")+":"+String.valueOf(rec.tickWithCatalyst), 4210752,false);
-			gui.drawText(28,110,StatCollector.translateToLocal("catalystRequird"), 4210752,false);
+			drawString(StatCollector.translateToLocal("nei.euTick")+":"+String.valueOf(rec.eu/rec.tickWithCatalyst),28,90, 4210752,false);	
+			drawString(StatCollector.translateToLocal("nei.tick")+":"+String.valueOf(rec.tickWithCatalyst),28,100, 4210752,false);
+			drawString(StatCollector.translateToLocal("nei.catalystRequird"),28,110, 4210752,false);
 		}
 		else{
-			gui.drawText(28,90,StatCollector.translateToLocal("nei.euTick")+":"+String.valueOf(rec.eu/rec.tick), 4210752,false);	
-			gui.drawText(28,100,StatCollector.translateToLocal("nei.tick")+":"+String.valueOf(rec.tick), 4210752,false);
+			drawString(StatCollector.translateToLocal("nei.euTick")+":"+String.valueOf(rec.eu/rec.tick),28,90, 4210752,false);	
 			if (rec.tickWithCatalyst>1)
-				gui.drawText(28,110,StatCollector.translateToLocal("tickWithCatalyst")+":"+String.valueOf(rec.tickWithCatalyst), 4210752,false);
+				drawString(StatCollector.translateToLocal("tickWithCatalyst")+":"+String.valueOf(rec.tickWithCatalyst),28,110, 4210752,false);
 		}
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		gui.bindTexture("/mods/FrogCraft/textures/gui/Gui_AdvanceChemicalReactor.png");
-		drawProgressBar(gui,68,29, 176, 0, 30,10,20,1);
-		gui.drawTexturedModalRect(143, 12, 176, 17, 10, 14);		
+		changeTexture("frogcraft:textures/gui/Gui_AdvanceChemicalReactor.png");
+		drawProgressBar(68,29, 176, 0, 30,10,20,1);
+		
+		drawTexturedModalRect(143, 12, 176, 17, 10, 14);		
 	}
+	
+	@Override
+	public Class<? extends GuiContainer> getGuiClass(){
+		return GuiAdvanceChemicalReactor.class;
+	}
+	
 	
 	@Override
     public void loadCraftingRecipes(String outputId, Object... results)
@@ -96,6 +107,7 @@ public class AdvanceChemicalReactorRecipeHandler extends TemplateRecipeHandler{
 		}
 	}
 	
+	@Override
 	public void loadUsageRecipes(ItemStack ingredient){
 		for(int i=0;i<FrogCraft.Common.RecipeManager.advanceChemicalReactorRecipes.size();i++){
 			Cached_Recipe rec=new Cached_Recipe(i);
@@ -106,6 +118,7 @@ public class AdvanceChemicalReactorRecipeHandler extends TemplateRecipeHandler{
 	
 	
 	//Custom class represents a cached recipe
+	
 	public class Cached_Recipe extends TemplateRecipeHandler.CachedRecipe{
 		public ArrayList products= new ArrayList();
 		public ArrayList resources= new ArrayList();

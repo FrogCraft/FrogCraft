@@ -6,8 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import FrogCraft.*;
-import FrogCraft.Common.BaseIC2Machine;
-import FrogCraft.Common.SidedIC2Machine;
+import FrogCraft.Common.*;
 import FrogCraft.Machines.IndustrialDevices.*;
 
 
@@ -18,7 +17,7 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -76,6 +75,11 @@ public class BlockMachines extends BlockContainer {
     //Register Icons
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister r)    {
+    	//Register Liquid Textures (I have no where else to do this!!!!!!)
+		for (String fluidName:FluidManager.fluids.keySet())
+			net.minecraftforge.fluids.FluidRegistry.getFluid(fluidName.toLowerCase())
+			.setIcons(r.registerIcon("FrogCraft:Fluids/"+fluidName));
+		    	
     	iconBuffer = new Icon[ItemBlockMachines.subNames.length][12];
 
     	//PneumaticCompressor
@@ -355,7 +359,7 @@ public class BlockMachines extends BlockContainer {
 	
 	
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving player, ItemStack stack)
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack)
     {
         super.onBlockPlacedBy(world, x, y, z, player, stack);
         int heading = MathHelper.floor_double((double)(player.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;

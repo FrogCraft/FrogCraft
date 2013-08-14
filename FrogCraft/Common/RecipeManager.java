@@ -1,17 +1,23 @@
 package FrogCraft.Common;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.liquids.LiquidStack;
+import net.minecraftforge.fluids.*;
 
 
 public class RecipeManager {
-	/** {idIn,damageIn,amountIn,energy,tick,idOut, damageOut, amountOut....}*/
-	public static List<int[]> liquidInjectorRecipes = new ArrayList<int[]>();
-	/** {idIn,damageIn,amountIn,energy,tick,idOut,damageOut,amountOut,idOut,damageOut,amountOut} */
-	public static List<int[]> thermalCrackerRecipes =  new ArrayList<int[]>();
+	/**Condence Tower Recipes Integer for fluidID*/
+	public static HashMap<Integer,FluidStack[]> condenseTowerRecipes= new HashMap();
+	/**{amount of input consumed per tick, tickTotal, energy}*/
+	public static HashMap<Integer,Integer[]> condenseTowerRecipeInfo= new HashMap();
+	
+	/** {inputItemStack,outputItemStack,outputLiquidStack,energyPerTick,tickTotal} */
+	public static List<Object[]> thermalCrackerRecipes =  new ArrayList<Object[]>();
+	
 	
 	/** {id,damage,amountDay,amountNight,isItem} 
 	 * 	isItem: Do not change the top texture, especially for items such as GT solar component,
@@ -22,7 +28,7 @@ public class RecipeManager {
 
 	/**	0-4:Reactants 5-9:Products 10:Catalyst 11:cellNeed 12:cellOut*/
 	public static List<ItemStack[]> advanceChemicalReactorRecipes = new ArrayList<ItemStack[]>();
-	/** {eu,tick,tickWithCatalyst} */
+	/** {euPerTick,tick,tickWithCatalyst} */
 	public static List<int[]> advanceChemicalReactorRecipeInfo =  new ArrayList<int[]>();	
 	
 	//AdvanceChemicalReactor
@@ -150,96 +156,56 @@ public class RecipeManager {
 		return false;
 	}
 	
-	//Liquid Injector-------------------------------------------------------------------------------------------------------------------------------
+	//Condense Tower------------------------------------------------------------------------------------
+	public static void addCondenseTowerRecipe(FluidStack in,int energy,int tick,FluidStack... outs){		
+		condenseTowerRecipes.put(in.getFluid().getID(), outs);
+		condenseTowerRecipeInfo.put(in.getFluid().getID(), new Integer[]{in.amount,energy,tick});
+	}
 
-	/** add a new liquid recipe for condense tower  energy-per in*/
-	public static void addLiquidInjectorRecipe(LiquidStack in,int energy,int tick,LiquidStack out1,LiquidStack out2,LiquidStack out3,LiquidStack out4,LiquidStack out5){
-		addLiquidInjectorRecipe(in.itemID,in.itemMeta,in.amount,energy,tick,out1,out2,out3,out4,out5);
-	}
-	
-	/** add a new liquid recipe for condense tower */
-	public static void addLiquidInjectorRecipe(int idIn,int damageIn,int amountIn,int energy,int tick,LiquidStack out1,LiquidStack out2,LiquidStack out3,LiquidStack out4,LiquidStack out5){
-		if (out1==null) out1=new LiquidStack(0,0);
-		if (out2==null) out2=new LiquidStack(0,0);
-		if (out3==null) out3=new LiquidStack(0,0);
-		if (out4==null) out4=new LiquidStack(0,0);	
-		if (out5==null) out5=new LiquidStack(0,0);		
-		liquidInjectorRecipes.add(new int[]{idIn,damageIn,amountIn,energy,tick,
-				out1.itemID,out1.itemMeta,out1.amount,
-				out2.itemID,out2.itemMeta,out2.amount,
-				out3.itemID,out3.itemMeta,out3.amount,
-				out4.itemID,out4.itemMeta,out4.amount,
-				out5.itemID,out5.itemMeta,out5.amount});		
-	}
-	
-	/** find a liquid recipe for condense tower */
-	public static int[] getLiquidInjectorRecipes(int idIn,int damageIn,int amountIn){
-		int[] j;
-		for (int i=0;i<liquidInjectorRecipes.size();i++){
-			j=liquidInjectorRecipes.get(i);
-			if (j[0]==idIn&j[1]==damageIn&j[2]<=amountIn){
-				return j;
-			}
-		}
-		return null;
-	}
-	
-	/** find a specific liquid recipe for condense tower 
-	 * 	index=0,1,2,3,4
-	 * 	return:id,damage,amount*/
-	public static int[] getLiquidInjectorRecipesX(int[] r,int index){
-		if (r==null)
+	/** Find a recipe for inFluid, amount is checked*/
+	public static FluidStack[] getCondenceTowerRecipes(FluidStack inFluid){
+		FluidStack[] r=condenseTowerRecipes.get(inFluid.getFluid().getID());
+		
+		if(r==null)
 			return null;
 		
-		if (r[(3*index)+5]==0)
-			return null;
+		if(getCondenceTowerRecipeInfo(inFluid)[0]>inFluid.amount)
+			return null; //Not enough liquid
 		
-		int[] result=new int[3];
-		result[0]=r[(3*index)+5];
-		result[1]=r[(3*index)+6];
-		result[2]=r[(3*index)+7];
-		return result;
+		return r;
 	}
 	
-	/** Check if specific output in the recipe is needed or not*/
-	public static boolean hasLiquidInjectorRecipesX(int[] r,int index){
-		if (r==null)
-			return false;
-		
-		if (r[index+5]==0)
-			return false;
-		
-		return true;
+	public static Integer[] getCondenceTowerRecipeInfo(FluidStack in){
+		return condenseTowerRecipeInfo.get(in.getFluid().getID());
 	}
 	
-	/** Get the tier(minimum height of the Condense Tower) */
-	public static int getLiquidInjectorRecipesTier(int[] r){
-		int t=1;
-		if (r[8]>0) t=2;
-		if (r[11]>0) t=3;
-		if (r[14]>0) t=4;
-		if (r[17]>0) t=5;
-		return t;
+	/** Get the tier(minimum height required for the Condense Tower) */
+	public static int getCondensetowerRecipesTier(FluidStack[] rec){
+		if(rec==null)
+			return -1;
+		else
+			return rec.length;
 	}
 	
 	//Thermal Cracker---------------------------------------------------------------------------------------------------------------------
 
-	/** Add a new recipe for Thermal Cracker  energy-per tick*/
-	public static void addThermalCrackerRecipe(ItemStack in,int energy,int tick,ItemStack out,LiquidStack outl){
-		if (in==null)
-			return;
-		if (outl==null) outl=new LiquidStack(0,0,0);
-		if (out==null) out=new ItemStack(0,0,0);
-		thermalCrackerRecipes.add(new int[]{in.itemID,in.getItemDamage(),in.stackSize,energy,tick,out.itemID,out.getItemDamage(),out.stackSize,outl.itemID,outl.itemMeta,outl.amount});
+	/** Add a new recipe for Thermal Cracker  energy=per tick tick=total tick*/
+	public static void addThermalCrackerRecipe(ItemStack in,int energy,int tick,ItemStack out,FluidStack outl){
+		thermalCrackerRecipes.add(new Object[]{in,out,outl,energy,tick});
 	}
 	
-	/** Find a specific recipe for Thermal Cracker*/
-	public static int[] getThermalCrackerRecipe(ItemStack in){
-		int[] j;
-		for (int i=0;i<thermalCrackerRecipes.size();i++){
-			j=thermalCrackerRecipes.get(i);
-			if (j[0]==in.itemID&j[1]==in.getItemDamage()&j[2]<=in.stackSize){
-				return j;
+	/** Find a specific recipe for Thermal Cracker(amount sensitive)*/
+	public static Object[] getThermalCrackerRecipe(ItemStack in){
+		if(in==null)
+			return null;
+		
+		for (Object[] rec:thermalCrackerRecipes){
+			ItemStack recIn=(ItemStack) rec[0];
+			if(recIn.isItemEqual(in)){
+				if(in.stackSize>=recIn.stackSize) 
+					return rec;  //Find the match recipe
+				else
+					return null; //Don't have enough item
 			}
 		}
 		return null;

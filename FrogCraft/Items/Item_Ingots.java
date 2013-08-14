@@ -2,6 +2,9 @@ package FrogCraft.Items;
 
 import java.util.*;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+
 import FrogCraft.*;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -39,15 +42,11 @@ public class Item_Ingots extends Item{
     
 	public static String iconDir="Ingots",unLocalizedName="Item_Ingots";	
 	
-	public void registerIcons(int i){}
-	
 	public static Map<Integer,Icon> Icons;
-	public static Map<Integer,String> subNames= new HashMap();
-	public static Map<String,Integer> nameMap=new HashMap();
+	public static BiMap<Integer,String> subNames= HashBiMap.create();
 	
 	public static void add(int id,String name){
 		subNames.put(id,name);
-		nameMap.put(name, id);
 	}
 	
 	//Common stuffs
@@ -71,10 +70,8 @@ public class Item_Ingots extends Item{
     public void registerIcons(IconRegister par1IconRegister)
     {
     	Icons=new HashMap();
-    	for (int i:subNames.keySet().toArray(new Integer[]{})){
+    	for (int i:subNames.keySet().toArray(new Integer[]{}))
     		Icons.put(i,par1IconRegister.registerIcon("FrogCraft:"+iconDir+"/"+subNames.get(i)));
-    		registerIcons(i);
-    	}
     }
 	
     @SideOnly(Side.CLIENT)

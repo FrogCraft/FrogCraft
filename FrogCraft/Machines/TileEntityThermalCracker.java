@@ -7,21 +7,123 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.liquids.ILiquidTank;
-import net.minecraftforge.liquids.ITankContainer;
-import net.minecraftforge.liquids.LiquidStack;
-import net.minecraftforge.liquids.LiquidContainerRegistry;
+import net.minecraftforge.fluids.*;
 import FrogCraft.*;
 import FrogCraft.Common.*;
 
-public class TileEntityThermalCracker extends BaseIC2Machine implements ISidedInventory,ITankContainer{
+public class TileEntityThermalCracker extends BaseIC2Machine implements ISidedInventory,IFluidHandler{
 	public int maxCapacity=50000;
 	
 	public int progress=0,tick=0;
 	public ItemStack[] inv;
-	public int idOut,damageOut,amountOutP;
-	public LiquidTank tank=new LiquidTank(maxCapacity);
+	public int fluidID,amountP;
+	public fcFluidTank tank=new fcFluidTank(maxCapacity); 
 	
+	Object[] recipe=null;
+	
+    @Override
+	public void onInventoryChanged(){
+    	//Get the recipe
+    	Object[] nRec=RecipeManager.getThermalCrackerRecipe(inv[0]); 
+    	if(nRec!=recipe){
+    		tick=0;
+    		progress=0;
+    	}
+    	recipe=nRec;
+    }
+	
+    void dowork(){
+    	boolean canwork=canwork(recipe);
+    	
+    	setWorking(canwork);
+    	
+		if (!canwork){
+        	tick=0;
+        	progress=0;
+			return;
+		}
+		
+		int tickMax=(Integer)recipe[4];
+		
+		//Update progress
+		progress=100*tick/tickMax;
+		
+		tick+=1;
+		energy-=(Integer)recipe[3];
+		
+		if (tick<tickMax)
+			return;
+		
+		tick=0;
+		progress=0;
+		
+		//Consume Input
+		inv[0].stackSize-=((ItemStack)recipe[0]).stackSize;
+		if (inv[0].stackSize==0)
+			inv[0]=null;
+		
+		//Make products
+		if(recipe[1]!=null){
+			if(inv[1]==null)
+				inv[1]=((ItemStack)recipe[1]).copy();
+			else
+				inv[1].stackSize+=((ItemStack)recipe[1]).stackSize;
+		}
+		
+		fill((FluidStack)recipe[2]);
+    }
+    
+    boolean canwork(Object[] recipe){
+    	//Validate Recipe
+    	if (recipe==null) 
+    		return false;
+    	
+    	//Check energy
+		if (energy<(Integer)recipe[3])
+			return false;
+    	
+		ItemStack product=(ItemStack)recipe[1];
+		
+		//Check product slot
+    	if (inv[1]!=null&product!=null){
+    		//Stack type mismatch
+    		if (!product.isItemEqual(inv[1])|
+    			inv[1].stackSize>inv[1].getMaxStackSize()-product.stackSize)
+    			return false;
+    	}
+    	else if(product==null&&inv[1]!=null)
+    		return false;
+    	
+    	
+    	if (!canFill(((FluidStack)recipe[2])))
+    		return false;
+    	
+    	return true;
+    }
+    
+	public void fill(FluidStack fluid){
+		if (fluid==null)
+			return;
+		if (tank.fluid==null)
+			tank.fluid=fluid.copy();
+		else
+			tank.fluid.amount+=fluid.amount;
+	}
+	
+	public boolean canFill(FluidStack fluid){
+		//Empty tank
+		if (tank.fluid==null)
+			return true;
+		//No new fluid is produced
+		if (fluid==null)
+			return true;		
+		if (tank.fluid.isFluidEqual(fluid)
+				&&tank.fluid.amount<=maxCapacity-fluid.amount)
+			return true;
+		return false;
+	}
+	
+    //TileEntity--------------------------------------------------------------------
 	public TileEntityThermalCracker() {
 		super(128, 10000);
 		inv = new ItemStack[4];
@@ -43,132 +145,89 @@ public class TileEntityThermalCracker extends BaseIC2Machine implements ISidedIn
         	setWorking(false);
         }
 
-        
-        fillContainer(tank.liquid,inv,2,3);
-
-        if (tank.liquid!=null)
-        	if (tank.liquid.amount==0){
-        		tank.liquid=null;
-        	}
-        
-        if (tank.liquid!=null){
-        	idOut=tank.liquid.itemID;
-        	damageOut=tank.liquid.itemMeta;
-        	amountOutP=tank.liquid.amount*1000/maxCapacity;
+        if (tank.fluid!=null&&tank.fluid.amount==0)
+        	tank.fluid=null;   
+        	
+        if (tank.fluid!=null){
+        	fluidID=tank.fluid.fluidID;
+        	amountP=tank.fluid.amount*1000/maxCapacity;
+        	
+        	FluidManager.fillContainer(tank.fluid, inv, 2, 3);
         }
         else{
-        	idOut=0;
-        	damageOut=0;
+        	fluidID=0;
+        	amountP=0;
         }
     }
-    
-    void fillContainer(LiquidStack liquid,ItemStack[] slots,int empty,int target){
-    	if (!LiquidContainerRegistry.isEmptyContainer(slots[empty]))
-    		return;
-    	
-    	ItemStack s=LiquidContainerRegistry.fillLiquidContainer(liquid,slots[empty]);
-    	if (s==null)
-    		return;
-    	if (slots[target]!=null)
-    		if (slots[target].itemID!=s.itemID|slots[target].getItemDamage()!=s.getItemDamage()|slots[target].stackSize>slots[target].getMaxStackSize()-s.stackSize)
-    			return;
-    	
-    	if (slots[target]==null)
-    		slots[target]=s;
-    	else
-    		slots[target].stackSize+=s.stackSize;
-    	
-    	if (slots[empty].stackSize==1)
-    		slots[empty]=null;
-    	else
-    		slots[empty].stackSize-=1;
-    	
-    	liquid.amount-=LiquidContainerRegistry.getLiquidForFilledItem(slots[target]).amount;
+	
+    @Override
+    public void readFromNBT(NBTTagCompound tagCompound) {
+    	super.readFromNBT(tagCompound);
+            
+    	NBTTagList tagList = tagCompound.getTagList("Inventory");
+    	for (int i = 0; i < tagList.tagCount(); i++) {
+    		NBTTagCompound tag = (NBTTagCompound) tagList.tagAt(i);
+    		byte slot = tag.getByte("Slot");
+    		if (slot >= 0 && slot < inv.length) {
+    			inv[slot] = ItemStack.loadItemStackFromNBT(tag);
+    		}
+    	}
+                    
+    	tank.readFromNBT(tagCompound);
+    	onInventoryChanged();
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound tagCompound) {
+            super.writeToNBT(tagCompound);
+                            
+            NBTTagList itemList = new NBTTagList();
+            for (int i = 0; i < inv.length; i++) {
+                    ItemStack stack = inv[i];
+                    if (stack != null) {
+                            NBTTagCompound tag = new NBTTagCompound();
+                            tag.setByte("Slot", (byte) i);
+                            stack.writeToNBT(tag);
+                            itemList.appendTag(tag);
+                    }
+            }
+            tagCompound.setTag("Inventory", itemList);
+            
+            tank.writeToNBT(tagCompound);
     }
 	
-    void dowork(){
-    	int[] recipe=RecipeManager.getThermalCrackerRecipe(inv[0]);
-    	boolean canwork=canwork(recipe);
-    	
-    	setWorking(canwork);
-    	
-		if (!canwork)
-			return;
-		
-		progress=100*tick/recipe[4];
-		
-		tick+=1;
-		energy-=recipe[3];
-		if (tick<recipe[4])
-			return;
-		
-		tick=0;
-		progress=0;
-		
-		if (inv[0].stackSize>recipe[2])
-			inv[0].stackSize-=recipe[2];
-		else
-			inv[0]=null;
-		
-		if(inv[1]==null)
-			inv[1]=new ItemStack(recipe[5],recipe[7],recipe[6]);
-		else
-			inv[1].stackSize+=recipe[7];
-		
-		fill(recipe[8],recipe[9],recipe[10]);
-    }
-    
-    boolean canwork(int[] recipe){
-    	if (recipe==null) 
-    		return false;
-    	
-		if (energy<recipe[3])
-			return false;
-    	
-    	if (inv[1]!=null)
-    		if (inv[1].itemID!=recipe[5]|inv[1].getItemDamage()!=recipe[6]|inv[1].stackSize>inv[1].getMaxStackSize()-recipe[7])
-    			return false;
-    	
-    	if (!canFill(recipe[8],recipe[9],recipe[10]))
-    		return false;
-    	
-    	return true;
-    }
-    
-	public void fill(int id,int damage,int amount){
-		if (id==0)
-			return;
-		if (tank.getLiquid()==null)
-			tank.liquid=(new LiquidStack(id,amount,damage));
-		else
-			tank.getLiquid().amount+=amount;
+	//IFluidHandler------------------------------------------------------------------
+	@Override
+	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+		return tank.fill(resource, doFill);
+	}
+
+	@Override
+	public FluidStack drain(ForgeDirection from, FluidStack resource,boolean doDrain) {
+        if (resource == null || !resource.isFluidEqual(tank.getFluid()))
+        {
+            return null;
+        }
+        return tank.drain(resource.amount, doDrain);
+	}
+
+	@Override
+	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+		return tank.drain(maxDrain, doDrain);
+	}
+
+	@Override
+	public boolean canFill(ForgeDirection from, Fluid fluid) {return true;}
+
+	@Override
+	public boolean canDrain(ForgeDirection from, Fluid fluid) {return true;}
+
+	@Override
+	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+		return new FluidTankInfo[] {tank.getInfo()};
 	}
 	
-	public boolean canFill(int id,int damage,int amount){
-		if (!tank.containsValidLiquid())
-			return true;
-		if (tank.getLiquid().itemID==id&tank.getLiquid().itemMeta==damage&tank.getLiquid().amount<=maxCapacity-amount)
-			return true;
-		return false;
-	}
-    
-    //LiquidContainer-----------------------------------------------------------------------------
-    
-	@Override
-	public int fill(ForgeDirection from, LiquidStack resource, boolean doFill) {return 0;}
-	@Override
-	public int fill(int tankIndex, LiquidStack resource, boolean doFill) {return 0;}
-	@Override
-	public LiquidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {return tank.drain(maxDrain, doDrain);}
-	@Override
-	public LiquidStack drain(int tankIndex, int maxDrain, boolean doDrain) {return tank.drain(maxDrain, doDrain);}
-	@Override
-	public ILiquidTank[] getTanks(ForgeDirection direction) {return new ILiquidTank[]{tank};}
-	@Override
-	public ILiquidTank getTank(ForgeDirection direction, LiquidStack type) {return tank;}
-    
-	//SidedInventory-------------------------------------------------------------------------------
-	
+	//Inventory-------------------------------------------------------------------------------
 	@Override
 	public int getSizeInventory() {
 		return inv.length;
@@ -221,58 +280,6 @@ public class TileEntityThermalCracker extends BaseIC2Machine implements ISidedIn
 
     @Override
     public boolean isUseableByPlayer(EntityPlayer player) {return worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) == this && player.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) < 64;}
-    
-    @Override
-    public void readFromNBT(NBTTagCompound tagCompound) {
-            super.readFromNBT(tagCompound);
-            
-            NBTTagList tagList = tagCompound.getTagList("Inventory");
-            for (int i = 0; i < tagList.tagCount(); i++) {
-                    NBTTagCompound tag = (NBTTagCompound) tagList.tagAt(i);
-                    byte slot = tag.getByte("Slot");
-                    if (slot >= 0 && slot < inv.length) {
-                            inv[slot] = ItemStack.loadItemStackFromNBT(tag);
-                    }
-            }
-                    
-            
-        	idOut=tagCompound.getInteger("idOut");
-        	damageOut=tagCompound.getInteger("damageOut");
-        	
-        	tank.liquid=(new LiquidStack(idOut,tagCompound.getInteger("amountOut"),damageOut));
-    }
-
-    @Override
-    public void writeToNBT(NBTTagCompound tagCompound) {
-            super.writeToNBT(tagCompound);
-                            
-            NBTTagList itemList = new NBTTagList();
-            for (int i = 0; i < inv.length; i++) {
-                    ItemStack stack = inv[i];
-                    if (stack != null) {
-                            NBTTagCompound tag = new NBTTagCompound();
-                            tag.setByte("Slot", (byte) i);
-                            stack.writeToNBT(tag);
-                            itemList.appendTag(tag);
-                    }
-            }
-            tagCompound.setTag("Inventory", itemList);
-            
-        	int amountOut=0;
-        	LiquidStack lin=tank.getLiquid();
-        	
-        	if (tank.containsValidLiquid()){
-            	idOut=lin.itemID;
-            	damageOut=lin.itemMeta;
-        		amountOut=lin.amount;
-        	}
-
-        	
-        	tagCompound.setInteger("idOut", idOut);
-        	tagCompound.setInteger("damageOut", damageOut);
-        	tagCompound.setInteger("amountOut", amountOut);	
-    }
-
 
 	@Override
 	public void openChest() {}
@@ -283,20 +290,29 @@ public class TileEntityThermalCracker extends BaseIC2Machine implements ISidedIn
 
 
 	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) {return false;}
+	public boolean isItemValidForSlot(int i, ItemStack itemstack) {return true;}
 
 	
 	//SidedInventory
 	@Override
-	public int[] getAccessibleSlotsFromSide(int var1) {
-		if (var1==0|var1==1)
-			return new int[]{0};
-		return new int[]{1,3};
+	public int[] getAccessibleSlotsFromSide(int var1) {return new int[]{0,1,2,3};}
+
+	@Override
+	public boolean canInsertItem(int i, ItemStack itemstack, int j) {
+		if(FluidContainerRegistry.isEmptyContainer(itemstack)){
+			if(i==2)
+				return true;
+		}
+		else if(i==0)
+			return true;
+		
+		return false;
 	}
 
 	@Override
-	public boolean canInsertItem(int i, ItemStack itemstack, int j) {return true;}
-
-	@Override
-	public boolean canExtractItem(int i, ItemStack itemstack, int j) {return true;}
+	public boolean canExtractItem(int i, ItemStack itemstack, int j) {
+		if(i==1|i==3)
+			return true;
+		return false;
+	}
 }

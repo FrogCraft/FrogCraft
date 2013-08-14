@@ -25,7 +25,7 @@ public abstract class BaseIC2Machine extends SidedIC2Machine implements ic2.api.
     public void updateEntity()
     {
         super.updateEntity();
-        if (!this.addedToEnergyNet)
+        if (!worldObj.isRemote&!this.addedToEnergyNet)
         {
             //EnergyNet.getForWorld(this.worldObj).addTileEntity(this);
             MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
@@ -36,7 +36,7 @@ public abstract class BaseIC2Machine extends SidedIC2Machine implements ic2.api.
     @Override
     public void invalidate()
     {
-        if (this.addedToEnergyNet)
+        if (!worldObj.isRemote&this.addedToEnergyNet)
         {
             //EnergyNet.getForWorld(this.worldObj).removeTileEntity(this);
             MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));

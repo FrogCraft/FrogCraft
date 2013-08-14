@@ -26,9 +26,6 @@ public abstract class TileEntityIndustrialDevice extends BaseIC2Machine implemen
 
     public static String[] SoundSource = {"Machines/CompressorOp.ogg","Machines/MaceratorOp.ogg","Machines/ExtractorOp.ogg","Machines/Electro Furnace/ElectroFurnaceStart.ogg"};
     
-    
-    private IC2AudioSource audioSource;
-    
 	//Class Declaration
 	public TileEntityIndustrialDevice(){
 		super(128,10000);
@@ -48,11 +45,6 @@ public abstract class TileEntityIndustrialDevice extends BaseIC2Machine implemen
     @Override
     public void invalidate()
     {
-    	if (this.audioSource != null)
-    	{
-    		IC2AudioSource.removeSource(audioSource);
-    		this.audioSource = null;
-    	}
     	super.invalidate();
     }
 	
@@ -93,18 +85,11 @@ public abstract class TileEntityIndustrialDevice extends BaseIC2Machine implemen
         		heat=heat+1;
         }
         	        
-        if (tick==150){
+        if (tick==100){
         	tick=0;
         	
         		if (heat>0)heat=heat-1;
         	
-        }
-        
-        if (isWorking()){
-        	NetworkHelper.initiateTileEntityEvent(this, 0, true);
-        }
-        else{
-        	NetworkHelper.initiateTileEntityEvent(this, 1, true);
         }
         
         if (heat<30|!canwork){
@@ -116,7 +101,7 @@ public abstract class TileEntityIndustrialDevice extends BaseIC2Machine implemen
         
 
         
-        if (cansmeltg()&energy>=600){
+        if (cansmeltg()&energy>=300){
         	progress+=1;
         	if (progress==15){
         		progress=0;
@@ -130,31 +115,26 @@ public abstract class TileEntityIndustrialDevice extends BaseIC2Machine implemen
     
     void dowork(){
     	for (int i=0;i<6;i++){
-    		if(inv[i]!=null&&inv[i].stackSize<=0)
-    			inv[i]=null;
-    		ItemStack[] results=getResult(inv[i]);
-    		ItemStack result=results[1];
+    		ItemStack result=getResult(inv,i);
     		if (result!=null){ //Can smelt
     			if (inv[i+6]==null){
     				inv[i+6]=result.copy();
     				
-    				inv[i]=results[0];
-    				if(inv[i].stackSize<=0)
+    				if(inv[i].stackSize==0)
     					inv[i]=null;
     				
-    				energy-=100;
+    				energy-=50;
     			}
     			
-    			else if (inv[i+6].getItem()==result.getItem()&inv[i+6].getItemDamage()==result.getItemDamage()){
+    			else if (inv[i+6].isItemEqual(result)){
     				if (inv[i+6].stackSize<=inv[i+6].getMaxStackSize()-result.stackSize){
+    					
     					inv[i+6].stackSize+=result.stackSize;
     					
-    					
-    					inv[i]=results[0];
-        				if(inv[i].stackSize<=0)
+        				if(inv[i].stackSize==0)
         					inv[i]=null;
     					
-        				energy-=100;	
+        				energy-=50;	
     				}
     			}
     		}
@@ -162,15 +142,15 @@ public abstract class TileEntityIndustrialDevice extends BaseIC2Machine implemen
     }
     
     public boolean canwork(){
-    	if (energy<600)
+    	if (energy<300)
     		return false;
     	
     	if (redPowerd())
     		return true;
     	else if (cansmeltg())
     		return true;
-    	else				
-    		return false;
+    	
+    	return false;
     }
     
     boolean redPowerd(){
@@ -179,31 +159,29 @@ public abstract class TileEntityIndustrialDevice extends BaseIC2Machine implemen
     
     boolean cansmeltg(){
     	for (int i=0;i<6;i++){
-    		ItemStack result=getResultF(inv[i]);
+    		ItemStack result=getResult(inv[i]);
     		if (result!=null){
     			if(inv[i+6]==null){
     				return true;
     			}
-    			else if (result.getItem()==inv[i+6].getItem()&result.getItemDamage()==inv[i+6].getItemDamage()&inv[i+6].stackSize<=inv[i+6].getMaxStackSize()-result.stackSize){
+    			else if (result.isItemEqual(inv[i+6])&&
+    					inv[i+6].stackSize<=result.getMaxStackSize()-result.stackSize){
     				return true;
     			}
     		}
     	}
+    	
     	return false;
     }
 	
-    public abstract ItemStack[] getResult(ItemStack i);
-    public abstract ItemStack getResultF(ItemStack i);    
+    public abstract ItemStack getResult(ItemStack[] inv,int id);
+    public abstract ItemStack getResult(ItemStack i);    
     
 	@Override
-	public int getSizeInventory() {
-		return inv.length;
-	}
+	public int getSizeInventory() {return inv.length;}
 
 	@Override
-	public ItemStack getStackInSlot(int slot) {
-		return inv[slot];
-	}
+	public ItemStack getStackInSlot(int slot) {return inv[slot];}
 
     @Override
     public ItemStack decrStackSize(int slot, int amt) {
@@ -237,21 +215,13 @@ public abstract class TileEntityIndustrialDevice extends BaseIC2Machine implemen
 	}
 
 	@Override
-	public String getInvName() {
-		// TODO Auto-generated method stub
-		return "tileentityIndustrialDevice";
-	}
+	public String getInvName() {return "tileentityIndustrialDevice";}
 
 	@Override
-	public boolean isInvNameLocalized() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	public boolean isInvNameLocalized() {return false;}
 
     @Override
-    public int getInventoryStackLimit() {
-            return 64;
-    }
+    public int getInventoryStackLimit() {return 64;}
 
     @Override
     public boolean isUseableByPlayer(EntityPlayer player) {
@@ -292,45 +262,11 @@ public abstract class TileEntityIndustrialDevice extends BaseIC2Machine implemen
             tagCompound.setTag("Inventory", itemList);
             tagCompound.setInteger("heat", heat);
     }
-
-
-	public int[] getAccessibleSlotsFromSide(int var1){
-    	if (var1==1|var1==0)
-    		return new int[]{0,1,2,3,4,5};
-    	return new int[]{6,7,8,9,10,11};
-    }
-	
-    public boolean canInsertItem(int i, ItemStack itemstack, int j){return true;}
-
-    public boolean canExtractItem(int i, ItemStack itemstack, int j){return true;}
     
-	@Override
-	public void onNetworkEvent(int event){	
-	    	if (worldObj.isRemote)
-	    	{
-	            if ((this.audioSource == null))
-	            {
-	                this.audioSource = new IC2AudioSource(this, SoundSource[getBlockMetadata()-2]);
-	            }
-
-	            switch (event)
-	            {
-	                case 0:
-	                    if (this.audioSource == null) break;
-	                    audioSource.play();
-	                    break;
-	                case 1:
-	                    if (audioSource == null) break;
-	                    audioSource.stop();
-	                    audioSource.removeSource(audioSource);
-	            }
-	    	}
-	    	
-	    	NetworkHelper.announceBlockUpdate(worldObj, xCoord, yCoord, zCoord);
-	}
-	
-	
-    
+	//@Override
+	//public void onNetworkEvent(int event){	
+	//    NetworkHelper.announceBlockUpdate(worldObj, xCoord, yCoord, zCoord);
+	//}
     
 	@Override
 	public void openChest() {}
@@ -339,6 +275,22 @@ public abstract class TileEntityIndustrialDevice extends BaseIC2Machine implemen
 	public void closeChest() {}
 
 	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) {return false;}
+	public boolean isItemValidForSlot(int i, ItemStack itemstack) {return true;}
+
+	public int[] getAccessibleSlotsFromSide(int var1){
+    	return new int[]{0,1,2,3,4,5,6,7,8,9,10,11};
+    }
+	
+    public boolean canInsertItem(int i, ItemStack itemstack, int j){
+    	if(i<6)
+    		return true;
+    	return false;
+    }
+
+    public boolean canExtractItem(int i, ItemStack itemstack, int j){
+    	if(i>5)
+    		return true;
+    	return false;
+    }
 
 }

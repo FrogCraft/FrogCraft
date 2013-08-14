@@ -40,24 +40,24 @@ public class ContainerAutoWorkBench extends Container {
         //Raw Material Slots(0-26)
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
-                    addSlotToContainer(new Slot(tileEntity, j + i * 9,8 + j * 18, 17 + i * 18));
+                    addSlotToContainer(new Slot(tileEntity, j + i * 9,84 + j * 18, 17 + i * 18));
             }
         }
         
         //Crafting Matrix(27-35)
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                    addSlotToContainer(new Slot(tileEntity, j + i * 3+27,j * 18-58, 17 + i * 18));
+                    addSlotToContainer(new Slot(tileEntity, j + i * 3+27,j * 18+18, 17 + i * 18));
             }
         }        
         
         //Product Slot
-        addSlotToContainer(new ProductSlot(tileEntity, 36, -68, 142));
-        addSlotToContainer(new ProductSlot(tileEntity, 37, -50, 142));
-        addSlotToContainer(new ProductSlot(tileEntity, 38, -32, 142));
-        addSlotToContainer(new ProductSlot(tileEntity, 39, -14, 142));
+        addSlotToContainer(new ProductSlot(tileEntity, 36, 62-54, 142));
+        addSlotToContainer(new ProductSlot(tileEntity, 37, 62-36, 142));
+        addSlotToContainer(new ProductSlot(tileEntity, 38, 62-18, 142));
+        addSlotToContainer(new ProductSlot(tileEntity, 39, 62, 142));
         //Product Demo Slot
-        addSlotToContainer(new CraftSlot(tileEntity, 40, -40, 102));
+        addSlotToContainer(new CraftSlot(tileEntity, 40, 36, 102));
         
         bindPlayerInventory(inventoryPlayer);
 	}
@@ -71,16 +71,17 @@ public class ContainerAutoWorkBench extends Container {
 
     protected void bindPlayerInventory(InventoryPlayer inventoryPlayer) {
         for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 9; j++) {
-                        addSlotToContainer(new Slot(inventoryPlayer, j + i * 9 + 9,
-                                        8 + j * 18, 84 + i * 18));
-                }
+            for (int j = 0; j < 9; j++) {
+                    addSlotToContainer(new Slot(inventoryPlayer, j + i * 9 + 9,
+                                    84 + j * 18, 84 + i * 18));
+            }
         }
 
         for (int i = 0; i < 9; i++) {
-                addSlotToContainer(new Slot(inventoryPlayer, i, 8 + i * 18, 142));
+            addSlotToContainer(new Slot(inventoryPlayer, i, 
+            		84 + i * 18, 142));
         }
-}
+    }
 	
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int slot) {

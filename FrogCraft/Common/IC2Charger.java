@@ -23,7 +23,7 @@ public class IC2Charger {
         			chargeRate=maxEnergy-energy;
         		
 
-        		energy +=ElectricItem.discharge(item, chargeRate, tier, true, false);
+        		energy +=ElectricItem.manager.discharge(item, chargeRate, tier, true, false);
         	}
         }
         return energy;
@@ -33,7 +33,7 @@ public class IC2Charger {
         if (item!=null&energy>0){
         	int chargeID=item.itemID;
         	if (Item.itemsList[chargeID] instanceof IElectricItem){
-        		int charge=ElectricItem.charge(item,chargingRate, tier, true, true);
+        		int charge=ElectricItem.manager.charge(item,chargingRate, tier, true, true);
         		
         		int chargeRate;
         		
@@ -46,9 +46,9 @@ public class IC2Charger {
         			chargeRate=energy;
         		
         		if (charge<energy)
-        			energy -=ElectricItem.charge(item,chargeRate, tier, true, false);	
+        			energy -=ElectricItem.manager.charge(item,chargeRate, tier, true, false);	
         		else
-        			energy -=ElectricItem.charge(item,energy, tier, true, false);    
+        			energy -=ElectricItem.manager.charge(item,energy, tier, true, false);    
         		
         	}	
         }

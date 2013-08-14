@@ -1,15 +1,13 @@
 package FrogCraft;
 
 import net.minecraft.item.ItemStack;
-import FrogCraft.Items.Item_Cells;
-import FrogCraft.Items.Item_Dusts;
-import FrogCraft.Items.Item_Gases;
-import FrogCraft.Items.Item_Ingots;
-import FrogCraft.Items.Item_Liquids;
-import FrogCraft.Items.Item_Miscs;
+
+import FrogCraft.Common.FluidManager;
+import FrogCraft.Items.*;
 import FrogCraft.api.fcItems;
 
 public class ItemsRegister {
+
 	public static void loadItemsData(){
 		//Cells
 		Item_Cells.add(0,"cell_Ammonia");
@@ -52,41 +50,22 @@ public class ItemsRegister {
 		//Ingots
 		Item_Ingots.add(0,"K");
 		Item_Ingots.add(1,"P");
-		
-		
-		
-		//Liquids
-		Item_Liquids.add(0,"LiquifiedAir");
-		Item_Liquids.add(1,"CoalTar");
-/*2*/	Item_Liquids.add(2,"HNO3");
-		Item_Liquids.add(3,"Benzene");
-		Item_Liquids.add(4,"Bromine");
-/*5*/	
-		
-		//Gases
-		Item_Gases.add(0,"Oxygen");
-		Item_Gases.add(1,"CO2");
-/*2*/	Item_Gases.add(2,"Argon");
-		Item_Gases.add(3,"Ammonia");
-		Item_Gases.add(4,"NO");
-/*5*/	Item_Gases.add(5,"CO");	
-		Item_Gases.add(6,"Fluorine");
-	}
+}
 	
-	public static void loadContainerSettings(){
+
+	public static void registerFluids(){
+		FluidManager.RegisterFluid("LiquifiedAir", new ItemStack(fcItems.cellsID,1,3));
+		FluidManager.RegisterFluid("CoalTar", new ItemStack(fcItems.cellsID,1,1));
+		FluidManager.RegisterFluid("HNO3", new ItemStack(fcItems.cellsID,1,6));
+		FluidManager.RegisterFluid("Benzene", new ItemStack(fcItems.cellsID,1,9));
+		FluidManager.RegisterFluid("Bromine", new ItemStack(fcItems.cellsID,1,10));
 		
-		Item_Liquids.filledContainer.put(0, new ItemStack(fcItems.cellsID,1,3));
-		Item_Liquids.filledContainer.put(1, new ItemStack(fcItems.cellsID,1,1));
-		Item_Liquids.filledContainer.put(2, new ItemStack(fcItems.cellsID,1,6));
-		Item_Liquids.filledContainer.put(3, new ItemStack(fcItems.cellsID,1,9));
-		Item_Liquids.filledContainer.put(4, new ItemStack(fcItems.cellsID,1,10));
-		
-		Item_Gases.filledContainer.put(0, new ItemStack(fcItems.cellsID,1,2));
-		Item_Gases.filledContainer.put(1, new ItemStack(fcItems.cellsID,1,4));	
-		Item_Gases.filledContainer.put(2, new ItemStack(fcItems.cellsID,1,5));
-		Item_Gases.filledContainer.put(3, new ItemStack(fcItems.cellsID,1,0));			
-		Item_Gases.filledContainer.put(4, new ItemStack(fcItems.cellsID,1,7));	
-		Item_Gases.filledContainer.put(5, new ItemStack(fcItems.cellsID,1,8));
-		Item_Gases.filledContainer.put(6, new ItemStack(fcItems.cellsID,1,11));
+		FluidManager.RegisterFluid("Oxygen", new ItemStack(fcItems.cellsID,1,2));
+		FluidManager.RegisterFluid("CO2", new ItemStack(fcItems.cellsID,1,4));
+		FluidManager.RegisterFluid("Argon", new ItemStack(fcItems.cellsID,1,5));
+		FluidManager.RegisterFluid("Ammonia", new ItemStack(fcItems.cellsID,1,0));
+		FluidManager.RegisterFluid("NO", new ItemStack(fcItems.cellsID,1,7));
+		FluidManager.RegisterFluid("CO", new ItemStack(fcItems.cellsID,1,8));
+		FluidManager.RegisterFluid("Fluorine", new ItemStack(fcItems.cellsID,1,11));
 	}
 }

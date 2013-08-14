@@ -9,7 +9,6 @@ import FrogCraft.Common.ProductSlot;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.RenderEngine;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -18,13 +17,12 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
-import net.minecraftforge.liquids.LiquidStack;
 
 public class ContainerLiquidInjector extends Container {
 
 	protected TileEntityLiquidInjector tileEntity;
 	
-	public int idIn,damageIn,amountInP;
+	public int fluidID,amountP;
 	public int energy=0;
 	
 	public ContainerLiquidInjector (InventoryPlayer inventoryPlayer, TileEntityLiquidInjector te){
@@ -99,9 +97,8 @@ public class ContainerLiquidInjector extends Container {
     public void addCraftingToCrafters(ICrafting par1iCrafting) {
     	super.addCraftingToCrafters(par1iCrafting);
     	par1iCrafting.sendProgressBarUpdate(this, 0, tileEntity.energy);
-    	par1iCrafting.sendProgressBarUpdate(this, 1, tileEntity.idIn);
-    	par1iCrafting.sendProgressBarUpdate(this, 3, tileEntity.damageIn);    	
-    	par1iCrafting.sendProgressBarUpdate(this, 5, tileEntity.amountInP);    	
+    	par1iCrafting.sendProgressBarUpdate(this, 1, tileEntity.fluidID);
+    	par1iCrafting.sendProgressBarUpdate(this, 2, tileEntity.amountP);       	
     }
     
     
@@ -110,9 +107,8 @@ public class ContainerLiquidInjector extends Container {
     {
     	switch(par1){
     		case 0:{tileEntity.energy = par2;return;}
-    		case 1:{tileEntity.idIn = par2;return;}    		
-    		case 3:{tileEntity.damageIn = par2;return;}     
-    		case 5:{tileEntity.amountInP = par2;return;}       		
+    		case 1:{tileEntity.fluidID = par2;return;}    		
+    		case 2:{tileEntity.amountP = par2;return;}     	
     	}
     	
    	}
@@ -126,15 +122,13 @@ public class ContainerLiquidInjector extends Container {
     	{
     		ICrafting var2 = (ICrafting)var1.next();
     		var2.sendProgressBarUpdate(this, 0, energy);
-    		var2.sendProgressBarUpdate(this, 1, idIn);     
-    		var2.sendProgressBarUpdate(this, 3, damageIn);        
-    		var2.sendProgressBarUpdate(this, 5, amountInP);     		
+    		var2.sendProgressBarUpdate(this, 1, fluidID);     
+    		var2.sendProgressBarUpdate(this, 2, amountP);      		
     	}
     	
     	energy=tileEntity.energy;
-    	idIn=tileEntity.idIn;
-    	damageIn=tileEntity.damageIn;
-    	amountInP=tileEntity.amountInP;
+    	fluidID=tileEntity.fluidID;
+    	amountP=tileEntity.amountP;
     }
 
 

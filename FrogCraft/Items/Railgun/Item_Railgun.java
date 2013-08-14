@@ -10,6 +10,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.Icon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -97,7 +98,7 @@ public class Item_Railgun extends Item implements ic2.api.item.IElectricItem{
 		}
 		else{ //Not enough electricity
 			if (!world.isRemote)
-				player.sendChatToPlayer(StatCollector.translateToLocal("item.Item_Railgun.tooTired"));
+				player.sendChatToPlayer(ChatMessageComponent.func_111066_d(StatCollector.translateToLocal("item.Item_Railgun.tooTired")));
 		}
     	
 

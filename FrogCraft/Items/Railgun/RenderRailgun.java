@@ -11,10 +11,12 @@ import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.entity.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
 
 public class RenderRailgun implements IItemRenderer {
@@ -23,18 +25,23 @@ public class RenderRailgun implements IItemRenderer {
 	private static Minecraft mc = Minecraft.getMinecraft();
 	
 	@Override
-	public boolean handleRenderType(ItemStack item, ItemRenderType type) {return type==ItemRenderType.EQUIPPED;}
+	public boolean handleRenderType(ItemStack item, ItemRenderType type) {return type==ItemRenderType.EQUIPPED_FIRST_PERSON
+	|type==ItemRenderType.EQUIPPED;}
 
 	@Override
 	public boolean shouldUseRenderHelper(ItemRenderType type,ItemStack item,ItemRendererHelper helper) {return false;}
 
 	@Override
-	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {      
+	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {   
+		if(type==ItemRenderType.EQUIPPED_FIRST_PERSON)
+			renderFirstPerson(item);
+		else
+			renderThirdPerson((EntityPlayer)data[1],item);
 		if (Minecraft.getMinecraft().gameSettings.thirdPersonView==0&Minecraft.getMinecraft().thePlayer.inventory.getCurrentItem()==item){ 
-        	renderFirstPerson(item);
+        	
             return ;
         }
-		renderThirdPerson((EntityPlayer)data[1],item);
+		
 	}
 		
 	public void renderIcon(double par1, double par2, Icon par3Icon, double par4, double par5)
@@ -49,7 +56,8 @@ public class RenderRailgun implements IItemRenderer {
     }
     
     void renderFirstPerson(ItemStack item){ 	
-    	
+    	TextureManager texturemanager = this.mc.func_110434_K();
+
     	//First Person View
     	Icon icon;
     	if (mc.thePlayer.isUsingItem())
@@ -57,10 +65,10 @@ public class RenderRailgun implements IItemRenderer {
     	else
     		icon = Item_Railgun.icon;	
     	
-        mc.renderEngine.bindTexture("/gui/items.png");
+        //mc.renderEngine.func_110577_a(new ResourceLocation("/gui/items.png"));
         
-        ItemRenderer.renderItemIn2D(Tessellator.instance, icon.getMaxU(), icon.getMinV(), icon.getMinU(), icon.getMaxV(), icon.getSheetWidth(), icon.getSheetHeight(), 0.0625F);
-        
+    	texturemanager.func_110577_a(texturemanager.func_130087_a(1));
+    	ItemRenderer.renderItemIn2D(Tessellator.instance, icon.getMaxU(), icon.getMinV(), icon.getMinU(), icon.getMaxV(), icon.getOriginX(), icon.getOriginY(), 0.0625F);
         
         if (mc.thePlayer.isUsingItem()){       	
         	if (mc.thePlayer.inventory.hasItem(Item_Railgun.AmmoID)|mc.thePlayer.capabilities.isCreativeMode){
@@ -86,7 +94,7 @@ public class RenderRailgun implements IItemRenderer {
 	void renderShadow(){
     	GL11.glDepthFunc(GL11.GL_EQUAL);
     	GL11.glDisable(GL11.GL_LIGHTING);
-    	this.mc.renderEngine.bindTexture("%blur%/misc/glint.png");
+    	mc.renderEngine.func_110577_a(new ResourceLocation(("textures/entity/creeper/creeper_armor.png")));
     	GL11.glEnable(GL11.GL_BLEND);
     	GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
     	float f7 = 0.76F;
@@ -115,7 +123,7 @@ public class RenderRailgun implements IItemRenderer {
 	
 	void renderCoin(){
 		Tessellator tessellator = Tessellator.instance;
-        mc.renderEngine.bindTexture("/mods/FrogCraft/textures/render/Coin.png");
+		mc.renderEngine.func_110577_a(new ResourceLocation("frogcraft","/textures/render/Coin.png"));
         GL11.glPushMatrix();
         //GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glTranslatef(1.9F, 1.9F, 0.5F);

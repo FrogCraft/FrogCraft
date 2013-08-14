@@ -7,15 +7,15 @@ public class TileEntityIndustrialCompressor extends TileEntityIndustrialDevice {
 
 
 	@Override
-	public ItemStack[] getResult(ItemStack i) {
-		if (i==null)
-			return new ItemStack[]{i,null};
-		ItemStack r=Recipes.compressor.getOutputFor(i, true);
-		return new ItemStack[]{i,r};
+	public ItemStack getResult(ItemStack[] inv,int i) {
+		if (inv[i]==null)
+			return null;
+		ItemStack r=Recipes.compressor.getOutputFor(inv[i], true);
+		return r;
 	}
 	
 	@Override
-	public ItemStack getResultF(ItemStack i) {
+	public ItemStack getResult(ItemStack i) {
 		if (i==null)
 			return null;
 		return Recipes.compressor.getOutputFor(i.copy(), false);

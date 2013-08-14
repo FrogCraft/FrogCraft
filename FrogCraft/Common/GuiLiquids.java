@@ -5,32 +5,34 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.RenderEngine;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
 import net.minecraft.util.Icon;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.*;
 
 @SideOnly(Side.CLIENT)
 public abstract class GuiLiquids extends GuiContainer{
 	public GuiLiquids(Container par1Container) {super(par1Container);}
 	
-	public static void drawLiquidBar(int x	 	  ,int y     ,int width    ,int height,
-			     int liquidID,int Damage,int percentage){
-		if (liquidID==0)
-			return;
-		RenderEngine renderEngine = FMLClientHandler.instance().getClient().renderEngine;
-		Item item = Item.itemsList[liquidID];
-		Icon icon =	item.getIconFromDamage(Damage);
-
-		if (icon==null)
+	public static void drawLiquidBar(int x,int y,int width,int height,int fluidID,int percentage){
+		Fluid fluid=FluidRegistry.getFluid(fluidID);
+		if (fluid==null)
 			return;
 		
-		if (item.getSpriteNumber() == 0)     
-			renderEngine.bindTexture("/terrain.png");
-		else    
-			renderEngine.bindTexture("/gui/items.png");
+		Icon icon=fluid.getIcon();
+		
+		if (icon==null)
+			return;
 
+		//Bind SpriteNumber=0,texture "/terrain.png"
+		TextureManager texturemanager = Minecraft.getMinecraft().func_110434_K();
+		texturemanager.func_110577_a(texturemanager.func_130087_a(0)); 
+		
 		
 		double u = icon.getInterpolatedU(3.0D);
 		double u2 = icon.getInterpolatedU(13.0D);

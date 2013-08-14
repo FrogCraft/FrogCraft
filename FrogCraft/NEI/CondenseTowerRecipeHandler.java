@@ -8,16 +8,19 @@ import java.util.List;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.lwjgl.opengl.GL11;
 
+import FrogCraft.Common.FluidManager;
 import FrogCraft.Common.GuiLiquids;
-import FrogCraft.Common.LiquidIO;
 import FrogCraft.Machines.ItemBlockMachines;
 
 import codechicken.nei.PositionedStack;
 import codechicken.nei.forge.GuiContainerManager;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import static codechicken.core.gui.GuiDraw.*;
+
 
 public class CondenseTowerRecipeHandler extends TemplateRecipeHandler{
 	public CondenseTowerRecipeHandler(){
@@ -25,6 +28,7 @@ public class CondenseTowerRecipeHandler extends TemplateRecipeHandler{
 		codechicken.nei.api.API.registerUsageHandler(this);
 	}
 	
+	@Override
 	public void loadTransferRects(){
 		this.transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(35, 23,24, 16), getRecipeId(), new Object[0]));
 		
@@ -45,7 +49,7 @@ public class CondenseTowerRecipeHandler extends TemplateRecipeHandler{
 	//Recipe window texture
 	@Override
 	public String getGuiTexture() {
-		return "/mods/FrogCraft/textures/gui/Gui_CondenseTower.png";
+		return "frogcraft:textures/gui/Gui_CondenseTower.png";
 	}
 	
 	@Override
@@ -58,39 +62,42 @@ public class CondenseTowerRecipeHandler extends TemplateRecipeHandler{
 		return "FrogCraft.CT";
 	}
 	
-    public void drawBackground(GuiContainerManager gui, int recipe)
+	@Override
+    public void drawBackground(int recipe)
     {
-    	super.drawBackground(gui, recipe);
+    	super.drawBackground(recipe);
     	Cached_Recipe rec=(Cached_Recipe)arecipes.get(recipe);
-    	GuiLiquids.drawLiquidBar(9, 23, 16, 16, rec.rec[0], rec.rec[1], 100);
-    	if (rec.rec[5]>0)
-    		GuiLiquids.drawLiquidBar(71, 23, 16, 16, rec.rec[5], rec.rec[6], 100);
-		if(rec.rec[8]>0)
-			GuiLiquids.drawLiquidBar(89, 23, 16, 16,rec.rec[8],rec.rec[9], 100);
-		if(rec.rec[11]>0)
-			GuiLiquids.drawLiquidBar(107, 23, 16, 16,rec.rec[11],rec.rec[12], 100);	
-		if(rec.rec[14]>0)
-			GuiLiquids.drawLiquidBar(125, 23, 16, 16,rec.rec[14],rec.rec[15], 100);	
-		if(rec.rec[17]>0)
-			GuiLiquids.drawLiquidBar(143, 23, 16, 16,rec.rec[17],rec.rec[18], 100);	
+    	
+    	GuiLiquids.drawLiquidBar(9, 23, 16, 16, rec.id, 100);
+    	if(rec.rec.length>0&&rec.rec[0]!=null)
+    		GuiLiquids.drawLiquidBar(71, 23, 16, 16, rec.rec[0].fluidID, 100);
+		if(rec.rec.length>1&&rec.rec[1]!=null)
+			GuiLiquids.drawLiquidBar(89, 23, 16, 16,rec.rec[1].fluidID, 100);
+		if(rec.rec.length>2&&rec.rec[2]!=null)
+			GuiLiquids.drawLiquidBar(107, 23, 16, 16,rec.rec[2].fluidID, 100);	
+		if(rec.rec.length>3&&rec.rec[3]!=null)
+			GuiLiquids.drawLiquidBar(125, 23, 16, 16,rec.rec[3].fluidID, 100);	
+		if(rec.rec.length>4&&rec.rec[4]!=null)
+			GuiLiquids.drawLiquidBar(143, 23, 16, 16,rec.rec[4].fluidID, 100);	
     }
 	
-	public void drawExtras(GuiContainerManager gui, int recipe){
+	@Override
+	public void drawExtras(int recipe){
 		Cached_Recipe rec=(Cached_Recipe)arecipes.get(recipe);
-		gui.drawText(28,80,StatCollector.translateToLocal("nei.euTotal")+":"+String.valueOf(rec.eu), 4210752,false);
-		gui.drawText(28,90,"Per "+String.valueOf(rec.unit)+"mB", 4210752,false);	
-		gui.drawText(28,100,StatCollector.translateToLocal("nei.euTick")+":"+String.valueOf(rec.tick), 4210752,false);
+		drawString(StatCollector.translateToLocal("nei.euTotal")+":"+String.valueOf(rec.eu),28,80, 4210752,false);
+		drawString("Per "+String.valueOf(rec.unit)+"mB",28,90, 4210752,false);	
+		drawString(StatCollector.translateToLocal("nei.euTick")+":"+String.valueOf(rec.tick),28,100, 4210752,false);
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		gui.bindTexture(getGuiTexture());
-		drawProgressBar(gui,35, 23, 176, 0, 24, 47,30,0);
+		changeTexture(getGuiTexture());
+		drawProgressBar(35, 23, 176, 0, 24, 47,30,0);
 	}
 	
 	@Override
     public void loadCraftingRecipes(String outputId, Object... results)
     {
 		if (outputId.equals(getRecipeId())) {
-			for(int i=0;i<FrogCraft.Common.RecipeManager.liquidInjectorRecipes.size();i++)
+			for(int i:FrogCraft.Common.RecipeManager.condenseTowerRecipes.keySet())
 				arecipes.add(new Cached_Recipe(i));
 		}
 		else 
@@ -99,15 +106,16 @@ public class CondenseTowerRecipeHandler extends TemplateRecipeHandler{
 	
 	@Override
 	public void loadCraftingRecipes(ItemStack result){
-		for(int i=0;i<FrogCraft.Common.RecipeManager.liquidInjectorRecipes.size();i++){
+		for(int i:FrogCraft.Common.RecipeManager.condenseTowerRecipes.keySet()){
 			Cached_Recipe rec=new Cached_Recipe(i);
 			if (rec.contains(rec.products, result))
 				this.arecipes.add(rec);
 		}
 	}
 	
+	@Override
 	public void loadUsageRecipes(ItemStack ingredient){
-		for(int i=0;i<FrogCraft.Common.RecipeManager.liquidInjectorRecipes.size();i++){
+		for(int i:FrogCraft.Common.RecipeManager.condenseTowerRecipes.keySet()){
 			Cached_Recipe rec=new Cached_Recipe(i);
 			if (rec.contains(rec.resources, ingredient))
 				this.arecipes.add(rec);
@@ -120,25 +128,28 @@ public class CondenseTowerRecipeHandler extends TemplateRecipeHandler{
 		public ArrayList products= new ArrayList();
 		public ArrayList resources= new ArrayList();
 
-		public int eu,tick,unit;
-		public int[] rec;
+		public int eu,tick,unit,id;
+		public FluidStack[] rec;
+		public Integer[] info;
 		
 		public Cached_Recipe(int i){			
-			rec=FrogCraft.Common.RecipeManager.liquidInjectorRecipes.get(i);
-			this.resources.add(new PositionedStack(LiquidIO.getFilledContainers(rec[0],rec[1]), 9, 23));
-			eu=rec[3];
-			tick=rec[4];
-			unit=rec[2];
-			if(rec[5]>0)
-				this.products.add(new PositionedStack(LiquidIO.getFilledContainers(rec[5],rec[6]), 71, 23));
-			if(rec[8]>0)
-				this.products.add(new PositionedStack(LiquidIO.getFilledContainers(rec[8],rec[9]), 89, 23));
-			if(rec[11]>0)
-				this.products.add(new PositionedStack(LiquidIO.getFilledContainers(rec[11],rec[12]), 107, 23));	
-			if(rec[14]>0)
-				this.products.add(new PositionedStack(LiquidIO.getFilledContainers(rec[14],rec[15]), 125, 23));	
-			if(rec[17]>0)
-				this.products.add(new PositionedStack(LiquidIO.getFilledContainers(rec[17],rec[18]), 143, 23));				
+			id=i;
+			rec=FrogCraft.Common.RecipeManager.condenseTowerRecipes.get(i);
+			info=FrogCraft.Common.RecipeManager.condenseTowerRecipeInfo.get(i);
+			this.resources.add(new PositionedStack(FluidManager.getFilledContainers(i), 9, 23));
+			eu=info[2];
+			tick=info[1];
+			unit=info[0];
+			if(rec.length>0&&rec[0]!=null)
+				this.products.add(new PositionedStack(FluidManager.getFilledContainers(rec[0]), 71, 23));
+			if(rec.length>1&&rec[1]!=null)
+				this.products.add(new PositionedStack(FluidManager.getFilledContainers(rec[1]), 89, 23));
+			if(rec.length>2&&rec[2]!=null)
+				this.products.add(new PositionedStack(FluidManager.getFilledContainers(rec[2]), 107, 23));	
+			if(rec.length>3&&rec[3]!=null)
+				this.products.add(new PositionedStack(FluidManager.getFilledContainers(rec[3]), 125, 23));	
+			if(rec.length>4&&rec[4]!=null)
+				this.products.add(new PositionedStack(FluidManager.getFilledContainers(rec[4]), 143, 23));				
 		}
 		
 		public ArrayList getIngredients()

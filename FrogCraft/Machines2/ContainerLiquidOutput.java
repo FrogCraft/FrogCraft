@@ -19,7 +19,7 @@ public class ContainerLiquidOutput extends Container {
 
 	protected TileEntityLiquidOutput tileEntity;
 	
-	public int idOut,damageOut,amountOutP;
+	public int fluidID,amountP;
 	
 	public ContainerLiquidOutput (InventoryPlayer inventoryPlayer, TileEntityLiquidOutput te){
         tileEntity = te;
@@ -49,7 +49,7 @@ public class ContainerLiquidOutput extends Container {
         for (int i = 0; i < 9; i++) {
                 addSlotToContainer(new Slot(inventoryPlayer, i, 8 + i * 18, 142));
         }
-}
+    }
 	
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int slot) {
@@ -93,9 +93,8 @@ public class ContainerLiquidOutput extends Container {
     @Override
     public void addCraftingToCrafters(ICrafting par1iCrafting) {
     	super.addCraftingToCrafters(par1iCrafting);
-    	par1iCrafting.sendProgressBarUpdate(this, 0, tileEntity.idOut);
-    	par1iCrafting.sendProgressBarUpdate(this, 1, tileEntity.damageOut);    	
-    	par1iCrafting.sendProgressBarUpdate(this, 2, tileEntity.amountOutP);    	
+    	par1iCrafting.sendProgressBarUpdate(this, 0, tileEntity.fluidID);   	
+    	par1iCrafting.sendProgressBarUpdate(this, 1, tileEntity.amountP);    	
     }
     
     
@@ -103,9 +102,8 @@ public class ContainerLiquidOutput extends Container {
     public void updateProgressBar(int par1, int par2)
     {
     	switch(par1){
-    		case 0:{tileEntity.idOut = par2;return;}    		
-    		case 1:{tileEntity.damageOut = par2;return;}     
-    		case 2:{tileEntity.amountOutP = par2;return;}       		
+    		case 0:{tileEntity.fluidID = par2;return;}    	   
+    		case 1:{tileEntity.amountP = par2;return;}       		
     	}
     	
    	}
@@ -118,14 +116,12 @@ public class ContainerLiquidOutput extends Container {
     	while (var1.hasNext())
     	{
     		ICrafting var2 = (ICrafting)var1.next();
-    		var2.sendProgressBarUpdate(this, 0, idOut);     
-    		var2.sendProgressBarUpdate(this, 1, damageOut);        
-    		var2.sendProgressBarUpdate(this, 2, amountOutP);     		
+    		var2.sendProgressBarUpdate(this, 0, fluidID);     
+    		var2.sendProgressBarUpdate(this, 1, amountP);       		
     	}
     	
-    	idOut=tileEntity.idOut;
-    	damageOut=tileEntity.damageOut;
-    	amountOutP=tileEntity.amountOutP;
+    	fluidID=tileEntity.fluidID;
+    	amountP=tileEntity.amountP;
     }
 
 

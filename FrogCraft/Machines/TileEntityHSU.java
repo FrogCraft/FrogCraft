@@ -100,11 +100,13 @@ public class TileEntityHSU extends BaseIC2Machine implements ic2.api.energy.tile
 	
 	@Override 
 	public void afterSetFacing(short facing){
+        if (worldObj.isRemote)
+            return;
+        
 		if(!this.addedToEnergyNet){
 			MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
         	this.addedToEnergyNet = true;
 		}
-		return;
 	}
 	
 	@Override
@@ -229,5 +231,5 @@ public class TileEntityHSU extends BaseIC2Machine implements ic2.api.energy.tile
 
 
 	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) {return false;}
+	public boolean isItemValidForSlot(int i, ItemStack itemstack) {return false;}
 }

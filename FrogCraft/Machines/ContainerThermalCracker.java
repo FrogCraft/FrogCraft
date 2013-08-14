@@ -19,7 +19,7 @@ public class ContainerThermalCracker extends Container {
 	
 	public int progress=0;
 	public int energy=0;
-	public int idOut,damageOut,amountOutP;
+	public int fluidID,amountP;
 	
 	public ContainerThermalCracker (InventoryPlayer inventoryPlayer, TileEntityThermalCracker te){
         tileEntity = te;
@@ -96,13 +96,11 @@ public class ContainerThermalCracker extends Container {
     
     @Override
     public void addCraftingToCrafters(ICrafting par1iCrafting) {
-            // TODO Auto-generated method stub
            super.addCraftingToCrafters(par1iCrafting);
             par1iCrafting.sendProgressBarUpdate(this, 0, tileEntity.energy);
             par1iCrafting.sendProgressBarUpdate(this, 1, tileEntity.progress);      
-        	par1iCrafting.sendProgressBarUpdate(this, 2, tileEntity.idOut);
-        	par1iCrafting.sendProgressBarUpdate(this, 3, tileEntity.damageOut);    	
-        	par1iCrafting.sendProgressBarUpdate(this, 4, tileEntity.amountOutP);    
+        	par1iCrafting.sendProgressBarUpdate(this, 2, tileEntity.fluidID); 	
+        	par1iCrafting.sendProgressBarUpdate(this, 3, tileEntity.amountP);    
     }
     
     
@@ -112,16 +110,14 @@ public class ContainerThermalCracker extends Container {
     	switch(par1){
     		case 0:{tileEntity.energy = par2;return;}
     		case 1:{tileEntity.progress = par2;return;}
-    		case 2:{tileEntity.idOut = par2;return;}    		
-			case 3:{tileEntity.damageOut = par2;return;}     
-			case 4:{tileEntity.amountOutP = par2;return;}       		
+    		case 2:{tileEntity.fluidID = par2;return;}    	   
+			case 3:{tileEntity.amountP = par2;return;}       		
     	}
    	}
     
     @Override
     public void detectAndSendChanges()
     {
-    	// TODO Auto-generated method stub
     	super.detectAndSendChanges();
     	Iterator var1 = this.crafters.iterator();
     	while (var1.hasNext())
@@ -131,15 +127,13 @@ public class ContainerThermalCracker extends Container {
             	var2.sendProgressBarUpdate(this, 0, energy);
             //if (progress!=tileEntity.progress)
             	var2.sendProgressBarUpdate(this, 1, progress);  
-        		var2.sendProgressBarUpdate(this, 2, idOut);     
-        		var2.sendProgressBarUpdate(this, 3, damageOut);        
-        		var2.sendProgressBarUpdate(this, 4, amountOutP); 
+        		var2.sendProgressBarUpdate(this, 2, fluidID);           
+        		var2.sendProgressBarUpdate(this, 3, amountP); 
     	}
     	
     	energy=tileEntity.energy;
     	progress=tileEntity.progress;
-    	idOut=tileEntity.idOut;
-    	damageOut=tileEntity.damageOut;
-    	amountOutP=tileEntity.amountOutP;
+    	fluidID=tileEntity.fluidID;
+    	amountP=tileEntity.amountP;
     }
 }

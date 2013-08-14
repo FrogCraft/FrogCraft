@@ -5,7 +5,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
-import FrogCraft.*;
 import FrogCraft.Common.BaseIC2Machine;
 
 public class TileEntityAirPump extends BaseIC2Machine {

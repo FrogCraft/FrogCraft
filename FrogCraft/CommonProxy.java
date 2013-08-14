@@ -16,7 +16,7 @@ import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class CommonProxy implements IGuiHandler {
-    //returns an instance of the Container you made earlier
+
 	@Override
     	public Object getServerGuiElement(int id, EntityPlayer player, World world,int x, int y, int z) {
         	TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
@@ -92,7 +92,7 @@ public class CommonProxy implements IGuiHandler {
     	public void init() {
     		for (String lang : languages) {
     			LanguageRegistry.instance().loadLocalization(
-    					"/mods/FrogCraft/lang/" + lang + ".properties", lang, false);
+    					"/assets/frogcraft/lang/" + lang + ".properties", lang, false);
     		}
     	}
         

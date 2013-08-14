@@ -8,16 +8,19 @@ import java.util.List;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.lwjgl.opengl.GL11;
 
 import FrogCraft.Common.GuiLiquids;
-import FrogCraft.Common.LiquidIO;
+import FrogCraft.Common.FluidManager;
 import FrogCraft.Machines.ItemBlockMachines;
 
 import codechicken.nei.PositionedStack;
 import codechicken.nei.forge.GuiContainerManager;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import static codechicken.core.gui.GuiDraw.*;
 
 public class ThermalCrackerRecipeHandler extends TemplateRecipeHandler{
 	public ThermalCrackerRecipeHandler(){
@@ -45,7 +48,7 @@ public class ThermalCrackerRecipeHandler extends TemplateRecipeHandler{
 	//Recipe window texture
 	@Override
 	public String getGuiTexture() {
-		return "/mods/FrogCraft/textures/gui/Gui_ThermalCracker.png";
+		return "frogcraft:textures/gui/Gui_ThermalCracker.png";
 	}
 	
 	@Override
@@ -58,22 +61,24 @@ public class ThermalCrackerRecipeHandler extends TemplateRecipeHandler{
 		return "FrogCraft.TC";
 	}
 	
-	public void drawExtras(GuiContainerManager gui, int recipe){
+	@Override
+	public void drawExtras(int recipe){
+		drawProgressBar(40,18, 176, 80, 24,17,20,0);
 		Cached_Recipe rec=(Cached_Recipe)arecipes.get(recipe);
-		gui.drawText(28,80,StatCollector.translateToLocal("nei.euTotal")+":"+String.valueOf(rec.eu*rec.tick), 4210752,false);
-		gui.drawText(28,90,StatCollector.translateToLocal("nei.euTick")+":"+String.valueOf(rec.eu), 4210752,false);	
-		gui.drawText(28,100,StatCollector.translateToLocal("nei.tick")+":"+String.valueOf(rec.tick), 4210752,false);
+		drawString(StatCollector.translateToLocal("nei.euTotal")+":"+String.valueOf(rec.eu*rec.tick),28,80, 4210752,false);
+		drawString(StatCollector.translateToLocal("nei.euTick")+":"+String.valueOf(rec.eu),28,90, 4210752,false);	
+		drawString(StatCollector.translateToLocal("nei.tick")+":"+String.valueOf(rec.tick),28,100, 4210752,false);
 		if (rec.outID>0)
-			gui.drawText(28,110,StatCollector.translateToLocal("nei.outputLiquid")+":"+new ItemStack(rec.outID,1,rec.outDamage).getDisplayName(), 4210752,false);
+			drawString(StatCollector.translateToLocal("nei.outputLiquid")+":"+FluidManager.getFluidDisplayName(rec.outID),28,110, 4210752,false);
 		
 		
-		GuiLiquids.drawLiquidBar(138, 12, 16, 47, rec.outID, rec.outDamage, 100);
+		GuiLiquids.drawLiquidBar(138, 12, 16, 47, rec.outID, 100);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		gui.bindTexture(getGuiTexture());
-		gui.drawTexturedModalRect(138, 12, 176, 0, 16, 47);
-		drawProgressBar(gui,40,18, 176, 80, 24,17,20,0);
-		gui.drawTexturedModalRect(76,46, 176, 52, 10, 14);	
-		gui.drawTexturedModalRect(20,39, 176, 66, 14, 13);
+		changeTexture(getGuiTexture());
+		drawTexturedModalRect(138, 12, 176, 0, 16, 47);
+		
+		drawTexturedModalRect(76,46, 176, 52, 10, 14);	
+		drawTexturedModalRect(20,39, 176, 66, 14, 13);
 	}
 	
 	@Override
@@ -110,22 +115,20 @@ public class ThermalCrackerRecipeHandler extends TemplateRecipeHandler{
 		public ArrayList products= new ArrayList();
 		public ArrayList resources= new ArrayList();
 
-		public int eu,tick,outID,outDamage,outAmount;
+		public int eu,tick,outID;
 		
 		public Cached_Recipe(int i){			
-			int[] rec=FrogCraft.Common.RecipeManager.thermalCrackerRecipes.get(i);
-			this.resources.add(new PositionedStack(new ItemStack(rec[0],rec[2],rec[1]), 19, 17));
-			eu=rec[3];
-			tick=rec[4];
-			if(rec[5]>0)
-				this.products.add(new PositionedStack(new ItemStack(rec[5],rec[7],rec[6]), 70, 17));
-			outID=rec[8];
-			outDamage=rec[9];
-			outAmount=rec[10];
+			Object[] rec=FrogCraft.Common.RecipeManager.thermalCrackerRecipes.get(i);
+			this.resources.add(new PositionedStack(((ItemStack)rec[0]).copy(), 19, 17));
+			eu=(Integer) rec[3];
+			tick=(Integer) rec[4];
+			if(rec[1]!=null)
+				this.products.add(new PositionedStack(((ItemStack)rec[1]).copy(), 70, 17));
+			outID=((FluidStack)rec[2]).fluidID;
 			
-			if (outID>0){
-				this.products.add(new PositionedStack(LiquidIO.getFilledContainers(outID, outDamage), 108, 45));
-			}
+			if (outID>-1)
+				this.products.add(new PositionedStack(FluidManager.getFilledContainers(outID), 108, 45));
+			
 		}
 		
 		public ArrayList getIngredients()

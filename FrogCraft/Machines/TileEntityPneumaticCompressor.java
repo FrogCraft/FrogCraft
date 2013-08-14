@@ -2,24 +2,13 @@ package FrogCraft.Machines;
 
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
-
-import ic2.api.tile.IWrenchable;
-import ic2.api.network.INetworkDataProvider;
-import ic2.api.network.INetworkTileEntityEventListener;
-import ic2.api.network.NetworkHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.ForgeDirection;
-import java.util.ArrayList;
-import java.util.List;
-
-import java.util.Random;
 
 import FrogCraft.Common.BaseIC2Machine;
-import FrogCraft.Common.SidedIC2Machine;
 
 public class TileEntityPneumaticCompressor extends BaseIC2Machine implements ISidedInventory{
 	//Variables
@@ -48,57 +37,40 @@ public class TileEntityPneumaticCompressor extends BaseIC2Machine implements ISi
         
         //////////////////
         if (inv[0]!=null&energy-8>=0&fully()){
-        	
-        	int recid = gregtechmod.api.util.GT_Recipe.findEqualImplosionRecipeIndex(inv[0],FrogCraft.mod_FrogCraft.iTNT);
-        	
-        	if (recid>-1){  //able to work
-        		gregtechmod.api.util.GT_Recipe g=gregtechmod.api.util.GT_Recipe.sImplosionRecipes.get(recid);
-        		ItemStack res=g.mOutput1;
-        		gas_total=g.mOutput2.stackSize;
+
+        	Object[] rec=FrogCraft.Intergration.GregTech.findImplosionRecipe(inv[0]);
+        	if (rec!=null){  //able to work
+        		ItemStack out=(ItemStack) rec[0];
+        		gas_total=(Integer) rec[1];
         		
         		
         		gas_total=gas_total*FrogCraft.mod_FrogCraft.rate_PneumaticCompressor;
-        		if (inv[1]==null){
-        			tick+=cosume_gas(20);
-        			energy-=8;
-        			progress=tick*100/gas_total;
-        			
-        			rndboom();
-        			
-        			if(tick>gas_total){
-        				inv[1]=res.copy();
-        				
-        				if (inv[0].stackSize==g.mInput1.stackSize)
-        					inv[0]=null;        				
-        				else
-        					inv[0].stackSize-=g.mInput1.stackSize;
-        				
-        				tick=0;
-        				
-        				boom();
-        			}
-        		}
-        		else if(inv[1].getItem()==res.getItem()&inv[1].getItemDamage()==res.getItemDamage()&inv[1].stackSize<=res.getMaxStackSize()-res.stackSize){
-        			tick+=cosume_gas(20);
-        			energy-=8;
-        			progress=tick*100/gas_total;
-        			
-        			rndboom();
-        			
-        			if(tick>gas_total){
-        				inv[1]=new ItemStack(res.getItem(),inv[1].stackSize+res.stackSize,inv[1].getItemDamage());
-        				
-        				if (inv[0].stackSize==g.mInput1.stackSize)
-        					inv[0]=null;
-        				else
-        					inv[0].stackSize-=g.mInput1.stackSize;
-        				
-        				tick=0;	
-        				
-        				boom();
-        			} 
-        		}
         		
+
+        		tick+=cosume_gas(20);
+        		energy-=8;
+        		progress=tick*100/gas_total;
+        			
+        		rndboom();
+        			
+        		if(tick>gas_total){
+        			//Make product
+        			if (inv[1]==null)
+        				inv[1]=out.copy();
+        			else
+        				inv[1].stackSize+=out.stackSize;
+        				
+        				
+        			//Consume Input
+        			inv[0].stackSize-=(Integer)rec[2];
+        			if (inv[0].stackSize==0)
+        				inv[0]=null;
+        			
+        			
+        			tick=0;	
+        				
+        			boom();
+        		}         		
         	}
         }
         else{
@@ -107,7 +79,6 @@ public class TileEntityPneumaticCompressor extends BaseIC2Machine implements ISi
         	gas_total=0;
         }
     }
-   
     
     int cosume_gas(int amount){
     	int r=0;
@@ -130,7 +101,7 @@ public class TileEntityPneumaticCompressor extends BaseIC2Machine implements ISi
     
 	void boom(){if(FrogCraft.mod_FrogCraft.boom_PneumaticCompressor)worldObj.createExplosion(null, xCoord, yCoord+1, zCoord, 0F, false);}
     void rndboom(){if(FrogCraft.mod_FrogCraft.rndboom_PneumaticCompressor){
-    	if ((new Random()).nextInt(20)==5)boom();
+    	if (worldObj.rand.nextInt(20)==5)boom();
     }}
 	
     public boolean fully(){
@@ -289,21 +260,27 @@ public class TileEntityPneumaticCompressor extends BaseIC2Machine implements ISi
 
 
 	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) {return false;}
+	public boolean isItemValidForSlot(int i, ItemStack itemstack) {return false;}
 	
 	//SidedInventory
 	@Override
 	public int[] getAccessibleSlotsFromSide(int var1) {
-		if (var1==0|var1==1)
-			return new int[]{0};
-		return new int[]{1};
+		return new int[]{0,1};
 	}
 
 	@Override
-	public boolean canInsertItem(int i, ItemStack itemstack, int j) {return true;}
+	public boolean canInsertItem(int slot, ItemStack itemstack, int side) {
+		if (slot==0)
+			return true;
+		return false;
+	}
 
 	@Override
-	public boolean canExtractItem(int i, ItemStack itemstack, int j) {return true;}
+	public boolean canExtractItem(int slot, ItemStack itemstack, int side) {
+		if (slot==1)
+			return true;
+		return false;
+	}
 }
 
 

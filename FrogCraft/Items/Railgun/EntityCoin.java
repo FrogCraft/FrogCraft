@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -37,7 +37,7 @@ public class EntityCoin extends Entity implements IProjectile
     /**
      * Is the entity that throws this 'thing' (snowball, ender pearl, eye of ender or potion)
      */
-    private EntityLiving thrower;
+    private EntityLivingBase thrower;
     private String throwerName = null;
     private int ticksInGround;
     private int ticksInAir = 0;
@@ -51,12 +51,12 @@ public class EntityCoin extends Entity implements IProjectile
 			//return;
 			
         AxisAlignedBB axisalignedbb = this.boundingBox.expand(3.0D, 3.0D, 3.0D);
-        List list1 = this.worldObj.getEntitiesWithinAABB(EntityLiving.class, axisalignedbb);
+        List list1 = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
         if (list1 != null && !list1.isEmpty())
         {
             Iterator iterator = list1.iterator();
             while (iterator.hasNext()){
-            	EntityLiving entityliving = (EntityLiving)iterator.next();
+            	EntityLivingBase entityliving = (EntityLivingBase)iterator.next();
             	entityliving.setFire(5);
             	int distance=(int)(entityliving.getDistanceToEntity(this)*entityliving.getDistanceToEntity(this));
             	if (distance==0)
@@ -99,7 +99,7 @@ public class EntityCoin extends Entity implements IProjectile
         return par1 < d1 * d1;
     }
 
-    public EntityCoin(World par1World, EntityLiving par2EntityLiving)
+    public EntityCoin(World par1World, EntityLivingBase par2EntityLiving)
     {
         super(par1World);
         this.thrower = par2EntityLiving;
@@ -224,7 +224,7 @@ public class EntityCoin extends Entity implements IProjectile
 
         Vec3 vec3 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
         Vec3 vec31 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-        MovingObjectPosition movingobjectposition = this.worldObj.rayTraceBlocks(vec3, vec31);
+        MovingObjectPosition movingobjectposition = this.worldObj.clip(vec3, vec31);
         vec3 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
         vec31 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
@@ -238,7 +238,7 @@ public class EntityCoin extends Entity implements IProjectile
             Entity entity = null;
             List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
             double d0 = 0.0D;
-            EntityLiving entityliving = this.getThrower();
+            EntityLivingBase entityliving = this.getThrower();
 
             for (int j = 0; j < list.size(); ++j)
             {
@@ -388,7 +388,7 @@ public class EntityCoin extends Entity implements IProjectile
         return 0.0F;
     }
 
-    public EntityLiving getThrower()
+    public EntityLivingBase getThrower()
     {
         if (this.thrower == null && this.throwerName != null && this.throwerName.length() > 0)
         {

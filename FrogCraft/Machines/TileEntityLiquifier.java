@@ -1,26 +1,22 @@
 package FrogCraft.Machines;
 
 import ic2.api.item.Items;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.liquids.ILiquidTank;
-import net.minecraftforge.liquids.ITankContainer;
-import net.minecraftforge.liquids.LiquidContainerData;
-import net.minecraftforge.liquids.LiquidContainerRegistry;
-import net.minecraftforge.liquids.LiquidStack;
+import net.minecraftforge.fluids.*;
+
 import FrogCraft.mod_FrogCraft;
 import FrogCraft.Common.*;
 
-public class TileEntityLiquifier extends BaseIC2Machine implements ISidedInventory,ITankContainer{
+public class TileEntityLiquifier extends BaseIC2Machine implements ISidedInventory,IFluidHandler{
 	public static int maxCapacity=10000;
 	
-	public int idOut,damageOut,amountOutP;
-	public LiquidTank tankOut=new LiquidTank(maxCapacity);
+	public int fluidID,amountP;
+	public fcFluidTank tank=new fcFluidTank(maxCapacity);
 	public ItemStack inv[];
 	
 	public int tick=0;
@@ -34,15 +30,6 @@ public class TileEntityLiquifier extends BaseIC2Machine implements ISidedInvento
     public void readFromNBT(NBTTagCompound n) {
     	super.readFromNBT(n);
     	
-    	int amountIn,amountOut;
-    	
-    	idOut=n.getInteger("idOut");
-    	damageOut=n.getInteger("damageOut");
-    	amountIn=n.getInteger("amountIn");
-    	amountOut=n.getInteger("amountOut");
-    	
-    	tankOut.liquid=(new LiquidStack(idOut,amountOut,damageOut));
-    	
         NBTTagList tagList = n.getTagList("Inventory");
         for (int i = 0; i < tagList.tagCount(); i++) {
                 NBTTagCompound tag = (NBTTagCompound) tagList.tagAt(i);
@@ -51,27 +38,15 @@ public class TileEntityLiquifier extends BaseIC2Machine implements ISidedInvento
                         inv[slot] = ItemStack.loadItemStackFromNBT(tag);
                 }
         }
+        
+        tank.readFromNBT(n);
     }
     
     @Override
     public void writeToNBT(NBTTagCompound n) {
     	super.writeToNBT(n);
 	
-    	int amountOut=0;
-    	LiquidStack lout=tankOut.getLiquid();
-    	
-    	
-    	if (tankOut.containsValidLiquid()){
-        	idOut=lout.itemID; 
-        	damageOut=lout.itemMeta;
-    		amountOut=lout.amount;
-    	}
-    	
-    	n.setInteger("idOut", idOut);
-    	n.setInteger("damageOut", damageOut);  
-    	n.setInteger("amountOut", amountOut);     
-    	
-        NBTTagList itemList = new NBTTagList();
+    	NBTTagList itemList = new NBTTagList();
         for (int i = 0; i < inv.length; i++) {
                 ItemStack stack = inv[i];
                 if (stack != null) {
@@ -82,6 +57,8 @@ public class TileEntityLiquifier extends BaseIC2Machine implements ISidedInvento
                 }
         }
         n.setTag("Inventory", itemList);
+        
+        tank.writeToNBT(n);
     }
         
     @Override
@@ -100,25 +77,28 @@ public class TileEntityLiquifier extends BaseIC2Machine implements ISidedInvento
         	if (energy>=64){
         		TileEntityAirPump te=(TileEntityAirPump)worldObj.getBlockTileEntity(xCoord, yCoord-1, zCoord);
         		
-        		if (!tankOut.containsValidLiquid()&te.getGas()>=12){
+        		if (tank.fluid==null){
         			if(te.useGas(12)){
-        				tankOut.liquid=(new LiquidStack(mod_FrogCraft.Liquids.itemID,10,0));	
+        				tank.fluid=FluidManager.getFluid("LiquifiedAir",10);	
         				energy-=32;
         				didSomething=true;
         			}
         		}		
-        		if (tankOut.liquid!=null)
-        			if(tankOut.liquid.itemID==mod_FrogCraft.Liquids.itemID&tankOut.liquid.itemMeta==0&tankOut.liquid.amount<=maxCapacity-10)
+        		if (tank.fluid!=null)
+        			if(tank.fluid.getFluid().getID()==FluidManager.getFluid("LiquifiedAir",10).fluidID
+        			&tank.fluid.amount<=maxCapacity-10)
         				if(te.useGas(12)){
-        					tankOut.liquid.amount+=10;
+        					tank.fluid.amount+=10;
         					energy-=32;
         					didSomething=true;
         				}
+        		
         	}
         }
         else {
         	if(inv[0]!=null&&Items.getItem("airCell").isItemEqual(inv[0])&&
-        			(!tankOut.containsValidLiquid()|(tankOut.containsValidLiquid()&&tankOut.liquid.amount<=maxCapacity-1000))){
+        			(tank.fluid==null|(tank.fluid!=null&&tank.fluid.amount<=maxCapacity-1000))&&
+        			(inv[2]==null|(inv[2]!=null&&ic2.api.item.Items.getItem("cell").isItemEqual(inv[2])&&inv[2].stackSize<inv[2].getMaxStackSize()))){
         		if (energy<32)
         			tick=0;
         		else{
@@ -132,16 +112,20 @@ public class TileEntityLiquifier extends BaseIC2Machine implements ISidedInvento
         			if(tick>100){
         				tick=0;
         				
-        				if (!tankOut.containsValidLiquid()){
-        					tankOut.liquid=(new LiquidStack(mod_FrogCraft.Liquids.itemID,1000,0));
-        				}
-        				else{
-        					tankOut.liquid.amount+=1000;
-        				}
+        				if (tank.fluid==null)
+            				tank.fluid=FluidManager.getFluid("LiquifiedAir",1000);	
+        				else
+        					tank.fluid.amount+=1000;
+        	
         				
         				inv[0].stackSize-=1;
         				if(inv[0].stackSize==0)
-        				inv[0]=null;
+        					inv[0]=null;
+        				
+        				if(inv[2]==null)
+        					inv[2]=ic2.api.item.Items.getItem("cell");
+        				else
+        					inv[2].stackSize+=1;
         			}
         		}
         	}
@@ -152,30 +136,45 @@ public class TileEntityLiquifier extends BaseIC2Machine implements ISidedInvento
     	
         setWorking(didSomething);
         
-        LiquidIO.fillContainer(tankOut.liquid,inv,1,3);
-    	
-        if (tankOut.liquid!=null){
-        	idOut=tankOut.liquid.itemID; 
-        	damageOut=tankOut.liquid.itemMeta;
-        	amountOutP=tankOut.liquid.amount*1000/maxCapacity;
+        if (tank.fluid!=null){
+        	fluidID=tank.fluid.fluidID;
+        	amountP=tank.fluid.amount*1000/maxCapacity;
+        	
+        	FluidManager.fillContainer(tank.fluid, inv, 1, 3);
+        }
+        else{
+        	fluidID=0;
+        	amountP=0;
         }
     }
     
-    
-    
-    //Liquid Options -- Ready for update
+
+    //IFluidHandler
 	@Override
-	public int fill(ForgeDirection from, LiquidStack resource, boolean doFill) {return 0;}
+	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {return tank.fill(resource, doFill);}
+
 	@Override
-	public int fill(int tankIndex, LiquidStack resource, boolean doFill) {return 0;}
+	public FluidStack drain(ForgeDirection from, FluidStack resource,boolean doDrain) {
+        if (resource == null || !resource.isFluidEqual(tank.getFluid()))
+        {
+            return null;
+        }
+        return tank.drain(resource.amount, doDrain);
+	}
+
 	@Override
-	public LiquidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {return tankOut.drain(maxDrain, doDrain);}
+	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+		return tank.drain(maxDrain, doDrain);
+	}
+
 	@Override
-	public LiquidStack drain(int tankIndex, int maxDrain, boolean doDrain) {return tankOut.drain(maxDrain, doDrain);}
+	public boolean canFill(ForgeDirection from, Fluid fluid) {return true;}
+
 	@Override
-	public ILiquidTank[] getTanks(ForgeDirection direction) {return new ILiquidTank[]{tankOut};}
+	public boolean canDrain(ForgeDirection from, Fluid fluid) {return true;}
+
 	@Override
-	public ILiquidTank getTank(ForgeDirection direction, LiquidStack type) {return tankOut;}	
+	public FluidTankInfo[] getTankInfo(ForgeDirection from) {return new FluidTankInfo[] { tank.getInfo() };}
 	//SidedInventory-------------------------------------------------------------------------------
 	
 	@Override
@@ -240,21 +239,30 @@ public class TileEntityLiquifier extends BaseIC2Machine implements ISidedInvento
 
 
 	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) {return false;}
+	public boolean isItemValidForSlot(int i, ItemStack itemstack) {return true;}
 
 	//SidedInventory
 	@Override
 	public int[] getAccessibleSlotsFromSide(int var1) {
-		if (var1==0)
-			return new int[]{0};
-		if (var1==1)
-			return new int[]{1};		
-		return new int[]{2,3};
+		return new int[]{0,1,2,3};
 	}
 
 	@Override
-	public boolean canInsertItem(int i, ItemStack itemstack, int j) {return true;}
+	public boolean canInsertItem(int i, ItemStack itemstack, int j) {
+		if(FluidContainerRegistry.isEmptyContainer(itemstack)){
+			if(i==1)
+				return true;
+		}
+		else if (i==0)
+			return true;
+		
+		return false;
+	}
 
 	@Override
-	public boolean canExtractItem(int i, ItemStack itemstack, int j) {return true;}
+	public boolean canExtractItem(int i, ItemStack itemstack, int j) {
+		if(i==2|i==3)
+			return true;
+		return false;
+	}
 }

@@ -6,17 +6,16 @@ import net.minecraft.item.ItemStack;
 import ic2.api.recipe.Recipes;
 
 public class TileEntityIndustrialMacerator extends TileEntityIndustrialDevice {
-
 	@Override
-	public ItemStack[] getResult(ItemStack i) {
-		if (i==null)
-			return new ItemStack[]{i,null};
-		ItemStack r= Recipes.macerator.getOutputFor(i, true);
-		return new ItemStack[]{i,r};
+	public ItemStack getResult(ItemStack[] inv,int i) {
+		if (inv[i]==null)
+			return null;
+		ItemStack r=Recipes.macerator.getOutputFor(inv[i], true);
+		return r;
 	}
-
+	
 	@Override
-	public ItemStack getResultF(ItemStack i) {
+	public ItemStack getResult(ItemStack i) {
 		if (i==null)
 			return null;
 		return Recipes.macerator.getOutputFor(i.copy(), false);

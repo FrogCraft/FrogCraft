@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
@@ -51,8 +52,9 @@ public class RenderACWindMillTop extends TileEntitySpecialRenderer{
 		//tessellator.setColorOpaque_F(f, f, f);
 		//OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)l1, (float)l2); 
   
-		bindTextureByName("/mods/FrogCraft/textures/blocks/ACWindMill_Fan.png");
-	        
+		
+		func_110628_a(new ResourceLocation("frogcraft","textures/blocks/ACWindMill_Fan.png"));
+	    
 		GL11.glPushMatrix();
 
 		
@@ -117,8 +119,7 @@ public class RenderACWindMillTop extends TileEntitySpecialRenderer{
 				float top = start_y - j;
 				float bottom = top - 1;
 
-				this.render_light(getDirection(), (right + left) / 2,
-						(bottom + top) / 2);
+				//this.render_light(getDirection(), (right + left) / 2,(bottom + top) / 2);
 
 				float texture_left = i / radius;
 				float texture_right = (i + 1) / radius;

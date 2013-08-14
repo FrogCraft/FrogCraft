@@ -1,7 +1,7 @@
 package FrogCraft.api;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.liquids.LiquidStack;
+import net.minecraftforge.fluids.FluidStack;
 
 /** This is a part of FrogCraft API allow you to access FrogCraft Recipes, you can include this as apart of your mod,
  *  do not modify any thing, otherwise it will cause unknown compatibility error or any unexpected result!
@@ -29,26 +29,17 @@ public class fcRecipes {
 	}
 	
 	/** add a new recipe for condense tower energy means eu cosumed per action*/
-	public static void addLiquidInjectorRecipe(LiquidStack in,int energy,int tick,LiquidStack out1,LiquidStack out2,LiquidStack out3,LiquidStack out4,LiquidStack out5){
+	public static void addCondenseTowerRecipe(FluidStack in,int energy,int tick,FluidStack... out){
 		try {
-		Class.forName("FrogCraft.Common.RecipeManager").getMethod("addLiquidInjectorRecipe", LiquidStack.class,int.class,int.class,LiquidStack.class,LiquidStack.class,LiquidStack.class,LiquidStack.class,LiquidStack.class)
-		.invoke(null, in,energy,tick,out1,out2,out3,out4,out5);
+		Class.forName("FrogCraft.Common.RecipeManager").getMethod("addCondenseTowerRecipe", FluidStack.class,int.class,int.class,FluidStack[].class)
+		.invoke(null, in,energy,tick,out);
 		}catch (Exception e) {}	
 	}
 	
-	/** add a new recipe for condense tower energy means eu cosumed per action
-	 * out should has at least 1 and at most 5*/
-	public static void addLiquidInjectorRecipe(LiquidStack in,int energy,int tick,LiquidStack... out){	
-		LiquidStack[] l=new LiquidStack[]{null,null,null,null,null};
-		for (int i=0;i<out.length;i++)
-			l[i]=out[i];
-		addLiquidInjectorRecipe(in,energy,tick,l[0],l[1],l[2],l[3],l[4]);
-	}
-	
 	/** Add a new recipe for Thermal Cracker  energy-per tick*/
-	public static void addThermalCrackerRecipe(ItemStack in,int energy,int tick,ItemStack out,LiquidStack outl){
+	public static void addThermalCrackerRecipe(ItemStack in,int energy,int tick,ItemStack out,FluidStack outl){
 		try {
-		Class.forName("FrogCraft.Common.RecipeManager").getMethod("addThermalCrackerRecipe", ItemStack.class,int.class,int.class,ItemStack.class,LiquidStack.class)
+		Class.forName("FrogCraft.Common.RecipeManager").getMethod("addThermalCrackerRecipe", ItemStack.class,int.class,int.class,ItemStack.class,FluidStack.class)
 		.invoke(null, in,energy,tick,out,outl);
 		}catch (Exception e) {}			
 	}

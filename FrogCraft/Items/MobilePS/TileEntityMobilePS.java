@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ic2.api.Direction;
+import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileSourceEvent;
+import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.api.network.INetworkDataProvider;
@@ -12,6 +14,7 @@ import ic2.api.network.INetworkTileEntityEventListener;
 import ic2.api.network.NetworkHelper;
 import FrogCraft.mod_FrogCraft;
 import FrogCraft.Common.*;
+import FrogCraft.Intergration.GregTech;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -35,6 +38,7 @@ public class TileEntityMobilePS extends TileEntity implements ic2.api.energy.til
 	private int fuelslot=3,chargeslot=2,tier=1,chargingRate=1;
 	private int tick=0,tickMax=150,smeltingCost=390;
 	public int topID=0,topDamage=0;
+    public boolean addedToEnergyNet;
 	public static List networkedFields;
 	
 	@Override
@@ -55,12 +59,31 @@ public class TileEntityMobilePS extends TileEntity implements ic2.api.energy.til
 	}
 	
     @Override
+    public void invalidate()
+    {
+        if (!worldObj.isRemote&this.addedToEnergyNet)
+        {
+            //EnergyNet.getForWorld(this.worldObj).removeTileEntity(this);
+            MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
+            this.addedToEnergyNet = false;
+        }
+
+        super.invalidate();
+    }
+	
+    @Override
     public void updateEntity(){  	
         super.updateEntity();
                        
         
         if (worldObj.isRemote)
             return;
+        
+        if (!this.addedToEnergyNet)
+        {
+            MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
+            this.addedToEnergyNet = true;
+        }
         
         maxEnergy=ItemBlock_MobilePS.maxCharge+maxEnergy();
         
@@ -177,7 +200,7 @@ public class TileEntityMobilePS extends TileEntity implements ic2.api.energy.til
         			vOut=2048;
         		}
         	}
-        	else if (inv[5].itemID==mod_FrogCraft.GTVUpdate&&
+        	else if (inv[5].itemID==GregTech.GTComponent&&
         			inv[5].getItemDamage()==27){
         				if (inv[5].stackSize==1)
         					vOut=512;
@@ -352,5 +375,5 @@ public class TileEntityMobilePS extends TileEntity implements ic2.api.energy.til
 	public void closeChest() {}
 
 	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) {return false;}
+	public boolean isItemValidForSlot(int i, ItemStack itemstack) {return false;}
 }

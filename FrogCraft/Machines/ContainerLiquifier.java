@@ -9,7 +9,6 @@ import FrogCraft.Common.ProductSlot;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.RenderEngine;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -18,13 +17,12 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
-import net.minecraftforge.liquids.LiquidStack;
 
 public class ContainerLiquifier extends Container {
 
 	protected TileEntityLiquifier tileEntity;
 	
-	public int idOut,damageOut,amountOutP;
+	public int fluidID,amountP;
 	public int energy=0,tick=0;
 	
 	public ContainerLiquifier (InventoryPlayer inventoryPlayer, TileEntityLiquifier te){
@@ -103,9 +101,8 @@ public class ContainerLiquifier extends Container {
     	super.addCraftingToCrafters(par1iCrafting);
     	par1iCrafting.sendProgressBarUpdate(this, 0, tileEntity.energy);
     	par1iCrafting.sendProgressBarUpdate(this, 1, tileEntity.tick);
-    	par1iCrafting.sendProgressBarUpdate(this, 2, tileEntity.idOut);  	
-    	par1iCrafting.sendProgressBarUpdate(this, 4, tileEntity.damageOut);
-    	par1iCrafting.sendProgressBarUpdate(this, 6, tileEntity.amountOutP);       	
+    	par1iCrafting.sendProgressBarUpdate(this, 2, tileEntity.fluidID);  	
+    	par1iCrafting.sendProgressBarUpdate(this, 3, tileEntity.amountP);   	
     }
     
     
@@ -115,9 +112,8 @@ public class ContainerLiquifier extends Container {
     	switch(par1){
     		case 0:{tileEntity.energy = par2;return;}	
     		case 1:{tileEntity.tick = par2;return;}
-    		case 2:{tileEntity.idOut = par2;return;}    		
-    		case 4:{tileEntity.damageOut = par2;return;}       
-    		case 6:{tileEntity.amountOutP = par2;return;}     		
+    		case 2:{tileEntity.fluidID = par2;return;}    		
+    		case 3:{tileEntity.amountP = par2;return;}        		
     	}
     	
    	}
@@ -132,16 +128,14 @@ public class ContainerLiquifier extends Container {
     		ICrafting var2 = (ICrafting)var1.next();
     		var2.sendProgressBarUpdate(this, 0, energy);   
     		var2.sendProgressBarUpdate(this, 1, tick);
-    		var2.sendProgressBarUpdate(this, 2, idOut);
-    		var2.sendProgressBarUpdate(this, 4, damageOut);    		
-     		var2.sendProgressBarUpdate(this, 6, amountOutP);    		
+    		var2.sendProgressBarUpdate(this, 2, fluidID);
+    		var2.sendProgressBarUpdate(this, 3, amountP);      		
     	}
     	
     	energy=tileEntity.energy;
     	tick=tileEntity.tick;
-    	idOut=tileEntity.idOut;	
-    	damageOut=tileEntity.damageOut;		
-    	amountOutP=tileEntity.amountOutP;
+    	fluidID=tileEntity.fluidID;	
+    	amountP=tileEntity.amountP;		
     }
 
 

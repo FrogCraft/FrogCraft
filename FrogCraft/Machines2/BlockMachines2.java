@@ -10,8 +10,6 @@ import FrogCraft.Machines2.ACWindMill.*;
 import java.util.List;
 import java.util.Random;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -19,7 +17,7 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -191,7 +189,7 @@ public class BlockMachines2 extends BlockContainer {
 
     @Override
     public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
-    	SidedIC2Machine te=(SidedIC2Machine)world.getBlockTileEntity(x, y, z);
+    	TileEntity te=world.getBlockTileEntity(x, y, z);
     	
         if (te instanceof TileEntityACWindMillTop){
         	if (((TileEntityACWindMillTop)te).settled)
@@ -211,6 +209,9 @@ public class BlockMachines2 extends BlockContainer {
             }
             IInventory inventory = (IInventory) tileEntity;
 
+            if (tileEntity instanceof TileEntityAutoWorkBench)
+            	((TileEntityAutoWorkBench)tileEntity).inv[40]=null;
+            
             for (int i = 0; i < inventory.getSizeInventory(); i++) {
                     ItemStack item = inventory.getStackInSlot(i);
 
@@ -250,7 +251,7 @@ public class BlockMachines2 extends BlockContainer {
 	
 	
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving player, ItemStack stack)
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack)
     {
         super.onBlockPlacedBy(world, x, y, z, player, stack);
         int heading = MathHelper.floor_double((double)(player.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;

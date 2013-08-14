@@ -1,8 +1,11 @@
 package FrogCraft.Items.Railgun;
 
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
 
@@ -20,8 +23,8 @@ public class DamageSource_Coin extends EntityDamageSourceIndirect{
     }
     
     @Override
-    public String getDeathMessage(EntityLiving player)
+    public ChatMessageComponent getDeathMessage(EntityLivingBase player)
     {
-    	return ((EntityPlayer)getEntity()).username+" Railguned "+((EntityPlayer)player).username;
+    	return ChatMessageComponent.func_111082_b(((EntityPlayer)getEntity()).username+" Railguned "+((EntityPlayer)player).username);
     }
 }

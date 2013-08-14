@@ -12,14 +12,14 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.liquids.LiquidStack;
 
-public class TileEntityAutoWorkBench extends SidedIC2Machine implements ISidedInventory{
+public class TileEntityAutoWorkBench extends TileEntity implements ISidedInventory{
 	public ItemStack inv[];
+
 	public LocalInventoryCrafting craftMatrix = new LocalInventoryCrafting();
 	
 	private class LocalInventoryCrafting extends InventoryCrafting {
-
+		public ItemStack[] stacks;
 		public LocalInventoryCrafting() {
 			super(new Container() {
 				@Override
@@ -27,11 +27,14 @@ public class TileEntityAutoWorkBench extends SidedIC2Machine implements ISidedIn
 					return false;
 				}
 			}, 3, 3);
+			stacks=new ItemStack[9];
 		}
 		
-		public ItemStack[] getStackList(){
-			return stackList;
-		}
+	    public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
+	    {
+	    	super.setInventorySlotContents(par1, par2ItemStack);
+	    	stacks[par1] = par2ItemStack;
+	    }
 	}
 	
 	
@@ -120,7 +123,7 @@ public class TileEntityAutoWorkBench extends SidedIC2Machine implements ISidedIn
     	if(findEmptyProductSpace()<inv[40].stackSize)
     		return;
     	
-    	ItemStack requirements[]=collectItemStack(craftMatrix.getStackList());
+    	ItemStack requirements[]=collectItemStack(craftMatrix.stacks);
 
     	for (ItemStack i:requirements){
     		int amountStillRequired=i.stackSize;
@@ -190,29 +193,30 @@ public class TileEntityAutoWorkBench extends SidedIC2Machine implements ISidedIn
             }
             tagCompound.setTag("Inventory", itemList);
     }
-	
+
 	//ISidedInventory
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
-		if (side==0|side==1)
 			return new int[]{ 0, 1, 2, 3, 4, 5, 6, 7, 8,
 							  9,10,11,12,13,14,15,16,17,
-							  18,19,20,21,22,23,24,25,26};
-		return new int[]{36,37,38,39};
+							  18,19,20,21,22,23,24,25,26,
+							  36,37,38,39};
 	}
 
 	@Override
-	public boolean canInsertItem(int i, ItemStack itemstack, int j) {
-		if (j==0|j==1)
+	public boolean canInsertItem(int slot, ItemStack itemstack, int side) {
+		if(slot<27)
 			return true;
 		return false;
 	}
 
 	@Override
-	public boolean canExtractItem(int i, ItemStack itemstack, int j) {
-		return true;
+	public boolean canExtractItem(int slot, ItemStack itemstack, int side) {
+		if (slot==36|slot==37|slot==38|slot==39)
+			return true;
+		return false;
 	}
-
+    
 	//Inventory
 	@Override
 	public int getSizeInventory() {
@@ -274,5 +278,5 @@ public class TileEntityAutoWorkBench extends SidedIC2Machine implements ISidedIn
 	public void closeChest() {}
 
 	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) {return false;}
+	public boolean isItemValidForSlot(int i, ItemStack itemstack) {return true;}
 }

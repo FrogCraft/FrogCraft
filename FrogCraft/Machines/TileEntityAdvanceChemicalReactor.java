@@ -6,8 +6,8 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.ForgeDirection;
-import FrogCraft.*;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+
 import FrogCraft.Common.*;
 
 public class TileEntityAdvanceChemicalReactor extends BaseIC2Machine implements ISidedInventory{
@@ -21,7 +21,7 @@ public class TileEntityAdvanceChemicalReactor extends BaseIC2Machine implements 
 	int curRecipeIndex=-1;
 	
 	public TileEntityAdvanceChemicalReactor() {
-		super(128, 50000);
+		super(128, 10000);
 		inv=new ItemStack[13];
 	}
 	
@@ -49,33 +49,28 @@ public class TileEntityAdvanceChemicalReactor extends BaseIC2Machine implements 
         	
         	if(inv[12]!=null&&curRecipe[10]!=null&&inv[12].isItemEqual(curRecipe[10]))
         		tickMax=curRecipeInfo[2]; //Catalyst is needed
-        	else if(curRecipe[10]==null&&inv[12]!=null)
-        		tickMax=-1; 			  //Wrong condition  	
+        	else if(curRecipe[10]!=null&&inv[12]==null){
+        		tickMax=-1;} 			  //Wrong condition  	
         	else if(curRecipe[10]!=null&&inv[12]!=null&&!inv[12].isItemEqual(curRecipe[10]))
         		tickMax=-1; 			  //Wrong condition         	
         	else
         		tickMax=curRecipeInfo[1]; //No catalyst
 
 
-        	
-        	if((tickMax>0&&energy>=curRecipeInfo[0]&&checkOutput(curRecipe)&&checkCell(curRecipe))
-        			|(tickMax>0&&tick>0)){ //Check the input/output is available or not
+        	if(tickMax>0&&energy>=curRecipeInfo[0]&&((checkOutput(curRecipe)&&checkCell(curRecipe))|(tick>0))){
         		setWorking(true);
         		
-        		onInventoryChanged();
+        		//
         		
             	progress=tick*100/tickMax;
         		if (progress>100)
         			progress=100;
         	
+        		energy-=curRecipeInfo[0];
         		tick++;
-        		energy-=curRecipeInfo[0]/tickMax;
-        		if(tick>tickMax){ 
+        		
+        		if(tick>=tickMax){ 
         			tick=0;
-        			int m=(curRecipeInfo[0]/tickMax)*tickMax;
-        			m=curRecipeInfo[0]-m;
-        			m-=curRecipeInfo[0]/tickMax;
-        			energy-=m;
         			
         			if (curRecipe[11]!=null){
         				if(inv[10].stackSize>curRecipe[11].stackSize)
@@ -103,7 +98,8 @@ public class TileEntityAdvanceChemicalReactor extends BaseIC2Machine implements 
         					else
         						inv[i+5].stackSize+=curRecipe[i+5].stackSize;
         				}
-        			}
+        			}    
+        			onInventoryChanged();
         		}
         	}
         	else{
@@ -276,21 +272,30 @@ public class TileEntityAdvanceChemicalReactor extends BaseIC2Machine implements 
 
 
 	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) {return true;}
+	public boolean isItemValidForSlot(int i, ItemStack itemstack) {return true;}
 
 	//SidedInventory
 	@Override
 	public int[] getAccessibleSlotsFromSide(int var1) {
-		if (var1==0)
-			return new int[]{10};
-		if (var1==1)
-			return new int[]{0,1,2,3,4};
-		return new int[]{5,6,7,8,9,11};
+		return new int[]{0,1,2,3,4,5,6,7,8,9,10,11};
 	}
 
 	@Override
-	public boolean canInsertItem(int i, ItemStack itemstack, int j) {return true;}
+	public boolean canInsertItem(int slot, ItemStack itemstack, int side) {
+		if(FluidContainerRegistry.isEmptyContainer(itemstack)){
+			if(slot==10)
+				return true;
+		}
+		else if(slot==0|slot==1|slot==2|slot==3|slot==4)
+				return true;
+
+		return false;
+	}
 
 	@Override
-	public boolean canExtractItem(int i, ItemStack itemstack, int j) {return true;}
+	public boolean canExtractItem(int slot, ItemStack itemstack, int side) {
+		if(slot==5|slot==6|slot==7|slot==8|slot==9|slot==11)
+			return true;
+		return false;
+	}
 }

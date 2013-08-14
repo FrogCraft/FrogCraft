@@ -2,6 +2,7 @@ package FrogCraft.Machines;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
@@ -32,7 +33,7 @@ public class GuiAdvanceChemicalReactor extends GuiContainer {
                     int par3) {
             //draw your Gui here, only thing you need to change is the path
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            this.mc.renderEngine.bindTexture("/mods/FrogCraft/textures/gui/Gui_AdvanceChemicalReactor.png");
+            mc.renderEngine.func_110577_a(new ResourceLocation("frogcraft","/textures/gui/Gui_AdvanceChemicalReactor.png"));
             int x = (width - xSize) / 2;
             int y = (height - ySize) / 2;
             this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
@@ -42,7 +43,7 @@ public class GuiAdvanceChemicalReactor extends GuiContainer {
             	this.drawTexturedModalRect(x + 148, y + 23 +14 - tileentity.elevel, 176, 17+14- tileentity.elevel, 10, tileentity.elevel);
             
             
-            drawTexturedModalRect(x + 73, y + 40, 176, 0, 29, tileentity.progress*9/100);
+            drawTexturedModalRect(x + 73, y + 40, 176, 0, 30, tileentity.progress*9/100);
     }
 
     

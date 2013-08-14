@@ -53,7 +53,7 @@ public class SidedIC2Machine extends TileEntity implements IWrenchable, INetwork
     	if (!this.created)
         {
             this.created = true;
-            NetworkHelper.requestInitialData(this);
+            //NetworkHelper.requestInitialData(this);
             NetworkHelper.announceBlockUpdate(worldObj, xCoord, yCoord, zCoord);
             
         }
