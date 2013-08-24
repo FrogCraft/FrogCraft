@@ -36,7 +36,7 @@ public class GuiThermalCracker extends GuiLiquids {
                 
 		this.drawLiquidBar(143, 23, 16, 47, tileentity.fluidID, tileentity.amountP/10);
 
-		mc.renderEngine.func_110577_a(new ResourceLocation("frogcraft","/textures/gui/Gui_ThermalCracker.png"));     
+		mc.renderEngine.func_110577_a(new ResourceLocation("frogcraft:textures/gui/Gui_ThermalCracker.png"));     
 		this.drawTexturedModalRect(143, 23, 176, 0, 16, 47);
               	
 
@@ -56,7 +56,7 @@ public class GuiThermalCracker extends GuiLiquids {
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
 		//draw your Gui here, only thing you need to change is the path
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.renderEngine.func_110577_a(new ResourceLocation("frogcraft","/textures/gui/Gui_ThermalCracker.png"));
+		mc.renderEngine.func_110577_a(new ResourceLocation("frogcraft:textures/gui/Gui_ThermalCracker.png"));
 		int x = (width - xSize) / 2;
 		int y = (height - ySize) / 2;
 		this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);

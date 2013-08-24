@@ -118,7 +118,7 @@ public class RenderRailgun implements IItemRenderer {
 	
 	void renderCoin(){
 		Tessellator tessellator = Tessellator.instance;
-		mc.renderEngine.func_110577_a(new ResourceLocation("frogcraft","/textures/render/Coin.png"));
+		mc.renderEngine.func_110577_a(new ResourceLocation("frogcraft:textures/render/Coin.png"));
         GL11.glPushMatrix();
         //GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glTranslatef(1.9F, 1.9F, 0.5F);

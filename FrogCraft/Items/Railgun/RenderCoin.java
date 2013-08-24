@@ -25,7 +25,7 @@ public class RenderCoin extends Render
     {
     	for (int r=0;r<2;r++){
     		if (r==0)
-    			func_110776_a(new ResourceLocation("frogcraft","/textures/render/Coin.png"));
+    			func_110776_a(new ResourceLocation("frogcraft:textures/render/Coin.png"));
     		else
     			func_110776_a(new ResourceLocation("textures/entity/creeper/creeper_armor.png"));
     		

@@ -35,7 +35,7 @@ public class GuiLiquifier extends GuiLiquids {
     	
     	drawLiquidBar(143, 23, 16, 47, te.fluidID, te.amountP/10);
 
-    	mc.renderEngine.func_110577_a(new ResourceLocation("frogcraft","/textures/gui/Gui_Liquifier.png"));      
+    	mc.renderEngine.func_110577_a(new ResourceLocation("frogcraf:textures/gui/Gui_Liquifier.png"));      
     	this.drawTexturedModalRect(143, 23, 176, 0, 16, 47);
       	
 
@@ -55,7 +55,7 @@ public class GuiLiquifier extends GuiLiquids {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2,int par3) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.renderEngine.func_110577_a(new ResourceLocation("frogcraft","/textures/gui/Gui_Liquifier.png"));
+		mc.renderEngine.func_110577_a(new ResourceLocation("frogcraft:textures/gui/Gui_Liquifier.png"));
 		int x = (width - xSize) / 2;
 		int y = (height - ySize) / 2;
 		this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
