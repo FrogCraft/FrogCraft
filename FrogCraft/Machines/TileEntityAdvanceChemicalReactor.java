@@ -252,7 +252,7 @@ public class TileEntityAdvanceChemicalReactor extends BaseIC2Machine implements 
 	}
 
 	@Override
-	public String getInvName() {return "tileentityThermalCracker";}
+	public String getInvName() {return "tileentityAdvancedChemicalReactor";}
 
 	@Override
 	public boolean isInvNameLocalized() {return false;}

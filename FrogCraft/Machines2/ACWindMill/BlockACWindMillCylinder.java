@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 
 public class BlockACWindMillCylinder extends BlockFence{	
 	public BlockACWindMillCylinder(int id){
-		super(id, "FrogCraft:ACWindMill_Cylinder", Material.wood);
+		super(id, "FrogCraft:ACWindMill_Cylinder", Material.iron);
 		setHardness(2.0F);
 		setResistance(5.0F);
 		setStepSound(new StepSound("stone", 1.0F, 1.5F));

@@ -25,7 +25,7 @@ public class RecipeRegister {
 			SteelACWindMill=true;
 	
 	public static boolean ePC,eAP,eIC,eIM,eIE,eIF,eHSU,eUHSU,eEVT,eL,eCT,eTC,eACR, //Machine1
-						  eACWM,eAWB,                                               //Machine2
+						  eACWM,eAWB,eCF,                                          //Machine2
 						  eR,eMPS,eNH3C60K,eNH3C180K,eNH3C360K;                    //Other stuff
 	
 	public static void loadRecipes(){
@@ -130,19 +130,25 @@ public class RecipeRegister {
 
 		
 		//WindMill
-		if(GregTech.isGTLoaded&&SteelACWindMill){
-			if(eACWM)ic2.regShaped(new ItemStack(fcItems.fan),new Object[]{" i "," f ","i i",'f',"plateSteel",'i',"stickSteel"});
-			if(eACWM)ic2.regShaped(new ItemStack(fcItems.acwindmillcylinder,12),new Object[]{"f f","f f","f f",'f',"stickSteel"});
-		}else{
-			if(eACWM)ic2.regShaped(new ItemStack(fcItems.fan),new Object[]{" f "," f ","f f",'f',ic2.getItem("ironFence")});
-			if(eACWM)ic2.regShaped(new ItemStack(fcItems.acwindmillcylinder,12),new Object[]{"f f","f f","f f",'f',ic2.getItem("ironFence")});			
+		if(eACWM){
+			if(GregTech.isGTLoaded&&SteelACWindMill){
+				ic2.regShaped(new ItemStack(fcItems.fan),new Object[]{" i "," f ","i i",'f',"plateSteel",'i',"stickSteel"});
+				ic2.regShaped(new ItemStack(fcItems.acwindmillcylinder,12),new Object[]{"f f","f f","f f",'f',"stickSteel"});
+			}else{
+				ic2.regShaped(new ItemStack(fcItems.fan),new Object[]{" f "," f ","f f",'f',ic2.getItem("ironFence")});
+				ic2.regShaped(new ItemStack(fcItems.acwindmillcylinder,12),new Object[]{"f f","f f","f f",'f',ic2.getItem("ironFence")});			
+			}
+			//Top
+			ic2.regShaped(new ItemStack(fcItems.machine2ID,1,2),new Object[]{"crc","rwr","crc", 'c', "plateAlloyAdvanced",'w',ic2.getItem("windMill"),'r',"dyeRed"});
+			//Base   
+			ic2.regShaped(new ItemStack(fcItems.machine2ID,1,3),new Object[]{" i ","cac"," e ", 'c', "calclavia:WIRE",'a',"craftingRawMachineTier02",'e',"craftingCircuitTier02",'i',new ItemStack(fcItems.acwindmillcylinder)});        	
 		}
-		//Top
-		if(eACWM)ic2.regShaped(new ItemStack(fcItems.machine2ID,1,2),new Object[]{"crc","rwr","crc", 'c', "plateAlloyAdvanced",'w',ic2.getItem("windMill"),'r',"dyeRed"});
-        //Base   
-		if(eACWM)ic2.regShaped(new ItemStack(fcItems.machine2ID,1,3),new Object[]{" i ","cac"," e ", 'c', "calclavia:WIRE",'a',"craftingRawMachineTier02",'e',"craftingCircuitTier02",'i',new ItemStack(fcItems.acwindmillcylinder)});        	
 		//AutoWorkBench
 		if(eAWB)ic2.regShaped(new ItemStack(fcItems.machine2ID,1,4),new Object[]{"ttt","tct","ttt",'t',"ingotTin",'c',Block.workbench});
+		
+		//Combustion Furnace
+		if(eCF)ic2.regShaped(new ItemStack(fcItems.machine2ID,1,5), new Object[]{"iii","rer","cgc",'g',ic2.getItem("generator"),'e',"craftingExtractor",'c',ic2.getItem("cell"),'i',refinedIron,'r',"plateAlloyAdvanced"});
+		if(eCF)ic2.regShaped(new ItemStack(fcItems.machine2ID,1,5), new Object[]{"iii","rer","cgc",'g',ic2.getItem("generator"),'e',"craftingExtractor",'c',ic2.getItem("cell"),'i',aluminium,'r',"plateAlloyAdvanced"});
 		
         //RailGun
         if(eR)ic2.regShaped(new ItemStack(fcItems.miscsID,1,2),new Object[]{"scs","sts","scs",'s',"craftingSuperconductor",'c',"crafting360kCoolantStore",'t',new ItemStack(fcItems.machineID,1,8)});
@@ -165,24 +171,8 @@ public class RecipeRegister {
         ic2.regShaped(new ItemStack(fcItems.ThBattery), new Object[]{"epe","pop","ere",'o',"ingotThorium",'r',ic2.getItem("reactorReflectorThick"),'e',"craftingCircuitTier04",'p',"plateLead"});
 	}
 		
-	static void loadMachineRecipes(){
-		//Condense Tower
-		if(GregTech.isGTLoaded){
-		RecipeManager.addCondenseTowerRecipe(FluidManager.getFluid("liquifiedair", 12), 60, 20,  			    //Liquefied Air
-				                             FluidManager.getFluid("co2", 1),           						//CO2
-									         FluidManager.getFluid("Nitrogen",7),								//N2
-									         FluidManager.getFluid("oxygen", 3),           						//O2
-									         FluidManager.getFluid("argon", 1));           						//Ar
-										
-		
-		RecipeManager.addCondenseTowerRecipe(FluidManager.getFluid("coaltar", 22), 40, 20,  			    //CoalTar
-				FluidManager.getFluid("benzene", 2),           						//C6H6
-				FluidManager.getFluid("co", 5),								//CO
-				FluidManager.getFluid("Methane",10),           					//CH4
-				FluidManager.getFluid("Hydrogen",5));								//H2
-		}
-		
-		//AdvanceChemicalReactor
+	static void loadMachineRecipes(){	
+		//AdvanceChemicalReactor----------------------------------------------------------------
 		//CaO+CO2=Ca(OH)2 237104015
 		RecipeManager.addAdvanceChemicalReactorRecipe(ic2.getItem("waterCell"), new ItemStack(fcItems.dustsID,1,0),null, null, null,new ItemStack(fcItems.dustsID,1,4), null, null, null, null,null,null,ic2.getItem("cell"), 10, 10,-1);
 		//Ca(OH)2+CO2=CaCO3+H2O
@@ -225,7 +215,7 @@ public class RecipeRegister {
 		RecipeManager.addAdvanceChemicalReactorRecipe(GregTech.getGTCell(11, 1),fcItems.getItem(cls.cell,"cell_Fluorine",1),null,null,null,fcItems.getItem(cls.dust,"CaF2",1),null,null,null,null,null,null,ic2.getItem("cell",2),10,10,-1);		
 		
 		
-		//Thermal Cracker
+		//Thermal Cracker----------------------------------------------------------------------
 		//Coal
 		RecipeManager.addThermalCrackerRecipe(ic2.getItem("coalDust"), 48, 80, new ItemStack(fcItems.miscsID,1,0), FluidManager.getFluid("CoalTar", 200));
 		RecipeManager.addThermalCrackerRecipe(GregTech.getGTDust(240, 1), 48, 80, new ItemStack(fcItems.miscsID,1,0), FluidManager.getFluid("CoalTar", 200));		
@@ -236,6 +226,34 @@ public class RecipeRegister {
 	
 		//CaCO3->CaO+CO2
 		RecipeManager.addThermalCrackerRecipe(GregTech.getGTDust(4, 1), 30, 100, new ItemStack(fcItems.dustsID,1,0), FluidManager.getFluid("CO2", 1000));
+	
+	
+		
+		
+		//Combustion Furnace--------------------------------------------------------------------
+		RecipeManager.addCombustionFurnaceRecipe("dustSulfur", null, FluidManager.getFluid("SO2", 1000));
+		RecipeManager.addCombustionFurnaceRecipe("dustCoal", null, FluidManager.getFluid("CO2", 1000));
+		RecipeManager.addCombustionFurnaceRecipe("dustCharcoal", null, FluidManager.getFluid("CO2", 1000));
+		RecipeManager.addCombustionFurnaceRecipe("gemCoal", null, FluidManager.getFluid("CO2", 1000));
+		RecipeManager.addCombustionFurnaceRecipe(new ItemStack(Item.coal,1,1), null, FluidManager.getFluid("CO2", 1000));		
+		
+		
+		//Condense Tower------------------------------------------------------------------------
+		if(GregTech.isGTLoaded){
+		RecipeManager.addCondenseTowerRecipe(FluidManager.getFluid("liquifiedair", 12), 60, 20,  			    //Liquefied Air
+				                             FluidManager.getFluid("co2", 1),           						//CO2
+									         FluidManager.getFluid("Nitrogen",7),								//N2
+									         FluidManager.getFluid("oxygen", 3),           						//O2
+									         FluidManager.getFluid("argon", 1));           						//Ar
+										
+		
+		RecipeManager.addCondenseTowerRecipe(FluidManager.getFluid("coaltar", 22), 40, 20,  			    //CoalTar
+				FluidManager.getFluid("benzene", 2),           						//C6H6
+				FluidManager.getFluid("co", 5),								//CO
+				FluidManager.getFluid("Methane",10),           					//CH4
+				FluidManager.getFluid("Hydrogen",5));								//H2
+		}
+		
 	}
 	
 	static void loadGTMachineRecipes(){

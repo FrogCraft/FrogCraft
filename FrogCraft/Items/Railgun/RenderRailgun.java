@@ -36,12 +36,7 @@ public class RenderRailgun implements IItemRenderer {
 		if(type==ItemRenderType.EQUIPPED_FIRST_PERSON)
 			renderFirstPerson(item);
 		else
-			renderThirdPerson((EntityPlayer)data[1],item);
-		if (Minecraft.getMinecraft().gameSettings.thirdPersonView==0&Minecraft.getMinecraft().thePlayer.inventory.getCurrentItem()==item){ 
-        	
-            return ;
-        }
-		
+			renderThirdPerson((EntityPlayer)data[1],item);	
 	}
 		
 	public void renderIcon(double par1, double par2, Icon par3Icon, double par4, double par5)

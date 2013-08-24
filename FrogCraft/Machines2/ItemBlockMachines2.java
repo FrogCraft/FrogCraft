@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 
 public class ItemBlockMachines2 extends ItemBlock {
 
-	public final static String[] subNames = {"LiquidOutput","CondenseTowerCylinder","ACWindMillTop","ACWindMillBase","AutoWorkBench"};
+	public final static String[] subNames = {"LiquidOutput","CondenseTowerCylinder","ACWindMillTop","ACWindMillBase","AutoWorkBench","CombustionFurnace"};
 
 	public ItemBlockMachines2(int id) {
 		super(id);
@@ -18,7 +18,7 @@ public class ItemBlockMachines2 extends ItemBlock {
 
 	public void addInformation(ItemStack item, EntityPlayer player, List list, boolean par4) {
 		int dmg=item.getItemDamage();
-		if (dmg==3){list.add("Out: 32");}
+		if (dmg==3){list.add("Out: 8");}
 	}
 	
 	@Override

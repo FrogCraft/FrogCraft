@@ -123,6 +123,7 @@ public class mod_FrogCraft {
 
         RecipeRegister.eACWM=config.get("Enable", "AcademicCityWindMill", true).getBoolean(true);
         RecipeRegister.eAWB=config.get("Enable", "AutoWorkBench", true).getBoolean(true);  
+        RecipeRegister.eCF=config.get("Enable", "CombustionFurnace", true).getBoolean(true);  
         
         RecipeRegister.eR=config.get("Enable", "Railgun", true).getBoolean(true);
         RecipeRegister.eMPS=config.get("Enable", "MobilePowerSupply", true).getBoolean(true);  
@@ -259,6 +260,7 @@ public class mod_FrogCraft {
 		GameRegistry.registerTileEntity(TileEntityACWindMillBase.class, "containerACWindMillBase");		
 		GameRegistry.registerTileEntity(TileEntityLiquidOutput.class, "containerLiquidOutput");
 		GameRegistry.registerTileEntity(TileEntityAutoWorkBench.class, "containerAutoWorkBench");
+		GameRegistry.registerTileEntity(TileEntityCombustionFurnace.class, "containerCombustionFurnace");
 		
 		GameRegistry.registerTileEntity(TileEntityMobilePS.class, "containerMobilePS");
 		

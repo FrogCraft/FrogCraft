@@ -63,14 +63,16 @@ public class AdvanceChemicalReactorRecipeHandler extends TemplateRecipeHandler{
 	public void drawExtras(int recipe){
 		Cached_Recipe rec=(Cached_Recipe)arecipes.get(recipe);
 		
-		drawString(StatCollector.translateToLocal("nei.euTotal")+":"+String.valueOf(rec.eu),28,80, 4210752,false);
+		drawString(StatCollector.translateToLocal("nei.euTick")+":"+String.valueOf(rec.eu),28,90, 4210752,false);
+
 		if (rec.tick<0){
-			drawString(StatCollector.translateToLocal("nei.euTick")+":"+String.valueOf(rec.eu/rec.tickWithCatalyst),28,90, 4210752,false);	
+			drawString(StatCollector.translateToLocal("nei.euTotal")+":"+String.valueOf(rec.eu*rec.tickWithCatalyst),28,80, 4210752,false);	
 			drawString(StatCollector.translateToLocal("nei.tick")+":"+String.valueOf(rec.tickWithCatalyst),28,100, 4210752,false);
 			drawString(StatCollector.translateToLocal("nei.catalystRequird"),28,110, 4210752,false);
 		}
 		else{
-			drawString(StatCollector.translateToLocal("nei.euTick")+":"+String.valueOf(rec.eu/rec.tick),28,90, 4210752,false);	
+			drawString(StatCollector.translateToLocal("nei.euTotal")+":"+String.valueOf(rec.eu*rec.tick),28,80, 4210752,false);	
+			drawString(StatCollector.translateToLocal("nei.tick")+":"+String.valueOf(rec.tick),28,100, 4210752,false);	
 			if (rec.tickWithCatalyst>1)
 				drawString(StatCollector.translateToLocal("tickWithCatalyst")+":"+String.valueOf(rec.tickWithCatalyst),28,110, 4210752,false);
 		}

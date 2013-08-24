@@ -7,6 +7,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.*;
+import net.minecraftforge.oredict.OreDictionary;
 
 
 public class RecipeManager {
@@ -31,6 +32,8 @@ public class RecipeManager {
 	/** {euPerTick,tick,tickWithCatalyst} */
 	public static List<int[]> advanceChemicalReactorRecipeInfo =  new ArrayList<int[]>();	
 	
+	/** Reactant, OutputSolid, OutputLiquid*/
+	public static List<Object[]> combustionFurnaceRecipes = new ArrayList<Object[]>();
 	//AdvanceChemicalReactor
 	/** Add a recipe to Advance Chemical Reactor*/
 	public static void addAdvanceChemicalReactorRecipe(ItemStack r1,ItemStack r2,ItemStack r3,ItemStack r4,ItemStack r5,
@@ -210,6 +213,31 @@ public class RecipeManager {
 		}
 		return null;
 	}
+	
+	//Combustion Furnace---------------------------------------------------------------------------------------------------------------------
+	/** Add a new recipe for Combustion Furnace, the input must be a fuel*/
+	public static void addCombustionFurnaceRecipe(ItemStack in,ItemStack out,FluidStack outl){
+		combustionFurnaceRecipes.add(new Object[]{in,out,outl});
+	}
+	/** Add a new recipe for Combustion Furnace, the input must be a fuel, this is a ore dictionary version*/
+	public static void addCombustionFurnaceRecipe(String in,ItemStack out,FluidStack outl){
+		for (ItemStack itemStack: OreDictionary.getOres(in))
+			addCombustionFurnaceRecipe(itemStack,out,outl);
+	}
+	
+	/** Find a specific recipe for Combustion Furnace*/
+	public static Object[] getCombustionFurnaceRecipe(ItemStack in){
+		if(in==null)
+			return null;
+		
+		for (Object[] rec:combustionFurnaceRecipes){
+			ItemStack recIn=(ItemStack) rec[0];
+			if(recIn.isItemEqual(in))
+				return rec;  //Find the match recipe
+		}
+		return null;
+	}
+	
 	
 	//Mobile Power Supply
 	/** Add a custom solar panel supply for Mobile Power Supply

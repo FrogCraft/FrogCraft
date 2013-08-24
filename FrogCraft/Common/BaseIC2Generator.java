@@ -1,40 +1,53 @@
 package FrogCraft.Common;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 import ic2.api.Direction;
 import ic2.api.energy.event.*;
 
-public class BaseIC2Generator extends BaseIC2Machine implements ic2.api.energy.tile.IEnergySource{
+public class BaseIC2Generator extends BaseIC2NetTileEntity implements ic2.api.energy.tile.IEnergySource{
 	private EnergyTileSourceEvent sourceEvent;
-	public BaseIC2Generator(int energyMax) {
-		super(0, energyMax);
+	public int maxEnergy,
+	           energy=0;
+	public BaseIC2Generator(int maxEnergy) {
+		this.maxEnergy=maxEnergy;
 	}
 
-	@Override public void updateEntity(){
+	@Override
+	public void updateEntity(){
 		super.updateEntity();
 	}
 	
-	void out(int voltage,int power){
-		if (voltage>power){
-			out(power);
-			return;
-		}
-		
+    @Override
+    public void writeToNBT(NBTTagCompound tagCompound) {
+    	super.writeToNBT(tagCompound);
+    	tagCompound.setInteger("energy", energy);  
+    }
+    
+    @Override
+    public void readFromNBT(NBTTagCompound tagCompound) {
+    	super.readFromNBT(tagCompound);
+    	energy=tagCompound.getInteger("energy");
+    }
+	
+	/**Output amounts of energy, return energy not being emitted*/
+	protected int out(int voltage,int power){
+		if (voltage>power)
+			return voltage-power;
 		
 		int num = power/voltage;
 		for (int i=0;i<num;i++){
 			out(voltage);
 		}
 		
-		if (num*voltage<power){
-			out(num*voltage-power);
-		}
+		return num*voltage-power;
 	}
 	
-	void out(int amount){
-		if (amount>energy)
-			amount=energy;
+	/**Output a packet of energy*/
+	protected void out(int amount){	
+		if (energy<amount)
+			return;
 		
 		sourceEvent=new EnergyTileSourceEvent(this,amount);
 		MinecraftForge.EVENT_BUS.post(sourceEvent);		
@@ -50,10 +63,4 @@ public class BaseIC2Generator extends BaseIC2Machine implements ic2.api.energy.t
 	public int getMaxEnergyOutput() {
 		return Integer.MAX_VALUE;
 	}
-	
-    @Override
-    public boolean acceptsEnergyFrom(TileEntity var1, Direction var2)
-    {
-        return false;
-    }
 }

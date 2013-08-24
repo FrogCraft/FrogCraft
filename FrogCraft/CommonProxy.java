@@ -45,6 +45,8 @@ public class CommonProxy implements IGuiHandler {
         		return new ContainerLiquidOutput(player.inventory, (TileEntityLiquidOutput) tileEntity);
         	if (tileEntity instanceof TileEntityAutoWorkBench)
         		return new ContainerAutoWorkBench(player.inventory, (TileEntityAutoWorkBench) tileEntity);
+        	if (tileEntity instanceof TileEntityCombustionFurnace)
+        		return new ContainerCombustionFurnace(player.inventory,(TileEntityCombustionFurnace) tileEntity);
         	
         	return null;
         }
@@ -78,7 +80,9 @@ public class CommonProxy implements IGuiHandler {
         		return new GuiLiquidOutput(player.inventory, (TileEntityLiquidOutput) tileEntity);
         	if (tileEntity instanceof TileEntityAutoWorkBench)
         		return new GuiAutoWorkBench(player.inventory, (TileEntityAutoWorkBench) tileEntity);
-      
+        	if (tileEntity instanceof TileEntityCombustionFurnace)
+        		return new GuiCombustionFurnace(player.inventory,(TileEntityCombustionFurnace) tileEntity);
+        	
         	return null;
         }
 

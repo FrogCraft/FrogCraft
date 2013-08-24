@@ -111,12 +111,15 @@ public class TileEntityAutoWorkBench extends TileEntity implements ISidedInvento
 
 	//TileEntity
     @Override
+	public void onInventoryChanged(){
+    	inv[40]=getCraftingResult();    	
+    }
+    
+    @Override
     public void updateEntity()
     {
     	super.updateEntity();
 
-    	inv[40]=getCraftingResult();
-    	
     	if(inv[40]==null)
     		return; 		//When the recipe mismatch
     	
@@ -147,7 +150,7 @@ public class TileEntityAutoWorkBench extends TileEntity implements ISidedInvento
     			inv[i]=inv[40].copy();
     			return;
     		}
-    		else if(inv[i].stackSize<inv[i].getMaxStackSize()){
+    		else if(inv[i].isItemEqual(inv[40])&&inv[i].stackSize<inv[i].getMaxStackSize()){
     			inv[i].stackSize+=amountStillLeft;
     			if(inv[i].stackSize>inv[i].getMaxStackSize())
     				amountStillLeft=inv[i].getMaxStackSize()-inv[i].stackSize;
@@ -175,6 +178,7 @@ public class TileEntityAutoWorkBench extends TileEntity implements ISidedInvento
                             inv[slot] = ItemStack.loadItemStackFromNBT(tag);
                     }
             }
+            onInventoryChanged();
     }
 
     @Override

@@ -1,20 +1,20 @@
-package FrogCraft.Machines;
+package FrogCraft.Machines2;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.*;
-import FrogCraft.*;
+
 import FrogCraft.Common.*;
 
-public class TileEntityThermalCracker extends BaseIC2Machine implements ISidedInventory,IFluidHandler{
-	public int maxCapacity=50000;
+public class TileEntityCombustionFurnace extends BaseIC2Generator implements ISidedInventory,IFluidHandler{
+	public int maxCapacity=10000;
 	
-	public int progress=0,tick=0;
+	public int progress=0,tick=0,burnTime=0;
 	public ItemStack[] inv;
 	public int fluidID,amountP;
 	public fcFluidTank tank=new fcFluidTank(maxCapacity); 
@@ -23,8 +23,12 @@ public class TileEntityThermalCracker extends BaseIC2Machine implements ISidedIn
 	
     @Override
 	public void onInventoryChanged(){
+    	if(isWorking())
+    		return;
+    	burnTime=TileEntityFurnace.getItemBurnTime(inv[0])/4;
+    	
     	//Get the recipe
-    	Object[] nRec=RecipeManager.getThermalCrackerRecipe(inv[0]); 
+    	Object[] nRec=RecipeManager.getCombustionFurnaceRecipe(inv[0]); 
     	if(nRec!=recipe){
     		tick=0;
     		progress=0;
@@ -32,75 +36,6 @@ public class TileEntityThermalCracker extends BaseIC2Machine implements ISidedIn
     	recipe=nRec;
     }
 	
-    void dowork(){
-    	boolean canwork=canwork(recipe);
-    	
-    	setWorking(canwork);
-    	
-		if (!canwork){
-        	tick=0;
-        	progress=0;
-			return;
-		}
-		
-		int tickMax=(Integer)recipe[4];
-		
-		//Update progress
-		progress=100*tick/tickMax;
-		
-		tick+=1;
-		energy-=(Integer)recipe[3];
-		
-		if (tick<tickMax)
-			return;
-		
-		tick=0;
-		progress=0;
-		
-		//Consume Input
-		inv[0].stackSize-=((ItemStack)recipe[0]).stackSize;
-		if (inv[0].stackSize==0)
-			inv[0]=null;
-		
-		//Make products
-		if(recipe[1]!=null){
-			if(inv[1]==null)
-				inv[1]=((ItemStack)recipe[1]).copy();
-			else
-				inv[1].stackSize+=((ItemStack)recipe[1]).stackSize;
-		}
-		
-		fill((FluidStack)recipe[2]);
-    }
-    
-    boolean canwork(Object[] recipe){
-    	//Validate Recipe
-    	if (recipe==null) 
-    		return false;
-    	
-    	//Check energy
-		if (energy<(Integer)recipe[3])
-			return false;
-    	
-		ItemStack product=(ItemStack)recipe[1];
-		
-		//Check product slot
-    	if (inv[1]!=null&product!=null){
-    		//Stack type mismatch
-    		if (!product.isItemEqual(inv[1])|
-    			inv[1].stackSize>inv[1].getMaxStackSize()-product.stackSize)
-    			return false;
-    	}
-    	else if(product==null&&inv[1]!=null)
-    		return false;
-    	
-    	
-    	if (!canFill(((FluidStack)recipe[2])))
-    		return false;
-    	
-    	return true;
-    }
-    
 	public void fill(FluidStack fluid){
 		if (fluid==null)
 			return;
@@ -123,22 +58,100 @@ public class TileEntityThermalCracker extends BaseIC2Machine implements ISidedIn
 		return false;
 	}
 	
-    //TileEntity--------------------------------------------------------------------
-	public TileEntityThermalCracker() {
-		super(128, 10000);
+    void dowork(){	
+    	setWorking(true);
+    	
+		//Update progress
+		progress=100*tick/burnTime;
+		
+		tick+=1;
+		energy+=10;
+		if (energy>maxEnergy)
+			energy=maxEnergy;
+		
+		if (tick<burnTime)
+			return;
+		
+		tick=0;
+		progress=0;
+		setWorking(false);
+		onInventoryChanged();
+		
+		if(recipe==null)
+			return;
+			
+		//Make products
+		if(recipe[1]!=null){
+			if(inv[1]==null)
+				inv[1]=((ItemStack)recipe[1]).copy();
+			else
+				inv[1].stackSize+=((ItemStack)recipe[1]).stackSize;
+		}
+		
+		fill((FluidStack)recipe[2]);
+}
+    
+    boolean canwork(Object[] recipe){
+    	//Validate Fuel
+    	if (burnTime==0) 
+    		return false; //Not a fuel
+    	
+    	if (recipe==null)
+    		return true;
+    	
+		ItemStack product=(ItemStack)recipe[1];
+		
+		//Check product slot
+    	if (inv[1]!=null&product!=null){
+    		//Stack type mismatch
+    		if (!product.isItemEqual(inv[1])|
+    			inv[1].stackSize>inv[1].getMaxStackSize()-product.stackSize)
+    			return false;
+    	}
+    	else if(product==null&&inv[1]!=null)
+    		return false;
+    	
+    	
+    	if (!canFill(((FluidStack)recipe[2])))
+    		return false;
+    	
+    	return true;
+    }
+	
+	//TileEntity-------------------------------------------------------
+	public TileEntityCombustionFurnace() {
+		//Can store 10000Eu
+		super(10000);
 		inv = new ItemStack[4];
 	}
-	
+
     @Override
     public void updateEntity(){  	
         super.updateEntity();
-    	
-        if (worldObj.isRemote)
-            return;
-       
         
-        if (inv[0]!=null)
+        if (worldObj.isRemote)
+        	return;
+
+        if(isWorking())
         	dowork();
+        else if (inv[0]!=null){
+        	boolean canwork=canwork(recipe);
+        	
+        	setWorking(canwork);
+        	
+    		if (canwork){
+    			//Consume Input
+    			inv[0].stackSize-=1;
+    			if (inv[0].stackSize==0)
+    				inv[0]=null;    			
+    		}
+    		else
+    		{
+            	tick=0;
+            	progress=0;
+    		}
+
+        }
         else{
         	tick=0;
         	progress=0;
@@ -158,8 +171,10 @@ public class TileEntityThermalCracker extends BaseIC2Machine implements ISidedIn
         	fluidID=0;
         	amountP=0;
         }
+        
+        out(10);
     }
-	
+        
     @Override
     public void readFromNBT(NBTTagCompound tagCompound) {
     	super.readFromNBT(tagCompound);
@@ -270,7 +285,7 @@ public class TileEntityThermalCracker extends BaseIC2Machine implements ISidedIn
 	}
 
 	@Override
-	public String getInvName() {return "tileentityThermalCracker";}
+	public String getInvName() {return "tileentityCombustionFurnace";}
 
 	@Override
 	public boolean isInvNameLocalized() {return false;}
@@ -302,7 +317,7 @@ public class TileEntityThermalCracker extends BaseIC2Machine implements ISidedIn
 		if(FluidContainerRegistry.isEmptyContainer(itemstack))
 			return i==2;
 		else if(i==0)
-			return true;
+			return TileEntityFurnace.isItemFuel(itemstack);
 		
 		return false;
 	}

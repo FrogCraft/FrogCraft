@@ -77,18 +77,19 @@ public abstract class TileEntityIndustrialDevice extends BaseIC2Machine implemen
         
         if (canwork&heat<100 & energy-40>=0){
         	if (heat>=98)
-        		energy-=5;
+        		energy-=10;
         	else 
-        		energy-=32;
+        		energy-=40;
         	
-        	if(tick%10==0)
+        	if(tick%50==0)
         		heat=heat+1;
         }
         	        
         if (tick==100){
         	tick=0;
         	
-        		if (heat>0)heat=heat-1;
+        	if (heat>0)
+        		heat=heat-1;
         	
         }
         

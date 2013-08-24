@@ -26,7 +26,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 
 
-public class TileEntityMobilePS extends TileEntity implements ic2.api.energy.tile.IEnergySource,IInventory, INetworkDataProvider,INetworkTileEntityEventListener{
+public class TileEntityMobilePS extends BaseIC2NetTileEntity implements ic2.api.energy.tile.IEnergySource,IInventory, INetworkDataProvider,INetworkTileEntityEventListener{
 	public int maxEnergy=Integer.MAX_VALUE;
 	public int energyMK=0,energyMM=0,energyMB=0;
 	public int vOut=32;
@@ -38,7 +38,6 @@ public class TileEntityMobilePS extends TileEntity implements ic2.api.energy.til
 	private int fuelslot=3,chargeslot=2,tier=1,chargingRate=1;
 	private int tick=0,tickMax=150,smeltingCost=390;
 	public int topID=0,topDamage=0;
-    public boolean addedToEnergyNet;
 	public static List networkedFields;
 	
 	@Override
@@ -59,32 +58,13 @@ public class TileEntityMobilePS extends TileEntity implements ic2.api.energy.til
 	}
 	
     @Override
-    public void invalidate()
-    {
-        if (!worldObj.isRemote&this.addedToEnergyNet)
-        {
-            //EnergyNet.getForWorld(this.worldObj).removeTileEntity(this);
-            MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
-            this.addedToEnergyNet = false;
-        }
-
-        super.invalidate();
-    }
-	
-    @Override
     public void updateEntity(){  	
         super.updateEntity();
                        
         
         if (worldObj.isRemote)
             return;
-        
-        if (!this.addedToEnergyNet)
-        {
-            MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
-            this.addedToEnergyNet = true;
-        }
-        
+                
         maxEnergy=ItemBlock_MobilePS.maxCharge+maxEnergy();
         
         if      (maxEnergy>=100000000)
@@ -271,9 +251,6 @@ public class TileEntityMobilePS extends TileEntity implements ic2.api.energy.til
     //IEnergySource -------------------------------------------------------------------------
 	@Override
 	public boolean emitsEnergyTo(TileEntity receiver, Direction direction) {return true;}
-
-	@Override
-	public boolean isAddedToEnergyNet() {return true;}
 
 	@Override
 	public int getMaxEnergyOutput() {return 32;}

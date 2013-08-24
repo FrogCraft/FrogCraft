@@ -2,6 +2,7 @@ package FrogCraft;
 
 import FrogCraft.api.*;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.IFuelHandler;
 
 public class FuelHandler implements IFuelHandler {
@@ -10,9 +11,19 @@ public class FuelHandler implements IFuelHandler {
 	public int getBurnTime(ItemStack fuel) {
 		if (fuel==null)
 			return 0;		
+
+		for (ItemStack item:OreDictionary.getOres("dustCoal"))
+			if (item.isItemEqual(fuel))
+				return 1800;		
 		
-		if(fuel.isItemEqual(ic2.api.item.Items.getItem("coalDust")))   //IC2 CoalDust
-			return 1800;
+		for (ItemStack item:OreDictionary.getOres("dustCharcoal"))
+			if (item.isItemEqual(fuel))
+				return 1800;		
+		
+		for (ItemStack item:OreDictionary.getOres("dustSulfur"))
+			if (item.isItemEqual(fuel))
+				return 1600;
+			
 		
 		if(fuel.itemID==fcItems.miscsID){
 			switch (fuel.getItemDamage()){

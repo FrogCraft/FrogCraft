@@ -22,6 +22,7 @@ public class ItemsRegister {
 		Item_Cells.add(9,"cell_Benzene");
 		Item_Cells.add(10,"cell_Bromine");
 /*11*/	Item_Cells.add(11,"cell_Fluorine");
+		Item_Cells.add(12,"cell_SO2");
 		
 		//Miscs
 		Item_Miscs.add(0,"pCokingCoal");
@@ -67,5 +68,6 @@ public class ItemsRegister {
 		FluidManager.RegisterFluid("NO", new ItemStack(fcItems.cellsID,1,7));
 		FluidManager.RegisterFluid("CO", new ItemStack(fcItems.cellsID,1,8));
 		FluidManager.RegisterFluid("Fluorine", new ItemStack(fcItems.cellsID,1,11));
+		FluidManager.RegisterFluid("SO2", new ItemStack(fcItems.cellsID,1,12));
 	}
 }

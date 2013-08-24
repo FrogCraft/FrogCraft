@@ -10,8 +10,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public abstract class BaseIC2Machine extends SidedIC2Machine implements ic2.api.energy.tile.IEnergySink{
-    public boolean addedToEnergyNet;
+public abstract class BaseIC2Machine extends BaseIC2NetTileEntity implements ic2.api.energy.tile.IEnergySink{
+
     public int maxEnergy=0;
     public int maxInput;
     public int energy=0;
@@ -19,31 +19,6 @@ public abstract class BaseIC2Machine extends SidedIC2Machine implements ic2.api.
     public BaseIC2Machine(int saftVoltage, int maxStoredEnergy){
     	maxEnergy=maxStoredEnergy;
     	maxInput=saftVoltage;
-    }
-    
-    @Override
-    public void updateEntity()
-    {
-        super.updateEntity();
-        if (!worldObj.isRemote&!this.addedToEnergyNet)
-        {
-            //EnergyNet.getForWorld(this.worldObj).addTileEntity(this);
-            MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
-            this.addedToEnergyNet = true;
-        }
-    }
-	
-    @Override
-    public void invalidate()
-    {
-        if (!worldObj.isRemote&this.addedToEnergyNet)
-        {
-            //EnergyNet.getForWorld(this.worldObj).removeTileEntity(this);
-            MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
-            this.addedToEnergyNet = false;
-        }
-
-        super.invalidate();
     }
     
     @Override
@@ -58,12 +33,6 @@ public abstract class BaseIC2Machine extends SidedIC2Machine implements ic2.api.
     {
         super.writeToNBT(var1);
         var1.setInteger("energy", this.energy);
-    }
-    
-    @Override
-    public boolean isAddedToEnergyNet()
-    {
-        return this.addedToEnergyNet;
     }
 
     @Override

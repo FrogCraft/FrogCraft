@@ -51,6 +51,8 @@ public class BlockMachines2 extends BlockContainer {
     			return new TileEntityACWindMillBase();
     		case 4:
     			return new TileEntityAutoWorkBench();
+    		case 5:
+    			return new TileEntityCombustionFurnace();
     		default:
     				return null;
     	}
@@ -60,7 +62,7 @@ public class BlockMachines2 extends BlockContainer {
     //Regist Icons
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister r)    {
-    	iconBuffer = new Icon[ItemBlockMachines2.subNames.length][6];
+    	iconBuffer = new Icon[ItemBlockMachines2.subNames.length][12];
     
     	//LiquidOutput
     	iconBuffer[0][0]=r.registerIcon("FrogCraft:CondenseTowerCylinder_Top");
@@ -100,23 +102,62 @@ public class BlockMachines2 extends BlockContainer {
     	iconBuffer[4][2]=r.registerIcon("FrogCraft:AutoWorkBench_Back");
     	iconBuffer[4][3]=r.registerIcon("FrogCraft:AutoWorkBench_Front");    	
     	iconBuffer[4][4]=r.registerIcon("FrogCraft:AutoWorkBench_Side");
-    	iconBuffer[4][5]=r.registerIcon("FrogCraft:AutoWorkBench_Side");    	
+    	iconBuffer[4][5]=r.registerIcon("FrogCraft:AutoWorkBench_Side");    
+    	
+    	//SilverWire
+    	iconBuffer[5][0]=r.registerIcon("FrogCraft:CombustionFurnace_Back");
+    	iconBuffer[5][1]=r.registerIcon("FrogCraft:CombustionFurnace_Back");
+    	iconBuffer[5][2]=r.registerIcon("FrogCraft:CombustionFurnace_Back");
+    	iconBuffer[5][3]=r.registerIcon("FrogCraft:CombustionFurnace_Front");    	
+    	iconBuffer[5][4]=r.registerIcon("FrogCraft:CombustionFurnace_Side");
+    	iconBuffer[5][5]=r.registerIcon("FrogCraft:CombustionFurnace_Side");    
+    	iconBuffer[5][6]=r.registerIcon("FrogCraft:CombustionFurnace_Back");
+    	iconBuffer[5][7]=r.registerIcon("FrogCraft:CombustionFurnace_Back");
+    	iconBuffer[5][8]=r.registerIcon("FrogCraft:CombustionFurnace_Back");
+    	iconBuffer[5][9]=r.registerIcon("FrogCraft:CombustionFurnace_Front_Active");    	
+    	iconBuffer[5][10]=r.registerIcon("FrogCraft:CombustionFurnace_Side");
+    	iconBuffer[5][11]=r.registerIcon("FrogCraft:CombustionFurnace_Side");
     }
-    
-    //Gui Interface
-    int GetGui(TileEntity te){
-    	if (te instanceof TileEntityLiquidOutput)
-    		return 7;
-
-    	return -1;
-    }
-    
+   
     
     //Visualize effects
     @SideOnly(Side.CLIENT)
     @Override
-    public void randomDisplayTick(World world, int x, int y, int z, Random var5){
+    public void randomDisplayTick(World world, int x, int y, int z, Random random){
     	world.markBlockForRenderUpdate(x,  y,  z);
+    	
+    	TileEntity te=world.getBlockTileEntity(x, y, z);
+    	
+    	if(te instanceof TileEntityCombustionFurnace&&((TileEntityCombustionFurnace)te).isWorking())
+        {
+            short l = ((TileEntityCombustionFurnace)te).getFacing();
+            float f = (float)x + 0.5F;
+            float f1 = (float)y + 0.0F + random.nextFloat() * 6.0F / 16.0F;
+            float f2 = (float)z + 0.5F;
+            float f3 = 0.52F;
+            float f4 = random.nextFloat() * 0.6F - 0.3F;
+
+            if (l == 4)
+            {
+            	world.spawnParticle("smoke", (double)(f - f3), (double)f1, (double)(f2 + f4), 0.0D, 0.0D, 0.0D);
+                world.spawnParticle("flame", (double)(f - f3), (double)f1, (double)(f2 + f4), 0.0D, 0.0D, 0.0D);
+            }
+            else if (l == 5)
+            {
+            	world.spawnParticle("smoke", (double)(f + f3), (double)f1, (double)(f2 + f4), 0.0D, 0.0D, 0.0D);
+            	world.spawnParticle("flame", (double)(f + f3), (double)f1, (double)(f2 + f4), 0.0D, 0.0D, 0.0D);
+            }
+            else if (l == 2)
+            {
+            	world.spawnParticle("smoke", (double)(f + f4), (double)f1, (double)(f2 - f3), 0.0D, 0.0D, 0.0D);
+            	world.spawnParticle("flame", (double)(f + f4), (double)f1, (double)(f2 - f3), 0.0D, 0.0D, 0.0D);
+            }
+            else if (l == 3)
+            {
+            	world.spawnParticle("smoke", (double)(f + f4), (double)f1, (double)(f2 + f3), 0.0D, 0.0D, 0.0D);
+            	world.spawnParticle("flame", (double)(f + f4), (double)f1, (double)(f2 + f3), 0.0D, 0.0D, 0.0D);
+            }
+        }
     }
     
     
@@ -142,10 +183,8 @@ public class BlockMachines2 extends BlockContainer {
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9)
     {
     
-        if (entityPlayer.isSneaking())//|world.getBlockTileEntity(x, y, z)==null)
-        {
+        if (entityPlayer.isSneaking())
             return false;   
-        }
         
         TileEntity te = world.getBlockTileEntity(x, y, z);     
         
@@ -168,7 +207,6 @@ public class BlockMachines2 extends BlockContainer {
 
             if (te != null)
             {
-                //EnergyNet.getForWorld(world).removeTileEntity(team);
             	if (te instanceof BaseIC2Machine)
             		MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent((BaseIC2Machine)te));
                 te.invalidate();
@@ -185,7 +223,7 @@ public class BlockMachines2 extends BlockContainer {
         return false;
     }
     
-    public int damageDropped(int par1){return par1; } 
+    public int damageDropped(int par1){return par1;} 
 
     @Override
     public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
@@ -288,6 +326,9 @@ public class BlockMachines2 extends BlockContainer {
         
         if (!(te instanceof SidedIC2Machine))
         	return iconBuffer[blockMeta][mod_FrogCraft.sideAndFacingToSpriteOffset[blockSide][3]];
+        
+        if(te instanceof TileEntityCombustionFurnace&&((TileEntityCombustionFurnace)te).isWorking())
+        	return iconBuffer[blockMeta][mod_FrogCraft.sideAndFacingToSpriteOffset[blockSide][((SidedIC2Machine)te).facing]+6];
         
         return iconBuffer[blockMeta][mod_FrogCraft.sideAndFacingToSpriteOffset[blockSide][((SidedIC2Machine)te).facing]];
     }

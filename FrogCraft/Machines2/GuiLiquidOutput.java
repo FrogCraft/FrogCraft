@@ -15,7 +15,6 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
-import FrogCraft.mod_FrogCraft;
 import FrogCraft.Common.GuiLiquids;
 
 public class GuiLiquidOutput extends GuiLiquids {
@@ -53,7 +52,7 @@ public class GuiLiquidOutput extends GuiLiquids {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2,int par3) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.renderEngine.func_110577_a(new ResourceLocation("frogcraft","/textures/gui/Gui_LiquidInjector.png"));
+		mc.renderEngine.func_110577_a(new ResourceLocation("frogcraft","/textures/gui/Gui_LiquidOutput.png"));
 		int x = (width - xSize) / 2;
 		int y = (height - ySize) / 2;
 		this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);

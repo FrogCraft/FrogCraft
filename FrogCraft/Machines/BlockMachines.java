@@ -235,7 +235,6 @@ public class BlockMachines extends BlockContainer {
     @SideOnly(Side.CLIENT)
     @Override
     public void randomDisplayTick(World world, int x, int y, int z, Random var5){
-
     	world.markBlockForRenderUpdate(x,  y,  z);
         
     	TileEntity te=world.getBlockTileEntity(x, y, z);
@@ -389,7 +388,6 @@ public class BlockMachines extends BlockContainer {
             break;
         }
     }
-	
 	
     @SideOnly(Side.CLIENT)
     @Override
