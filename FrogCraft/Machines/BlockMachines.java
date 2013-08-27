@@ -8,6 +8,7 @@ import java.util.Random;
 import FrogCraft.*;
 import FrogCraft.Common.*;
 import FrogCraft.Machines.IndustrialDevices.*;
+import FrogCraft.api.fcItems;
 
 
 import cpw.mods.fml.relauncher.Side;
@@ -267,7 +268,7 @@ public class BlockMachines extends BlockContainer {
         setHardness(2.0F);
         setResistance(5.0F);
         setUnlocalizedName("Machines");
-        setCreativeTab(mod_FrogCraft.tabFrogCraft);
+        setCreativeTab(fcItems.tabFrogCraft);
 	}
 	
     @Override

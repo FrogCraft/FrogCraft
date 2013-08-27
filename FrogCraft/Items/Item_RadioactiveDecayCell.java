@@ -3,10 +3,11 @@ package FrogCraft.Items;
 
 import java.util.List;
 
+import FrogCraft.api.fcItems;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import FrogCraft.mod_FrogCraft;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -23,7 +24,7 @@ public class Item_RadioactiveDecayCell extends Item implements ic2.api.item.IEle
 		setMaxStackSize(1);
 		setMaxDamage(0);
 		setUnlocalizedName(name);
-		setCreativeTab(mod_FrogCraft.tabFrogCraft);	
+		setCreativeTab(fcItems.tabFrogCraft);	
 		this.rate=rate;
 	}
 	

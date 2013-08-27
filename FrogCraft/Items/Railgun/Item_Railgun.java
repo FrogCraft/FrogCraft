@@ -2,7 +2,8 @@ package FrogCraft.Items.Railgun;
 
 import java.util.List;
 
-import FrogCraft.mod_FrogCraft;
+import FrogCraft.api.fcItems;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -27,7 +28,7 @@ public class Item_Railgun extends Item implements ic2.api.item.IElectricItem{
 		maxStackSize = 1;
 		setHasSubtypes(true);
 		setUnlocalizedName("Item_Railgun");
-		setCreativeTab(mod_FrogCraft.tabFrogCraft);
+		setCreativeTab(fcItems.tabFrogCraft);
 		setMaxDamage(256);
 	}
 	

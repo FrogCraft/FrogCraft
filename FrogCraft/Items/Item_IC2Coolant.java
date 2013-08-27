@@ -1,8 +1,8 @@
 package FrogCraft.Items;
 
+import FrogCraft.api.fcItems;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import FrogCraft.mod_FrogCraft;
 import ic2.api.reactor.IReactor;
 import ic2.api.reactor.IReactorComponent;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -42,7 +42,7 @@ public abstract class Item_IC2Coolant extends Item implements IReactorComponent{
 		setMaxStackSize(1);
 		setMaxDamage(10000);
 		setUnlocalizedName("Item_Coolant_"+name);
-		setCreativeTab(mod_FrogCraft.tabFrogCraft);	
+		setCreativeTab(fcItems.tabFrogCraft);	
 	}
 
     @SideOnly(Side.CLIENT)

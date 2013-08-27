@@ -5,7 +5,6 @@ import java.util.List;
 
 import ic2.api.Direction;
 import ic2.api.energy.event.EnergyTileLoadEvent;
-import ic2.api.energy.event.EnergyTileSourceEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
@@ -26,15 +25,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 
 
-public class TileEntityMobilePS extends BaseIC2NetTileEntity implements ic2.api.energy.tile.IEnergySource,IInventory, INetworkDataProvider,INetworkTileEntityEventListener{
-	public int maxEnergy=Integer.MAX_VALUE;
+public class TileEntityMobilePS extends BaseIC2Generator implements IInventory, INetworkDataProvider,INetworkTileEntityEventListener{
 	public int energyMK=0,energyMM=0,energyMB=0;
-	public int vOut=32;
-	public int energy=0;
+	public int vOut=32,solar=0,overClock=0;
 	public int energyK=0,energyM=0,energyB=0;
 	public int progress=0;
 	public ItemStack[] inv;
-	private EnergyTileSourceEvent sourceEvent;
 	private int fuelslot=3,chargeslot=2,tier=1,chargingRate=1;
 	private int tick=0,tickMax=150,smeltingCost=390;
 	public int topID=0,topDamage=0;
@@ -58,15 +54,18 @@ public class TileEntityMobilePS extends BaseIC2NetTileEntity implements ic2.api.
 	}
 	
     @Override
-    public void updateEntity(){  	
-        super.updateEntity();
-                       
-        
-        if (worldObj.isRemote)
-            return;
-                
-        maxEnergy=ItemBlock_MobilePS.maxCharge+maxEnergy();
-        
+	public void onInventoryChanged(){
+    	super.onInventoryChanged();
+    	
+    	maxEnergy=ItemBlock_MobilePS.maxCharge+maxEnergy();
+    	
+    	refreshSetting();
+    	
+		NetworkHelper.updateTileEntityField(this,"topID");
+		NetworkHelper.updateTileEntityField(this,"topDamage");
+    }
+    
+    void refreshSetting(){
         if      (maxEnergy>=100000000)
         	tier=5;
         else if (maxEnergy>=10000000)
@@ -78,26 +77,37 @@ public class TileEntityMobilePS extends BaseIC2NetTileEntity implements ic2.api.
         else 
         	tier=1;
         
-        energy+=solar();
+        setvOut();
+        chargingRate=vOut*2;
+        
+        
+        overClock=getOverClock();
+        if (overClock>7)
+        	overClock=7;
+        
+        tickMax=150-(overClock*20);
+        smeltingCost=(int) (390*(overClock/3.0)+390);
+    }
+	
+    @Override
+    public void updateEntity(){  	
+        super.updateEntity();
+                       
+        
+        if (worldObj.isRemote)
+            return;
+        
+        solar=solar();
+        energy+=solar;
         if (energy>maxEnergy)
         	energy=maxEnergy;
         	
-		NetworkHelper.updateTileEntityField(this,"topID");
-		NetworkHelper.updateTileEntityField(this,"topDamage");
+
         
         energy=IC2Charger.discharge(inv[fuelslot], chargingRate, tier, energy, maxEnergy);
-        
         energy=IC2Charger.charge(inv[chargeslot], chargingRate, tier, energy, maxEnergy);       
 
-        setvOut();
-        chargingRate=vOut*2;
-        int o=getOverClock();
-        if (o>7)
-        	o=7;
-        
-        tickMax=150-(o*20);
-        smeltingCost=(int) (390*(o/3.0)+390);
-        
+       
         if (smelt()){
         	progress=tick*100/tickMax;
         }
@@ -235,26 +245,7 @@ public class TileEntityMobilePS extends BaseIC2NetTileEntity implements ic2.api.
     	
   		return inv[6].stackSize*RecipeManager.getMobilePSEnergyUpdatesValue(inv[6]); //IC2 energy storage upgrade item
     }
-    
-	void out(int amount){
-		if (amount>energy)
-			amount=energy;
-		
-		if (amount<0)
-			return;
-		
-		sourceEvent=new EnergyTileSourceEvent(this,amount);
-		MinecraftForge.EVENT_BUS.post(sourceEvent);		
-		energy-=amount-sourceEvent.amount;			
-	}
-    
-    //IEnergySource -------------------------------------------------------------------------
-	@Override
-	public boolean emitsEnergyTo(TileEntity receiver, Direction direction) {return true;}
-
-	@Override
-	public int getMaxEnergyOutput() {return 32;}
-	
+        	
 	//NBT -----------------------------------------------------------------------------------
     @Override
     public void readFromNBT(NBTTagCompound tagCompound) {
@@ -270,6 +261,8 @@ public class TileEntityMobilePS extends BaseIC2NetTileEntity implements ic2.api.
             }
             maxEnergy=tagCompound.getInteger("maxEnergy");  
             energy=tagCompound.getInteger("energy");  
+            
+            refreshSetting();
     }
 
     @Override

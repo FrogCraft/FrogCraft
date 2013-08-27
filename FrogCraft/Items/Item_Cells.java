@@ -5,7 +5,7 @@ import java.util.*;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
-import FrogCraft.*;
+import FrogCraft.api.fcItems;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -31,7 +31,7 @@ public class Item_Cells extends Item{
 		setHasSubtypes(true);
 		setUnlocalizedName(unLocalizedName);
 		setMaxDamage(0); 
-		setCreativeTab(mod_FrogCraft.tabFrogCraft);	
+		setCreativeTab(fcItems.tabFrogCraft);	
 	}
 
 	@SideOnly(Side.CLIENT)

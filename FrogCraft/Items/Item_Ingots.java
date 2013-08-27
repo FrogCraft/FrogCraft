@@ -5,7 +5,8 @@ import java.util.*;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
-import FrogCraft.*;
+import FrogCraft.mod_FrogCraft;
+import FrogCraft.api.fcItems;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -35,6 +36,15 @@ public class Item_Ingots extends Item{
         			entityItem.setDead();
         		}
         	}
+        	
+        	if (block==fcItems.BlockHNO3.blockID){
+        		mod_FrogCraft.fcAchievements.achieved(entityItem.worldObj.getClosestPlayer(entityItem.posX, entityItem.posY, entityItem.posZ, -1),"suicideExpert");
+        		entityItem.hurtResistantTime=40;
+        		if(!entityItem.worldObj.isRemote){
+        			entityItem.worldObj.createExplosion(null, entityItem.posX, entityItem.posY, entityItem.posZ, 3f*(float)Math.sqrt(entityItem.getEntityItem().stackSize), false);
+        			entityItem.setDead();
+        		}
+        	}        	
     	}
         return false;
     }
@@ -55,7 +65,7 @@ public class Item_Ingots extends Item{
 		setHasSubtypes(true);
 		setUnlocalizedName(unLocalizedName);
 		setMaxDamage(0); 
-		setCreativeTab(mod_FrogCraft.tabFrogCraft);	
+		setCreativeTab(fcItems.tabFrogCraft);	
 	}
 
 	@SideOnly(Side.CLIENT)

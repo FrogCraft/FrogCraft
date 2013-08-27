@@ -7,6 +7,7 @@ import net.minecraftforge.fluids.FluidStack;
  *  do not modify any thing, otherwise it will cause unknown compatibility error or any unexpected result!
  *  Call this anytime you want (after you register your items) */
 public class fcRecipes {
+	//API functions - FrogCraft does not uses these functions internally, you can copy them in to your mod
 	/** Add a recipe to Advance Chemical Reactor
 	 * 	tick=-1 means catalyst is need to start the reaction
 	 * 	eu means total cosumed eu!*/
@@ -42,6 +43,14 @@ public class fcRecipes {
 		Class.forName("FrogCraft.Common.RecipeManager").getMethod("addThermalCrackerRecipe", ItemStack.class,int.class,int.class,ItemStack.class,FluidStack.class)
 		.invoke(null, in,energy,tick,out,outl);
 		}catch (Exception e) {}			
+	}
+	
+	/** Add a new recipe for Combustion Furnace, the input itemstack must be a fuel!!!*/
+	public static void addCombustionFurnaceRecioe(ItemStack in,ItemStack out,FluidStack outl){
+		try {
+		Class.forName("FrogCraft.Common.RecipeManager").getMethod("addCombustionFurnaceRecipe", ItemStack.class,ItemStack.class,FluidStack.class)
+		.invoke(null, in,out,outl);
+		}catch (Exception e) {}	
 	}
 	
 	/** Add a custom solar panel supply for Mobile Power Supply

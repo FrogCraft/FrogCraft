@@ -1,6 +1,6 @@
 package FrogCraft.Items;
 
-import FrogCraft.mod_FrogCraft;
+import FrogCraft.api.fcItems;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,7 +14,7 @@ public class Item_Camera extends Item{
 		super(par1);
 		setUnlocalizedName("test233");
 		setMaxDamage(0); 
-		setCreativeTab(mod_FrogCraft.tabFrogCraft);	
+		setCreativeTab(fcItems.tabFrogCraft);	
 	}
 
     public boolean onItemUse(ItemStack item, EntityPlayer player, World world, int x, int y, int z, int par7, float par8, float par9, float par10)

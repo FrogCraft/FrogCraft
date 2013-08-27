@@ -2,9 +2,9 @@ package FrogCraft.Common;
 
 import net.minecraft.item.ItemStack;
 
-import FrogCraft.mod_FrogCraft;
 import FrogCraft.Items.*;
 import FrogCraft.api.fcItems.cls;
+import FrogCraft.api.fcItems;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -22,19 +22,19 @@ public class ItemManager {
 		
 
 		if (type==0){
-			id=mod_FrogCraft.Ingots.itemID;
+			id=fcItems.Ingots.itemID;
 			nameMap=Item_Ingots.subNames;
 		}
 		if (type==1){
-			id=mod_FrogCraft.Cells.itemID;
+			id=fcItems.Cells.itemID;
 			nameMap=Item_Cells.subNames;
 		}
 		if (type==2){
-			id=mod_FrogCraft.Miscs.itemID;
+			id=fcItems.Miscs.itemID;
 			nameMap=Item_Miscs.subNames;
 		}
 		if (type==3){
-			id=mod_FrogCraft.Dusts.itemID;
+			id=fcItems.Dusts.itemID;
 			nameMap=Item_Dusts.subNames;
 		}
 		

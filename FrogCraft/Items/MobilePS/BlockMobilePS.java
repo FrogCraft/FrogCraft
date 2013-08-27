@@ -2,10 +2,12 @@ package FrogCraft.Items.MobilePS;
 
 import java.util.Random;
 
+import FrogCraft.mod_FrogCraft;
+import FrogCraft.api.fcItems;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import FrogCraft.mod_FrogCraft;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -29,7 +31,7 @@ public class BlockMobilePS extends BlockContainer{
 	
 	public BlockMobilePS(int id) {
 		super(id, Material.rock);
-		setCreativeTab(mod_FrogCraft.tabFrogCraft);
+		setCreativeTab(fcItems.tabFrogCraft);
 		setUnlocalizedName("BlockMobilePS");
 	}
 
@@ -94,6 +96,7 @@ public class BlockMobilePS extends BlockContainer{
             }
 			te.maxEnergy=item.stackTagCompound.getInteger("maxEnergy");
 			te.energy=item.stackTagCompound.getInteger("charge");
+			te.onInventoryChanged();
 			//Minecraft.getMinecraft().thePlayer.sendChatMessage(String.valueOf(te.maxEnergy));
 			//Minecraft.getMinecraft().thePlayer.sendChatMessage(String.valueOf(te.energy));			
 		}

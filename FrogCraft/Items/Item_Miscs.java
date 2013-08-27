@@ -2,10 +2,11 @@ package FrogCraft.Items;
 
 import java.util.*;
 
+import FrogCraft.api.fcItems;
+
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
-import FrogCraft.*;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -32,7 +33,7 @@ public class Item_Miscs extends Item{
 		setHasSubtypes(true);
 		setUnlocalizedName(unLocalizedName);
 		setMaxDamage(0); 
-		setCreativeTab(mod_FrogCraft.tabFrogCraft);	
+		setCreativeTab(fcItems.tabFrogCraft);	
 	}
 
 	@SideOnly(Side.CLIENT)

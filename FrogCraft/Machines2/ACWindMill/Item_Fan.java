@@ -2,11 +2,10 @@ package FrogCraft.Machines2.ACWindMill;
 
 import java.util.List;
 
+import FrogCraft.api.fcItems;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
-import FrogCraft.mod_FrogCraft;
-
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -22,7 +21,7 @@ public class Item_Fan extends Item {
 	public Item_Fan(int par1) {
 		super(par1);
 		setUnlocalizedName("ACWindMill_Rotor");
-		setCreativeTab(mod_FrogCraft.tabFrogCraft);
+		setCreativeTab(fcItems.tabFrogCraft);
 	}
 
     @SideOnly(Side.CLIENT)

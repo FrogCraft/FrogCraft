@@ -1,5 +1,7 @@
 package FrogCraft;
 
+import FrogCraft.Blocks.BlockHNO3;
+import FrogCraft.Blocks.WorldGenerator;
 import FrogCraft.Common.*;
 import FrogCraft.Intergration.GregTech;
 import FrogCraft.Intergration.ic2;
@@ -10,15 +12,14 @@ import FrogCraft.Machines.*;
 import FrogCraft.Machines.IndustrialDevices.*;
 import FrogCraft.Machines2.*;
 import FrogCraft.Machines2.ACWindMill.*;
-import FrogCraft.Ore.WorldGenerator;
 import FrogCraft.api.*;
+
 import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.src.ModLoader;
+import net.minecraft.item.*;
 import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.MinecraftForge;
+
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -30,76 +31,36 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 
-@Mod( modid = "mod_FrogCraft", name="FrogCraft", version="162.1.3",dependencies = "required-after:IC2; after:gregtech_addon")
+@Mod( modid = "mod_FrogCraft", name="FrogCraft", version="162.1.5",dependencies = "required-after:IC2; after:gregtech_addon")
 @NetworkMod(channels = { "mod_FrogCraft" },clientSideRequired = true,serverSideRequired = false,packetHandler = PacketHandler.class)
 public class mod_FrogCraft {
 	@SidedProxy(clientSide = "FrogCraft.ClientProxy", serverSide = "FrogCraft.CommonProxy")
 	public static CommonProxy proxy;
 	
+	/**Instance of FrogCraft*/
 	@Instance("mod_FrogCraft")
 	public static mod_FrogCraft instance;
 	
-	public static Achievements fcAchievements;
+	/** Instance of all frogcraft achievements*/
+	public static Achievements fcAchievements;					  
 	
-	//Configuration
-	static int id_BlockOre,
-			   id_ACWindMillCylinder,
-			   id_BlockMobliePS,
-			   id_BlockMachines,
-			   id_BlockMachines2;
-					  
-	
-	static int id_IC2Coolant_NH3_60K,
-			   id_IC2Coolant_NH3_180K,
-			   id_IC2Coolant_NH3_360K,
-			   id_ItemIngots,
-			   id_ItemCells,
-			   id_ItemMiscs,
-			   id_ItemDusts,
-			   id_Railgun,
-			   id_ItemFan,
-			   id_UBattery,
-			   id_ThBattery,
-			   id_PuBattery;
-	
+	//Configurations
 	public static int rate_PneumaticCompressor;
 	public static boolean boom_PneumaticCompressor;
 	public static boolean rndboom_PneumaticCompressor;	
-	
-	//Blocks
-	public static FrogCraft.Ore.BlockOre Ore;
-	public static BlockFence ACWindMillCylinder;
-	public static BlockMobilePS MobilePS;
-	public static BlockMachines Machines;	
-	public static BlockMachines2 Machines2;	
-	public static Item_IC2Coolant IC2Coolant_NH3_60K;
-	public static Item_IC2Coolant IC2Coolant_NH3_180K;
-	public static Item_IC2Coolant IC2Coolant_NH3_360K;
-	public static Item_Ingots Ingots;
-	public static Item_Cells Cells;
-	public static Item_Miscs Miscs;
-	public static Item_Dusts Dusts;	
-	public static Item_Railgun Railgun;
-	public static Item_Fan Fan;
-	public static Item_RadioactiveDecayCell UBattery,ThBattery,PuBattery;
-	
+
 	//Dynamics
     public static int[][] sideAndFacingToSpriteOffset;
-	
-    //Custom Creative Page
-    public static CreativeTabs tabFrogCraft = new CreativeTabs("tabFrogCraft") {
-        public ItemStack getIconItemStack() {return new ItemStack(Machines, 1, 8);}
-    };   
     
-    
+    /** For loading config only!*/
+    private Configuration config;
 	@EventHandler
     public void preInit(FMLPreInitializationEvent event) {					
-		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
+		config = new Configuration(event.getSuggestedConfigurationFile());
         config.load();
 
         //---------------------------------------------------------------------------------------
@@ -133,26 +94,9 @@ public class mod_FrogCraft {
         
         WorldGenerator.genCarnallite=config.get("Enable", "genCarnalliteOreUnderWater", true).getBoolean(true);
         WorldGenerator.genFluorapatite=config.get("Enable", "genFluorapatiteOreUnderGround", true).getBoolean(true);
+        WorldGenerator.genDewalquite=config.get("Enable", "genDewalquiteOreUnderGround", true).getBoolean(true);        
         WorldGenerator.genClay=config.get("Enable", "genClayUnderGround", true).getBoolean(true);
-        //---------------------------------------------------------------------------------------
-        id_BlockOre=config.get("Blocks", "Ore", 658).getInt();
-        id_ACWindMillCylinder=config.get("Blocks", "ACWindMillCylinder", 659).getInt();  
-        id_BlockMobliePS=config.get("Blocks", "MobilePS", 660).getInt();  
-        id_BlockMachines=config.get("Blocks", "Machines", 661).getInt();  
-        id_BlockMachines2=config.get("Blocks", "Machines2", 662).getInt();  
-        
-        id_IC2Coolant_NH3_360K=config.get("Items", "IC2Coolant_NH3_360K", 19735).getInt();
-        id_IC2Coolant_NH3_180K=config.get("Items", "IC2Coolant_NH3_180K", 19736).getInt();
-        id_IC2Coolant_NH3_60K=config.get("Items", "IC2Coolant_NH3_60K", 19737).getInt();
-        id_ItemIngots=config.get("Items", "Ingots", 19738).getInt();
-        id_ItemCells=config.get("Items", "Cells", 19739).getInt();
-        id_ItemMiscs=config.get("Items", "Miscs", 19740).getInt();
-        id_ItemDusts=config.get("Items", "Dusts", 19741).getInt();
-        id_Railgun=config.get("Items", "Railgun", 19744).getInt();
-        id_ItemFan=config.get("Items", "Fan", 19745).getInt();     
-        id_UBattery=config.get("Items", "UBattery", 19746).getInt();        
-        id_ThBattery=config.get("Items", "id_ThBattery", 19747).getInt();   
-        id_PuBattery=config.get("Items", "id_PuBattery", 19748).getInt(); 
+        //Loading Configurations-----------------------------------------------------------------
         
         //PneumaticCompressor
         rate_PneumaticCompressor=config.get("Generals", "rate_PneumaticCompressor", 100).getInt();    
@@ -164,76 +108,73 @@ public class mod_FrogCraft {
         EntityCoin.damageHit=(short)  config.get("Generals", "Railgun_Damage", 50).getInt();
         EntityCoin.explosion=(float)config.get("Generals", "Railgun_Explosive", 0d).getDouble(0d); 
         Item_Railgun.euPerShot=config.get("Generals", "Railgun_Eu_Per_Shot", 100000).getInt();
-        
-
-        //---------------------------------------------------------------------------------------
-        config.save();
-
-        ItemsRegister.loadItemsData();        
   
         //---------------------------------------------------------------------------------------
+		fcItems.tabFrogCraft = new CreativeTabs("tabFrogCraft") {
+	        public ItemStack getIconItemStack() {return new ItemStack(fcItems.Machines, 1, 8);}
+	    };   
+        
+        ItemsRegister.loadItemsData();        
         regItems();
 		fcAchievements=new Achievements();  //This is important to be placed here!!!!	
+		
+		config.save();
 	}
 	
-	public void regItems(){
+	public void regItems(){	
 		//Initialize Blocks
-		Ore=new FrogCraft.Ore.BlockOre(id_BlockOre);
-		fcItems.oreID=Ore.blockID;
-		fcItems.acwindmillcylinder=ACWindMillCylinder = new BlockACWindMillCylinder(id_ACWindMillCylinder);
-		fcItems.mobileps=MobilePS=new BlockMobilePS(id_BlockMobliePS);
-		Machines=new BlockMachines(id_BlockMachines);
-		fcItems.machineID=Machines.blockID;
-		Machines2=new BlockMachines2(id_BlockMachines2);
-		fcItems.machine2ID=Machines2.blockID;
+		fcItems.Ore=new FrogCraft.Blocks.BlockOre(getBlockID("Ore", 658));
+		fcItems.ACWindMillCylinder = new BlockACWindMillCylinder(getBlockID("ACWindMillCylinder", 659));
+		fcItems.MobilePS=new BlockMobilePS(getBlockID("MobilePS", 660));
+		fcItems.Machines=new BlockMachines(getBlockID("Machines", 661));
+		fcItems.Machines2=new BlockMachines2(getBlockID("Machines2", 662));
 		
 		//Initialize Items
-		Cells=new Item_Cells(id_ItemCells);
-		fcItems.cellsID=Cells.itemID;		
+		fcItems.Cells=new Item_Cells(getItemID("Cells", 19739));
 		ItemsRegister.registerFluids();
 		FluidManager.initFluids();
-		Ingots=new Item_Ingots(id_ItemIngots);
-		fcItems.ingotsID=Ingots.itemID;
-		Miscs=new Item_Miscs(id_ItemMiscs);
-		fcItems.miscsID=Miscs.itemID;
-		Dusts=new Item_Dusts(id_ItemDusts);
-		fcItems.dustsID=Dusts.itemID;
-		
-		fcItems.IC2Coolant_NH3_60K=IC2Coolant_NH3_60K=new Item_IC2Coolant.Item_IC2CoolantNH3_60K(id_IC2Coolant_NH3_60K);
-		fcItems.IC2Coolant_NH3_180K=IC2Coolant_NH3_180K=new Item_IC2Coolant.Item_IC2CoolantNH3_180K(id_IC2Coolant_NH3_180K);	
-		fcItems.IC2Coolant_NH3_360K=IC2Coolant_NH3_360K=new Item_IC2Coolant.Item_IC2CoolantNH3_360K(id_IC2Coolant_NH3_360K);		
-		fcItems.railgun=Railgun=new Item_Railgun(id_Railgun);
-		fcItems.fan=Fan=new Item_Fan(id_ItemFan);
-		fcItems.UBattery=UBattery=new Item_RadioactiveDecayCell(id_UBattery,"UBattery",1);
-		fcItems.ThBattery=ThBattery=new Item_RadioactiveDecayCell(id_ThBattery,"ThBattery",1);
-		fcItems.PuBattery=PuBattery=new Item_RadioactiveDecayCell(id_PuBattery,"PuBattery",1);
-		
-		
+		fcItems.Ingots=new Item_Ingots(getItemID("Ingots", 19738));
+		fcItems.Miscs=new Item_Miscs(getItemID("Miscs", 19740));
+		fcItems.Dusts=new Item_Dusts(getItemID("Dusts", 19741));
+
+		//Initialize Fluid Blocks
+		fcItems.BlockHNO3= new BlockHNO3(getBlockID("HNO3", 657));
+
+		fcItems.NitricAcidBucket=new Item_NitricAcidBucket(getItemID("NitricAcidBucket", 19734));
+		fcItems.IC2Coolant_NH3_60K=new Item_IC2Coolant.Item_IC2CoolantNH3_60K(getItemID("IC2Coolant_NH3_60K", 19737));
+		fcItems.IC2Coolant_NH3_180K=new Item_IC2Coolant.Item_IC2CoolantNH3_180K(getItemID("IC2Coolant_NH3_180K", 19736));	
+		fcItems.IC2Coolant_NH3_360K=new Item_IC2Coolant.Item_IC2CoolantNH3_360K(getItemID("IC2Coolant_NH3_360K", 19735));		
+		fcItems.Railgun=new Item_Railgun(getItemID("Railgun", 19744));
+		fcItems.Fan=new Item_Fan(getItemID("Fan", 19745));
+		fcItems.UBattery=new Item_RadioactiveDecayCell(getItemID("UBattery", 19746),"UBattery",1);
+		fcItems.ThBattery=new Item_RadioactiveDecayCell(getItemID("id_ThBattery", 19747),"ThBattery",1);
+		fcItems.PuBattery=new Item_RadioactiveDecayCell(getItemID("id_PuBattery", 19748),"PuBattery",1);
+
 		//Register MetaBlocks
-		GameRegistry.registerBlock(Machines,ItemBlockMachines.class);	
-		GameRegistry.registerBlock(Machines2,ItemBlockMachines2.class);	
-		GameRegistry.registerBlock(Ore,FrogCraft.Ore.ItemBlockOre.class);	
+		GameRegistry.registerBlock(fcItems.Machines,ItemBlockMachines.class);	
+		GameRegistry.registerBlock(fcItems.Machines2,ItemBlockMachines2.class);	
+		GameRegistry.registerBlock(fcItems.Ore,FrogCraft.Blocks.ItemBlockOre.class);	
 		
 		//Register Normal Blocks	
-		GameRegistry.registerBlock(ACWindMillCylinder);		
-		GameRegistry.registerBlock(MobilePS,ItemBlock_MobilePS.class);
+		GameRegistry.registerBlock(fcItems.BlockHNO3);
+		GameRegistry.registerBlock(fcItems.ACWindMillCylinder);		
+		GameRegistry.registerBlock(fcItems.MobilePS,ItemBlock_MobilePS.class);
 		
 		//Register Items
-		GameRegistry.registerItem(IC2Coolant_NH3_60K, "FrogCraft_IC2Coolant_NH3_60K");
-		GameRegistry.registerItem(IC2Coolant_NH3_180K, "FrogCraft_IC2Coolant_NH3_180K");
-		GameRegistry.registerItem(IC2Coolant_NH3_360K, "FrogCraft_IC2Coolant_NH3_360K");		
-		GameRegistry.registerItem(Railgun, "FrogCraft_Railgun");
-		GameRegistry.registerItem(Fan, "FrogCraft_id_ItemFan");
-		GameRegistry.registerItem(Ingots,"FrogCraft_Ingots");			
-		GameRegistry.registerItem(Cells,"FrogCraft_Cells");			
-		GameRegistry.registerItem(Miscs,"FrogCraft_Miscs");	
-		GameRegistry.registerItem(Dusts,"FrogCraft_Dusts");	
-		
-
-		GameRegistry.registerItem(UBattery,"UBattery");
-		GameRegistry.registerItem(ThBattery,"ThBattery");
-		GameRegistry.registerItem(PuBattery,"PuBattery");
-	}
+		GameRegistry.registerItem(fcItems.NitricAcidBucket, "NitricAcidBucket");		
+		GameRegistry.registerItem(fcItems.IC2Coolant_NH3_60K, "FrogCraft_IC2Coolant_NH3_60K");
+		GameRegistry.registerItem(fcItems.IC2Coolant_NH3_180K, "FrogCraft_IC2Coolant_NH3_180K");
+		GameRegistry.registerItem(fcItems.IC2Coolant_NH3_360K, "FrogCraft_IC2Coolant_NH3_360K");		
+		GameRegistry.registerItem(fcItems.Railgun, "FrogCraft_Railgun");
+		GameRegistry.registerItem(fcItems.Fan, "FrogCraft_id_ItemFan");
+		GameRegistry.registerItem(fcItems.Ingots,"FrogCraft_Ingots");			
+		GameRegistry.registerItem(fcItems.Cells,"FrogCraft_Cells");			
+		GameRegistry.registerItem(fcItems.Miscs,"FrogCraft_Miscs");	
+		GameRegistry.registerItem(fcItems.Dusts,"FrogCraft_Dusts");	
+		GameRegistry.registerItem(fcItems.UBattery,"UBattery");
+		GameRegistry.registerItem(fcItems.ThBattery,"ThBattery");
+		GameRegistry.registerItem(fcItems.PuBattery,"PuBattery");
+}
 	
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
@@ -273,9 +214,12 @@ public class mod_FrogCraft {
 	
 		ic2.init();
 		GregTech.init();
-		OreDictRegister.registerOreDict();
+		ItemsRegister.registerOreDict();
+		
+		//Register Forge Event
+		MinecraftForge.EVENT_BUS.register(fcItems.BlockHNO3);
 	}
-	
+		
 	@EventHandler
     public void postInit(FMLPostInitializationEvent event) {
 		NetworkRegistry.instance().registerGuiHandler(this, new CommonProxy());
@@ -286,7 +230,7 @@ public class mod_FrogCraft {
 		RecipeRegister.loadRecipes();
 
         GameRegistry.registerFuelHandler(new FuelHandler());
-		
+        
 		try
         {
             sideAndFacingToSpriteOffset = (int[][])Class.forName("ic2.core.block.BlockMultiID").getField("sideAndFacingToSpriteOffset").get(null);
@@ -311,4 +255,12 @@ public class mod_FrogCraft {
         }
 	}
 	
+	
+	int getItemID(String name,int defaultValue){
+		return config.get("Items", name, defaultValue).getInt();
+	}
+	
+	int getBlockID(String name,int defaultValue){
+		return config.get("Blocks", name, defaultValue).getInt();
+	}	
 }

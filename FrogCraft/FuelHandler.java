@@ -25,7 +25,7 @@ public class FuelHandler implements IFuelHandler {
 				return 1600;
 			
 		
-		if(fuel.itemID==fcItems.miscsID){
+		if(fuel.itemID==fcItems.Miscs.itemID){
 			switch (fuel.getItemDamage()){
 			case 0:
 				return 1800;  //Piece of coking coal

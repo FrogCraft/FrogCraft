@@ -2,7 +2,8 @@ package FrogCraft.Machines2.ACWindMill;
 
 import java.util.List;
 
-import FrogCraft.mod_FrogCraft;
+import FrogCraft.api.fcItems;
+
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.StepSound;
 import net.minecraft.block.material.Material;
@@ -19,7 +20,7 @@ public class BlockACWindMillCylinder extends BlockFence{
 		setResistance(5.0F);
 		setStepSound(new StepSound("stone", 1.0F, 1.5F));
 		setUnlocalizedName("ACWindMill_Cylinder");
-		setCreativeTab(mod_FrogCraft.tabFrogCraft);
+		setCreativeTab(fcItems.tabFrogCraft);
 	}
 	
 	@Override

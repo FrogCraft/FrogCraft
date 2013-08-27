@@ -10,9 +10,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
-import FrogCraft.*;
+
 import FrogCraft.Common.*;
 import FrogCraft.Machines2.*;
+import FrogCraft.api.fcItems;
 
 public class TileEntityLiquidInjector extends BaseIC2Machine implements ISidedInventory,IFluidHandler{
 	public int maxCapacity=10000;
@@ -39,7 +40,7 @@ public class TileEntityLiquidInjector extends BaseIC2Machine implements ISidedIn
 	}
 	
 	boolean y(int level){
-		return (worldObj.getBlockId(xCoord, yCoord+level, zCoord)==mod_FrogCraft.Machines2.blockID)&(worldObj.getBlockMetadata(xCoord, yCoord+level, zCoord)==1);
+		return (worldObj.getBlockId(xCoord, yCoord+level, zCoord)==fcItems.Machines2.blockID)&(worldObj.getBlockMetadata(xCoord, yCoord+level, zCoord)==1);
 	}
 	
 	void dowork(FluidStack liquid){

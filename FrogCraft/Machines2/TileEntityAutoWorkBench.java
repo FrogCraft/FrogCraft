@@ -150,7 +150,7 @@ public class TileEntityAutoWorkBench extends TileEntity implements ISidedInvento
     			inv[i]=inv[40].copy();
     			return;
     		}
-    		else if(inv[i].isItemEqual(inv[40])&&inv[i].stackSize<inv[i].getMaxStackSize()){
+    		else if(inv[i].isItemEqual(inv[40])&&inv[i].stackSize<inv[i].getMaxStackSize()){ //There used to be a bug
     			inv[i].stackSize+=amountStillLeft;
     			if(inv[i].stackSize>inv[i].getMaxStackSize())
     				amountStillLeft=inv[i].getMaxStackSize()-inv[i].stackSize;

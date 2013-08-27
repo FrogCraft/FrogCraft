@@ -10,6 +10,7 @@ public class NEI_Config implements IConfigureNEI{
 		new ThermalCrackerRecipeHandler();
 		new CondenseTowerRecipeHandler();
 		new LiquifierRecipeHandler();
+		new CombustionFurnaceRecipeHandler();
 	}
 
 	@Override

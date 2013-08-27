@@ -2,6 +2,9 @@ package FrogCraft.Machines2.ACWindMill;
 
 import java.util.Random;
 
+import FrogCraft.Common.SidedIC2Machine;
+import FrogCraft.api.fcItems;
+
 import ic2.api.network.NetworkHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -12,8 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.ForgeDirection;
-import FrogCraft.mod_FrogCraft;
-import FrogCraft.Common.SidedIC2Machine;
+
 
 public class TileEntityACWindMillTop extends SidedIC2Machine{		
 	public boolean settled;
@@ -35,7 +37,7 @@ public class TileEntityACWindMillTop extends SidedIC2Machine{
             	for (int y=-3;y<4;y++){
                 	for (int z=-3;z<4;z++){
                 		int id=worldObj.getBlockId(x+xCoord, y+yCoord, z+zCoord);
-                		if(id!=0&id!=mod_FrogCraft.ACWindMillCylinder.blockID)
+                		if(id!=0&id!=fcItems.ACWindMillCylinder.blockID)
                 			gen-=5;
                 	}
             	}
@@ -58,7 +60,7 @@ public class TileEntityACWindMillTop extends SidedIC2Machine{
     
     TileEntityACWindMillBase findBase(){
     	for (int y=yCoord-1;y>0;y--){
-    		if (worldObj.getBlockId(xCoord, y, zCoord)!=mod_FrogCraft.ACWindMillCylinder.blockID){
+    		if (worldObj.getBlockId(xCoord, y, zCoord)!=fcItems.ACWindMillCylinder.blockID){
     			if (worldObj.getBlockTileEntity(xCoord, y, zCoord) instanceof TileEntityACWindMillBase){
     				return (TileEntityACWindMillBase) worldObj.getBlockTileEntity(xCoord, y, zCoord) ;
     			}

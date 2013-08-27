@@ -1,8 +1,12 @@
 package FrogCraft.Items.MobilePS;
 
+import java.util.List;
+
 import FrogCraft.mod_FrogCraft;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraft.util.StringTranslate;
 import net.minecraft.world.World;
 
@@ -14,6 +18,12 @@ public class ItemBlock_MobilePS extends ItemBlock implements ic2.api.item.IElect
 		setMaxDamage(256);
 		setMaxStackSize(1);
 	}
+	
+	public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean par4) {
+		String info=StatCollector.translateToLocal(getLocalizedName(itemStack)+".info");
+		list.add(info);
+	}
+	
 	@Override
 	public int getMetadata (int damageValue) {return damageValue;}
 	

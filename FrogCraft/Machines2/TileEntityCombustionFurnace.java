@@ -21,11 +21,17 @@ public class TileEntityCombustionFurnace extends BaseIC2Generator implements ISi
 	
 	Object[] recipe=null;
 	
+	//Statics-------------------------------------------------------
+    public static int getBurnTime(ItemStack in){
+    	return TileEntityFurnace.getItemBurnTime(in)/4;
+    }
+    
+	//Functions-----------------------------------------------------
     @Override
 	public void onInventoryChanged(){
     	if(isWorking())
     		return;
-    	burnTime=TileEntityFurnace.getItemBurnTime(inv[0])/4;
+    	burnTime=getBurnTime(inv[0]);
     	
     	//Get the recipe
     	Object[] nRec=RecipeManager.getCombustionFurnaceRecipe(inv[0]); 
@@ -35,7 +41,7 @@ public class TileEntityCombustionFurnace extends BaseIC2Generator implements ISi
     	}
     	recipe=nRec;
     }
-	
+    
 	public void fill(FluidStack fluid){
 		if (fluid==null)
 			return;

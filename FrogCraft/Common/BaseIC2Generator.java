@@ -10,13 +10,13 @@ public class BaseIC2Generator extends BaseIC2NetTileEntity implements ic2.api.en
 	private EnergyTileSourceEvent sourceEvent;
 	public int maxEnergy,
 	           energy=0;
+	
+	public BaseIC2Generator() {
+		this.maxEnergy=Integer.MAX_VALUE;
+	}
+	
 	public BaseIC2Generator(int maxEnergy) {
 		this.maxEnergy=maxEnergy;
-	}
-
-	@Override
-	public void updateEntity(){
-		super.updateEntity();
 	}
 	
     @Override

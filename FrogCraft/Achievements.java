@@ -20,18 +20,19 @@ public class Achievements implements ICraftingHandler {
 
 	public Achievements(){
 		this.achievementList = new HashMap();
-		addAchievement(0,null,new ItemStack(mod_FrogCraft.Machines,1,8),0,0,"get_EVT",false);		
-		addAchievement(1,achievementList.get("get_EVT"),mod_FrogCraft.Railgun,0,-2,"get_railgun",true);		
-		addAchievement(2,null,new ItemStack(fcItems.ingotsID,1,0),-2,0,"killed_by_Potassium",true);		
-		addAchievement(3,null,new ItemStack(mod_FrogCraft.Machines,1,1),2,0,"gaspump",false);	
-		addAchievement(4,achievementList.get("gaspump"),new ItemStack(mod_FrogCraft.Machines,1,0),2,2,"pneumaticCompressor",false);
-		addAchievement(5,achievementList.get("gaspump"),new ItemStack(mod_FrogCraft.Machines,1,9),2,-2,"liquifier",false);
-		addAchievement(6,achievementList.get("get_EVT"),new ItemStack(mod_FrogCraft.Machines,1,6),0,2,"hsu",false);		
-		addAchievement(7,achievementList.get("hsu"),new ItemStack(mod_FrogCraft.Machines,1,7),0,4,"uhsu",false);					
-		addAchievement(8,achievementList.get("gaspump"),new ItemStack(mod_FrogCraft.Machines,1,12),4,0,"get_ACR",false);	
-		addAchievement(9,achievementList.get("get_ACR"),new ItemStack(fcItems.miscsID,1,3),4,-2,"goldclod",false);	
-		addAchievement(10,achievementList.get("liquifier"),new ItemStack(mod_FrogCraft.Machines,1,10),2,-4,"condensetower",false);	
-		addAchievement(11,achievementList.get("condensetower"),new ItemStack(mod_FrogCraft.Machines2,1,0),4,-4,"condensetower2",false);		
+		addAchievement(0,null,new ItemStack(fcItems.Machines,1,8),0,0,"get_EVT",false);		
+		addAchievement(1,achievementList.get("get_EVT"),fcItems.Railgun,0,-2,"get_railgun",true);		
+		addAchievement(2,null,new ItemStack(fcItems.Ingots,1,0),-2,0,"killed_by_Potassium",true);		
+		addAchievement(3,null,new ItemStack(fcItems.Machines,1,1),2,0,"gaspump",false);	
+		addAchievement(4,achievementList.get("gaspump"),new ItemStack(fcItems.Machines,1,0),2,2,"pneumaticCompressor",false);
+		addAchievement(5,achievementList.get("gaspump"),new ItemStack(fcItems.Machines,1,9),2,-2,"liquifier",false);
+		addAchievement(6,achievementList.get("get_EVT"),new ItemStack(fcItems.Machines,1,6),0,2,"hsu",false);		
+		addAchievement(7,achievementList.get("hsu"),new ItemStack(fcItems.Machines,1,7),0,4,"uhsu",false);					
+		addAchievement(8,achievementList.get("gaspump"),new ItemStack(fcItems.Machines,1,12),4,0,"get_ACR",false);	
+		addAchievement(9,achievementList.get("get_ACR"),new ItemStack(fcItems.Miscs,1,3),4,-2,"goldclod",false);	
+		addAchievement(10,achievementList.get("liquifier"),new ItemStack(fcItems.Machines,1,10),2,-4,"condensetower",false);	
+		addAchievement(11,achievementList.get("condensetower"),new ItemStack(fcItems.Machines2,1,0),4,-4,"condensetower2",false);		
+		addAchievement(12,achievementList.get("killed_by_Potassium"),new ItemStack(fcItems.NitricAcidBucket),-2,2,"suicideExpert",true);			
 		
 		AchievementPage.registerAchievementPage(new AchievementPage("FrogCraft", (Achievement[])achievementList.values().toArray(new Achievement[achievementList.size()])));
 		GameRegistry.registerCraftingHandler(this);
@@ -41,7 +42,7 @@ public class Achievements implements ICraftingHandler {
     @Override
     public void onCrafting(EntityPlayer player, ItemStack item, IInventory craftMatrix) 
     {
-    	if(item.itemID==fcItems.machineID){
+    	if(item.itemID==fcItems.Machines.blockID){
     		switch(item.getItemDamage()){
     		case 0:
     			achieved(player, "pneumaticCompressor");
@@ -70,16 +71,16 @@ public class Achievements implements ICraftingHandler {
     		}
     	}
     	
-    	if(item.itemID==fcItems.machine2ID){     
+    	if(item.itemID==fcItems.Machines2.blockID){     
     		switch(item.getItemDamage()){
     		case 0:
     			achieved(player, "condensetower2");
     			return;            			
     		}
     	}
-    	if(item.itemID==fcItems.railgun.itemID)
+    	if(item.itemID==fcItems.Railgun.itemID)
     		achieved(player, "get_railgun");
-    	if(item.itemID==fcItems.miscsID&&item.getItemDamage()==3)
+    	if(item.itemID==fcItems.Miscs.itemID&&item.getItemDamage()==3)
     		achieved(player, "goldclod");
     }
 

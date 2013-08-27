@@ -4,8 +4,8 @@ import ic2.api.energy.event.EnergyTileUnloadEvent;
 import FrogCraft.*;
 import FrogCraft.Common.BaseIC2Machine;
 import FrogCraft.Common.SidedIC2Machine;
-import FrogCraft.Machines.ItemBlockMachines;
 import FrogCraft.Machines2.ACWindMill.*;
+import FrogCraft.api.fcItems;
 
 import java.util.List;
 import java.util.Random;
@@ -173,7 +173,7 @@ public class BlockMachines2 extends BlockContainer {
         setHardness(2.0F);
         setResistance(5.0F);
         setUnlocalizedName("Machines2");
-        setCreativeTab(mod_FrogCraft.tabFrogCraft);
+        setCreativeTab(fcItems.tabFrogCraft);
         
 
 
@@ -188,15 +188,15 @@ public class BlockMachines2 extends BlockContainer {
         
         TileEntity te = world.getBlockTileEntity(x, y, z);     
         
-        if (te instanceof TileEntityACWindMillTop){
-        	if (((TileEntityACWindMillTop)te).settled){
-        		((TileEntityACWindMillTop)te).settled=false;
-        		dropBlockAsItem_do(world,x,y,z,new ItemStack(mod_FrogCraft.Fan,1));
-        		return true;
-        	}
-        }
+        //if (te instanceof TileEntityACWindMillTop){
+        //	if (((TileEntityACWindMillTop)te).settled){
+        //		((TileEntityACWindMillTop)te).settled=false;
+        //		dropBlockAsItem_do(world,x,y,z,new ItemStack(mod_FrogCraft.Fan,1));
+        //		return true;
+        //	}
+        //}
         
-        if(entityPlayer.getCurrentEquippedItem() != null&&entityPlayer.getCurrentEquippedItem().itemID==mod_FrogCraft.Fan.itemID){
+        if(entityPlayer.getCurrentEquippedItem() != null&&entityPlayer.getCurrentEquippedItem().itemID==fcItems.Fan.itemID){
         	return false;
         }
         
@@ -231,7 +231,7 @@ public class BlockMachines2 extends BlockContainer {
     	
         if (te instanceof TileEntityACWindMillTop){
         	if (((TileEntityACWindMillTop)te).settled)
-        		dropBlockAsItem_do(world,x,y,z,new ItemStack(mod_FrogCraft.Fan,1));
+        		dropBlockAsItem_do(world,x,y,z,new ItemStack(fcItems.Fan,1));
         }
     	
     	dropItems(world, x, y, z);

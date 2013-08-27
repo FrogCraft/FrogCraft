@@ -11,7 +11,8 @@ import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
-import FrogCraft.mod_FrogCraft;
+import FrogCraft.api.fcItems;
+
 
 public class RenderACWindMillTop extends TileEntitySpecialRenderer{
 	public TileEntityACWindMillTop te;
@@ -22,7 +23,7 @@ public class RenderACWindMillTop extends TileEntitySpecialRenderer{
 		//This will move our renderer so that it will be on proper place in the world
 		GL11.glTranslatef((float)d, (float)d1, (float)d2);
 		/*Note that true tile entity coordinates (tileEntity.xCoord, etc) do not match to render coordinates (d, etc) that are calculated as [true coordinates] - [player coordinates (camera coordinates)]*/
-		renderBlockYour( tileEntity.worldObj, tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, mod_FrogCraft.Machines2);
+		renderBlockYour( tileEntity.worldObj, tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, fcItems.Machines2);
 		GL11.glPopMatrix();
 	}
 	
