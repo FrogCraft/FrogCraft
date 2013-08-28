@@ -8,7 +8,8 @@ import net.minecraft.item.ItemStack;
 
 public class ItemBlockOre extends ItemBlock {
 
-	public final static String[] subNames = {"oreCarnallite","oreFluorapatite","oreDewalquite"};
+	public final static String[] subNames = {"oreCarnallite","oreFluorapatite","oreDewalquite","oreRuby"
+		,"oreSapphire","oreGreenSapphire","stoneMarble","stoneBasalt"};
 	
 	public ItemBlockOre(int id) {
 		super(id);

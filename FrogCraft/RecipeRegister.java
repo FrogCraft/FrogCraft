@@ -47,6 +47,10 @@ public class RecipeRegister {
 		//Dusts
 		regUnshaped(ItemManager.getItem(cls.dust, "Magnalium", 3),new Object[]{"dustMagnesium","dustAluminium","dustAluminium"});
 	
+		//Ores
+		FurnaceRecipes.smelting().addSmelting(fcItems.Ore.blockID, 3, ItemManager.getItem(cls.ingot, "Ruby"), 1F);
+		FurnaceRecipes.smelting().addSmelting(fcItems.Ore.blockID, 4, ItemManager.getItem(cls.ingot, "Sapphire"), 1F);
+		FurnaceRecipes.smelting().addSmelting(fcItems.Ore.blockID, 5, ItemManager.getItem(cls.ingot, "GreenSapphire"), 1F);
 		
 		//Modules
 		//Electrolize Module

@@ -60,6 +60,9 @@ public class ItemsRegister {
 		//Ingots
 		Item_Ingots.add(0,"K");
 		Item_Ingots.add(1,"P");
+		Item_Ingots.add(2, "Ruby");
+		Item_Ingots.add(3, "Sapphire");
+		Item_Ingots.add(4, "GreenSapphire");
 }
 	
 
@@ -103,6 +106,9 @@ public class ItemsRegister {
 		
 		OreDictionary.registerOre("ingotPotassium",new ItemStack(fcItems.Ingots,1,0));
 		OreDictionary.registerOre("gemPhosphor",new ItemStack(fcItems.Ingots,1,1));	
+		OreDictionary.registerOre("gemRuby",new ItemStack(fcItems.Ingots,1,2));
+		OreDictionary.registerOre("gemSapphire",new ItemStack(fcItems.Ingots,1,3));	
+		OreDictionary.registerOre("gemGreenSapphire",new ItemStack(fcItems.Ingots,1,4));		
 		
 		//Register Ores
 		for (int i=0;i<ItemBlockOre.subNames.length;i++){

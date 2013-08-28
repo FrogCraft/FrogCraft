@@ -24,7 +24,7 @@ public abstract class TileEntityIndustrialDevice extends BaseIC2Machine implemen
 	public int tick;
 	public int heat;
 
-    public static String[] SoundSource = {"Machines/CompressorOp.ogg","Machines/MaceratorOp.ogg","Machines/ExtractorOp.ogg","Machines/Electro Furnace/ElectroFurnaceStart.ogg"};
+    //public static String[] SoundSource = {"Machines/CompressorOp.ogg","Machines/MaceratorOp.ogg","Machines/ExtractorOp.ogg","Machines/Electro Furnace/ElectroFurnaceStart.ogg"};
     
 	//Class Declaration
 	public TileEntityIndustrialDevice(){
@@ -77,7 +77,7 @@ public abstract class TileEntityIndustrialDevice extends BaseIC2Machine implemen
         
         if (canwork&heat<100 & energy-40>=0){
         	if (heat>=98)
-        		energy-=10;
+        		energy-=5;
         	else 
         		energy-=40;
         	

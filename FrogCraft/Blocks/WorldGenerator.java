@@ -13,7 +13,8 @@ import net.minecraft.world.gen.feature.WorldGenMinable;
 import cpw.mods.fml.common.IWorldGenerator;
 
 public class WorldGenerator implements IWorldGenerator{
-	public static boolean genCarnallite,genFluorapatite,genDewalquite,genClay;
+	public static boolean genCarnallite,genFluorapatite,genDewalquite,genClay,
+	genRuby,genSapphire,genGreenSapphire,genMarble,genBasalt;
 	
 	@Override
 	public void generate(Random rand, int chunkX, int chunkZ, World world,IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
@@ -38,7 +39,7 @@ public class WorldGenerator implements IWorldGenerator{
     		k = chunkZ*16+rand.nextInt(16);
     		for (int i=0;i<5;i++)
     			new WorldGenMinable(fcItems.Ore.blockID,2,7,Block.stone.blockID).generate(world, rand, j, 10+rand.nextInt(40), k);
-    	}
+    	}   	
     	
     	if(genClay){
     		j = chunkX*16+rand.nextInt(16);
@@ -46,8 +47,43 @@ public class WorldGenerator implements IWorldGenerator{
     		for (int i=0;i<2;i++)
     			new WorldGenMinable(Block.blockClay.blockID,0,12,Block.stone.blockID).generate(world, rand, j, 25+rand.nextInt(40), k);    	
     	}
+    	
+    	if(genRuby){
+    		j = chunkX*16+rand.nextInt(16);
+    		k = chunkZ*16+rand.nextInt(16);
+    		for (int i=0;i<3;i++)
+    			new WorldGenMinable(fcItems.Ore.blockID,3,2,Block.stone.blockID).generate(world, rand, j, rand.nextInt(40), k);
+    	}	
+    	
+    	if(genSapphire){
+    		j = chunkX*16+rand.nextInt(16);
+    		k = chunkZ*16+rand.nextInt(16);
+    		for (int i=0;i<4;i++)
+    			new WorldGenMinable(fcItems.Ore.blockID,4,4,Block.stone.blockID).generate(world, rand, j, 5+rand.nextInt(45), k);
+    	}	
+    	
+    	if(genGreenSapphire){
+    		j = chunkX*16+rand.nextInt(16);
+    		k = chunkZ*16+rand.nextInt(16);
+    		for (int i=0;i<5;i++)
+    			new WorldGenMinable(fcItems.Ore.blockID,5,6,Block.stone.blockID).generate(world, rand, j, 5+rand.nextInt(45), k);
+    	}  
+    	
+    	if(genMarble){
+    		j = chunkX*16+rand.nextInt(16);
+    		k = chunkZ*16+rand.nextInt(16);
+    		if (rand.nextBoolean())
+    			new WorldGenMinable(fcItems.Ore.blockID,6,32,Block.stone.blockID).generate(world, rand, j, 30+rand.nextInt(50), k);
+    	}
+    	
+    	if(genBasalt){
+    		j = chunkX*16+rand.nextInt(16);
+    		k = chunkZ*16+rand.nextInt(16);
+    		if (rand.nextBoolean())
+    			new WorldGenMinable(fcItems.Ore.blockID,7,32,Block.stone.blockID).generate(world, rand, j, rand.nextInt(30), k);
+    	}
 	}
-
+	
 	//Currently useless
 	void gen_ore(Random rand, int chunkX, int chunkZ, World world ,int startY,int rangeY, int blockID){
 		for (int i = 0; i < 5; i++) {

@@ -96,6 +96,11 @@ public class mod_FrogCraft {
         WorldGenerator.genFluorapatite=config.get("Enable", "genFluorapatiteOreUnderGround", true).getBoolean(true);
         WorldGenerator.genDewalquite=config.get("Enable", "genDewalquiteOreUnderGround", true).getBoolean(true);        
         WorldGenerator.genClay=config.get("Enable", "genClayUnderGround", true).getBoolean(true);
+        WorldGenerator.genRuby=config.get("Enable", "genRubyOreUnderWater", true).getBoolean(true);
+        WorldGenerator.genSapphire=config.get("Enable", "genSapphireOreUnderGround", true).getBoolean(true);
+        WorldGenerator.genGreenSapphire=config.get("Enable", "genGreenSapphireOreUnderGround", true).getBoolean(true);        
+        WorldGenerator.genMarble=config.get("Enable", "genMarbleUnderGround", true).getBoolean(true);    
+        WorldGenerator.genBasalt=config.get("Enable", "genBasaltUnderGround", true).getBoolean(true);        
         //Loading Configurations-----------------------------------------------------------------
         
         //PneumaticCompressor
