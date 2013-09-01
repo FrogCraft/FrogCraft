@@ -91,6 +91,7 @@ public class CommonProxy implements IGuiHandler {
     	static {
     		languages.add("zh_CN");
     		languages.add("en_US");
+    		languages.add("de_DE");
     	}
     	
     	public void init() {

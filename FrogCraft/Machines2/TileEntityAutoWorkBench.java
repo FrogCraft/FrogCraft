@@ -120,6 +120,9 @@ public class TileEntityAutoWorkBench extends TileEntity implements ISidedInvento
     {
     	super.updateEntity();
 
+    	if(worldObj.isRemote)
+    		return;
+    	
     	if(inv[40]==null)
     		return; 		//When the recipe mismatch
     	

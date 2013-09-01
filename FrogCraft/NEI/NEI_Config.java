@@ -1,6 +1,5 @@
 package FrogCraft.NEI;
 
-import net.minecraftforge.common.Configuration;
 import codechicken.nei.api.IConfigureNEI;
 
 public class NEI_Config implements IConfigureNEI{
