@@ -31,6 +31,7 @@ public class EntityCoin extends Entity implements IProjectile
     private int yTile = -1;
     private int zTile = -1;
     private int inTile = 0;
+    private int inData = 0;
     protected boolean inGround = false;
     public int throwableShake = 0;
 
@@ -278,6 +279,28 @@ public class EntityCoin extends Entity implements IProjectile
             else
             {
                 this.onImpact(movingobjectposition);
+            }
+            
+            if (movingobjectposition.entityHit == null){
+                this.xTile = movingobjectposition.blockX;
+                this.yTile = movingobjectposition.blockY;
+                this.zTile = movingobjectposition.blockZ;
+                this.inTile = this.worldObj.getBlockId(this.xTile, this.yTile, this.zTile);
+                this.inData = this.worldObj.getBlockMetadata(this.xTile, this.yTile, this.zTile);
+                this.motionX = (double)((float)(movingobjectposition.hitVec.xCoord - this.posX));
+                this.motionY = (double)((float)(movingobjectposition.hitVec.yCoord - this.posY));
+                this.motionZ = (double)((float)(movingobjectposition.hitVec.zCoord - this.posZ));
+                float f2 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
+                this.posX -= this.motionX / (double)f2 * 0.05000000074505806D;
+                this.posY -= this.motionY / (double)f2 * 0.05000000074505806D;
+                this.posZ -= this.motionZ / (double)f2 * 0.05000000074505806D;
+                this.inGround = true;
+
+                if (this.inTile != 0)
+                {
+                    Block.blocksList[this.inTile].onEntityCollidedWithBlock(this.worldObj, this.xTile, this.yTile, this.zTile, this);
+                }
+            	
             }
         }
 

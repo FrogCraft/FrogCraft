@@ -35,7 +35,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 
-@Mod( modid = "mod_FrogCraft", name="FrogCraft", version="162.1.5",dependencies = "required-after:IC2; after:gregtech_addon")
+@Mod( modid = "mod_FrogCraft", name="FrogCraft", version="162.1.6.1",dependencies = "required-after:IC2; after:gregtech_addon")
 @NetworkMod(channels = { "mod_FrogCraft" },clientSideRequired = true,serverSideRequired = false,packetHandler = PacketHandler.class)
 public class mod_FrogCraft {
 	@SidedProxy(clientSide = "FrogCraft.ClientProxy", serverSide = "FrogCraft.CommonProxy")
