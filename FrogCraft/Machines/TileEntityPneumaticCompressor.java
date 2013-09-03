@@ -17,7 +17,8 @@ public class TileEntityPneumaticCompressor extends BaseIC2Machine implements ISi
 	public int progress;
 	public int tick;
 	public int gas_total=0;
-
+	
+	private Object[] rec;
 
 	//Class Declaration
 	public TileEntityPneumaticCompressor(){
@@ -27,6 +28,12 @@ public class TileEntityPneumaticCompressor extends BaseIC2Machine implements ISi
 		tick=0;	    
 	}
 	
+    @Override
+	public void onInventoryChanged(){
+    	if(inv[0]==null)
+    		return;
+    	rec=FrogCraft.Intergration.GregTech.findImplosionRecipe(inv[0]);
+    }
 	
     @Override
     public void updateEntity(){  	
@@ -36,10 +43,7 @@ public class TileEntityPneumaticCompressor extends BaseIC2Machine implements ISi
             return;
         
         //////////////////
-        if (inv[0]!=null&energy-8>=0&fully()){
-
-        	Object[] rec=FrogCraft.Intergration.GregTech.findImplosionRecipe(inv[0]);
-        	if (rec!=null){  //able to work
+        if (inv[0]!=null&energy-8>=0&fully()&rec!=null){
         		ItemStack out=(ItemStack) rec[0];
         		gas_total=(Integer) rec[1];
         		
@@ -66,12 +70,13 @@ public class TileEntityPneumaticCompressor extends BaseIC2Machine implements ISi
         			if (inv[0].stackSize==0)
         				inv[0]=null;
         			
+        			onInventoryChanged();
         			
         			tick=0;	
         				
         			boom();
         		}         		
-        	}
+        	
         }
         else{
         	tick=0;
@@ -231,7 +236,8 @@ public class TileEntityPneumaticCompressor extends BaseIC2Machine implements ISi
                             inv[slot] = ItemStack.loadItemStackFromNBT(tag);
                     }
             }
-                    
+                   
+            onInventoryChanged();
     }
 
     @Override

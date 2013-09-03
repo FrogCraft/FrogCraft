@@ -113,7 +113,7 @@ public class ItemsRegister {
 		//Register Ores
 		for (int i=0;i<ItemBlockOre.subNames.length;i++){
 			OreDictionary.registerOre(ItemBlockOre.subNames[i],new ItemStack(fcItems.Ore.blockID,1,i));	
-			gregtechmod.api.util.GT_OreDictUnificator.add(ItemBlockOre.subNames[i],new ItemStack(fcItems.Ore.blockID,1,i));
+			//gregtechmod.api.util.GT_OreDictUnificator.add(ItemBlockOre.subNames[i],new ItemStack(fcItems.Ore.blockID,1,i));
 		}
 	}
 }
